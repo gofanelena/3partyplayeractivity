@@ -8,6 +8,7 @@ public class Segment {
 	private int segmentID;
 	private ArrayList<FileFragment> segmentList;
 	private int segLength = -1;
+	private boolean Intergrity = false;
 
 	public void setSegLength(int segLength) {
 		if (this.segLength == -1) {
@@ -80,6 +81,8 @@ public class Segment {
 	}
 
 	public boolean checkIntegrity() {
+		if (Intergrity)
+			return true;
 		synchronized (this) {
 			if (segmentList == null) {
 				return false;
@@ -88,6 +91,7 @@ public class Segment {
 
 			if (segmentList.size() == 1
 					&& segmentList.get(0).getFragLength() == segLength) {
+				Intergrity = true;
 				return true;
 			}
 			return false;
