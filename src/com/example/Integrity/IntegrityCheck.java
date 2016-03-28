@@ -48,16 +48,19 @@ public class IntegrityCheck {
 
 	}
 
+	//url->3g
 	private String id2url(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//uri->proxy
 	private int uri2id(String uri) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	//url->3g
 	public int url2id(String url) {
 		// TODO Auto-generated method stub
 		return 0;
