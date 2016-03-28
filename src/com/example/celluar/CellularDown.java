@@ -62,7 +62,11 @@ public class CellularDown {
 						int startOffset = Integer.parseInt(start);
 						int endOffset = Integer.parseInt(end);
 						int totalLength = Integer.parseInt(total);
-						int pieceLength = endOffset - startOffset + 1;
+						int pieceLength = endOffset - startOffset;
+
+						if (pieceLength == 0) {
+							break;
+						}
 
 						byte[] tmpbuff = new byte[pieceLength];
 						int hasRead = 0;

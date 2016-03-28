@@ -27,16 +27,22 @@ public class IntegrityCheck {
 
 	public byte[] getSegments(String uri) {
 		int id = uri2id(uri);
+		synchronized (this) {
+			if (urlMap.indexOfKey(id) < 0) {
+				urlMap.put(id, new Segment(id, -1));
+			}
+			Segment segment = urlMap.get(id);
+			if (segment.checkIntegrity()) {
+				return segment.getData();
+			} else {
+				celluDown.queryFragment(id2url(id));
+			}
+		}
 		while (true) {
 			synchronized (this) {
-				if (urlMap.indexOfKey(id) < 0) {
-					urlMap.put(id, new Segment(id, -1));
-				}
 				Segment segment = urlMap.get(id);
 				if (segment.checkIntegrity()) {
 					return segment.getData();
-				} else {
-					celluDown.queryFragment(id2url(id));
 				}
 			}
 			try {
@@ -48,19 +54,19 @@ public class IntegrityCheck {
 
 	}
 
-	//url->3g
-	private String id2url(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	//uri->proxy
+	// uri->proxy
 	private int uri2id(String uri) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	//url->3g
+	// url->3g
+	private String id2url(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// url->3g
 	public int url2id(String url) {
 		// TODO Auto-generated method stub
 		return 0;
