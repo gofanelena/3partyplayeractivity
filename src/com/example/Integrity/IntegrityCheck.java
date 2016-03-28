@@ -1,85 +1,78 @@
 package com.example.Integrity;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
+import android.util.SparseArray;
 
 import com.example.celluar.CellularDown;
+import com.example.entities.FileFragment;
 import com.example.entities.Segment;
 
-public class IntegrityCheck{
-	//single instance mode
+public class IntegrityCheck {
+	// single instance mode
 	private static IntegrityCheck instance;
-	private static HashMap<URL, Segment> urlMap;
-	private Iterator iter;
+	private SparseArray<Segment> urlMap;
 
-	private static int segmentCount = -1;
 	private CellularDown celluDown;
-	
-	private IntegrityCheck(){
-		celluDown = new CellularDown();
-		urlMap = new HashMap<URL, Segment>();
-		iter = urlMap.entrySet().iterator();
+
+	private IntegrityCheck() {
+		urlMap = new SparseArray<Segment>();
 		celluDown = new CellularDown();
 	}
-	
-	public static synchronized IntegrityCheck getInstance(){
-		if(instance == null){
+
+	public static synchronized IntegrityCheck getInstance() {
+		if (instance == null) {
 			instance = new IntegrityCheck();
 		}
 		return instance;
 	}
-	
-	public void insertUrl(URL url){
-		synchronized(this){
-			if(urlMap.containsKey(url)){
-				return;
-			}
-			urlMap.put(url, new Segment(++segmentCount, -1));
-		}
-		
-	}
-	
-	public void insertUrl(String url){
-		try {
-			URL murl = new URL(url);
-			synchronized(this){
-				if(urlMap.containsKey(murl)){
-					return;
+
+	public byte[] getSegments(String uri) {
+		int id = uri2id(uri);
+		while (true) {
+			synchronized (this) {
+				if (urlMap.indexOfKey(id) < 0) {
+					urlMap.put(id, new Segment(id, -1));
 				}
-				urlMap.put(murl, new Segment(++segmentCount, -1));
-			}
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public void getSegments(){
-		while(true){
-			
-			synchronized(this){
-				while (iter.hasNext()) {
-				    URL key = (URL)iter.next();
-					Segment segment = urlMap.get(key);
-					if(segment.checkIntegrity()){
-						continue;
-					}else{						
-						celluDown.queryFragment(segment,key);
-					}
+				Segment segment = urlMap.get(id);
+				if (segment.checkIntegrity()) {
+					return segment.getData();
+				} else {
+					celluDown.queryFragment(id2url(id));
 				}
 			}
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+				return null;// Empty Data
+			}
 		}
-		
+
 	}
-	
+
+	private String id2url(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private int uri2id(String uri) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int url2id(String url) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setSegLength(String url, int totalLength) {
+		int id = url2id(url);
+		Segment s = urlMap.get(id);
+		s.setSegLength(totalLength);
+	}
+
+	public void insert(String url, FileFragment fm) {
+		int id = url2id(url);
+		Segment s = urlMap.get(id);
+		s.insert(fm);
+	}
 
 }
