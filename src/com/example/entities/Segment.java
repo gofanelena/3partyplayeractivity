@@ -96,6 +96,7 @@ public class Segment {
 			}
 			return false;
 		}
+<<<<<<< HEAD
 
 	}
 
@@ -109,8 +110,24 @@ public class Segment {
 		// TODO Auto-generated method stub
 		synchronized(this){
 			return segmentList.get(0).getData();
+=======
+
+	}
+
+	private void collectionSort() {
+		synchronized (this) {
+			Collections.sort(segmentList);
+>>>>>>> 0e38726c132f4c59b49122a8f05af468b1ac18f5
 		}
 		
 	}
 
+<<<<<<< HEAD
+=======
+	public byte[] getData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+>>>>>>> 0e38726c132f4c59b49122a8f05af468b1ac18f5
 }
