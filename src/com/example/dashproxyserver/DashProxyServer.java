@@ -1,7 +1,6 @@
 package com.example.dashproxyserver;
 
 import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
 
 import android.os.Environment;
 import android.util.Log;
@@ -55,18 +54,10 @@ public class DashProxyServer extends NanoHTTPD {
 
 			IntegrityCheck iTC = IntegrityCheck.getInstance();
 			byte[] tmp = iTC
-<<<<<<< HEAD
-					.getSegments("/autoChart/du/video/1/"
-							+ playist);
-			
-			return newFixedLengthResponse(Response.Status.OK,
-					"application/x-mpegurl", new String(tmp));
-=======
 					.getSegments("http://buptant.cn/autoChart/du/video/1/"
 							+ playist);
 			return newFixedLengthResponse(Response.Status.OK,
 					"application/x-mpegurl", fis, length);
->>>>>>> 0e38726c132f4c59b49122a8f05af468b1ac18f5
 
 		} else {
 
