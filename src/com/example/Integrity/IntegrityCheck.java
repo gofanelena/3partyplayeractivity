@@ -10,11 +10,16 @@ public class IntegrityCheck {
 	// single instance mode
 	private static IntegrityCheck instance;
 	private SparseArray<Segment> urlMap;
+	private SparseArray<String> idURLMap;
+	private SparseArray<String> idURIMap;
+	private static int idCount = -1;  
 
 	private CellularDown celluDown;
 
 	private IntegrityCheck() {
 		urlMap = new SparseArray<Segment>();
+	    idURLMap = new SparseArray<String>();
+		idURIMap = new SparseArray<String>();
 		celluDown = new CellularDown();
 	}
 
@@ -57,19 +62,40 @@ public class IntegrityCheck {
 	// uri->proxy
 	private int uri2id(String uri) {
 		// TODO Auto-generated method stub
-		return 0;
+		synchronized(this){
+			if(idURIMap.indexOfValue(uri)<0){
+				idURIMap.put(++idCount, uri);
+				return idCount;
+			}else{
+				return idURIMap.indexOfValue(uri);
+			}
+			
+		}
+			
 	}
 
 	// url->3g
 	private String id2url(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		synchronized(this){
+			if(idURLMap.get(id)==null){
+				int segNum = getFileNumFromName(idURIMap.get(id));
+				String url = "http://buptant.cn/autoChart/du/video/1/phps/"+segNum+".php";
+				idURLMap.put(id, url);
+				return url;
+			}else{
+				return idURLMap.get(id);
+			}
+		}
 	}
 
 	// url->3g
 	public int url2id(String url) {
 		// TODO Auto-generated method stub
-		return 0;
+		synchronized(this){
+			return idURLMap.indexOfValue(url);
+		}
+
 	}
 
 	public void setSegLength(String url, int totalLength) {
@@ -83,5 +109,20 @@ public class IntegrityCheck {
 		Segment s = urlMap.get(id);
 		s.insert(fm);
 	}
+	
+	public int getFileNumFromName(String uri){
+		String ss = null;
+		for (String s : uri.split("/")) {
+			if (s.contains(".mp4")) {
+				ss = s;
+				break;
+			}
+		}
+		String[] tmp = ss.split(".");
+		return Integer.parseInt(tmp[0]);
+	}
+	
 
 }
+
+
