@@ -91,6 +91,9 @@ public class CellularDown {
 			} catch (IOException e) {
 				e.printStackTrace();
 				Log.d("Test", "IOException");
+			}  catch (Exception e) {
+				e.printStackTrace();
+				Log.d("Test", "Exception");
 			} finally {
 				connection.disconnect();
 			}

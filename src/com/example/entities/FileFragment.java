@@ -2,7 +2,6 @@ package com.example.entities;
 
 public class FileFragment implements Comparable<FileFragment> {
 
-	private int fragLength;
 	private int startIndex;
 	private int stopIndex;
 	private int segmentID;
@@ -14,59 +13,43 @@ public class FileFragment implements Comparable<FileFragment> {
 		this.startIndex = start;
 		this.stopIndex = stop;
 		this.segmentID = segID;
-		this.fragLength = stopIndex - startIndex + 1;
+		int fragLength = stopIndex - startIndex;
 		this.data = new byte[fragLength];
 
 	}
 
-	public FileFragment(FileFragment fm) {
+	public FileFragment(FileFragment fm) throws Exception {
 		this.startIndex = fm.getStartIndex();
 		this.stopIndex = fm.getStopIndex();
 		this.segmentID = fm.getSegmentID();
-		this.fragLength = fm.getFragLength();
+		int fragLength = fm.getFragLength();
 		this.data = new byte[fragLength];
 		this.setData(fm.getData());
-	}
-
-	public void setFragLength(int fragLength) {
-		this.fragLength = fragLength;
-	}
-
-	public void setStartIndex(int startIndex) {
-		this.startIndex = startIndex;
-	}
-
-	public void setStopIndex(int stopIndex) {
-		this.stopIndex = stopIndex;
-	}
-
-	public void setSegmentID(int segmentID) {
-		this.segmentID = segmentID;
-	}
-
-	public void setWritten(boolean written) {
-		this.written = written;
 	}
 
 	public byte[] getData() {
 		return data;
 	}
 
-	public void setData(byte[] data, int offset) {
+	public void setData(byte[] d, int offset) {
 		synchronized (this) {
 			offset = offset - this.startIndex;
-			int len = data.length;
+			int len = offset + d.length;
 			byte[] tmpdata = new byte[len];
 			System.arraycopy(this.data, 0, tmpdata, 0, this.data.length);
-			System.arraycopy(data, 0, tmpdata, offset, data.length);
+			System.arraycopy(d, 0, tmpdata, offset, d.length);
 			this.data = tmpdata;
+			this.stopIndex = this.startIndex + tmpdata.length;
 			this.written = true;
 		}
 	}
 
-	public void setData(byte[] data) {
+	public void setData(byte[] d) throws Exception {
+		if (data.length != d.length)
+			throw new Exception("Fragment Length Wrong " + data.length + " "
+					+ d.length);
 		synchronized (this) {
-			System.arraycopy(data, 0, this.data, 0, fragLength);
+			System.arraycopy(d, 0, this.data, 0, d.length);
 			this.written = true;
 		}
 	}
@@ -76,7 +59,7 @@ public class FileFragment implements Comparable<FileFragment> {
 	}
 
 	public int getFragLength() {
-		return fragLength;
+		return data.length;
 	}
 
 	public int getStartIndex() {
@@ -97,4 +80,8 @@ public class FileFragment implements Comparable<FileFragment> {
 				Integer.valueOf(another.getStartIndex()));
 	}
 
+	@Override
+	public String toString() {
+		return "Frag " + startIndex + " " + stopIndex + " " + data.length;
+	}
 }
