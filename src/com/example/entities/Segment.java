@@ -11,8 +11,8 @@ public class Segment {
 	private boolean Intergrity = false;
 
 	public void setSegLength(int segLength) {
-		if (this.segLength == -1) {
-			synchronized (this) {
+		synchronized (this) {
+			if (this.segLength == -1) {
 				this.segLength = segLength;
 			}
 		}
@@ -28,54 +28,40 @@ public class Segment {
 		synchronized (this) {
 			if (fm.isWritten() && fm.getSegmentID() == segmentID) {
 				segmentList.add(fm);
-				// sortSegment();
 				collectionSort();
 				return true;
 			}
 			return false;
 		}
-
 	}
 
-	private void merge() {
-
+	private void merge() throws Exception {
 		if (segmentList == null || segmentList.size() == 1) {
 			return;
 		}
 		int size = segmentList.size();
 		for (int i = 0; i < size - 1; i++) {
-			if (segmentList.get(i).getStartIndex() == segmentList.get(i + 1)
-					.getStartIndex()) {
-				if (segmentList.get(i).getFragLength() <= segmentList
-						.get(i + 1).getFragLength()) {
+			FileFragment prev = segmentList.get(i);
+			FileFragment next = segmentList.get(i + 1);
+			if (prev.getStopIndex() < next.getStartIndex()) {
+				continue;
+			}
+			if (prev.getStartIndex() == next.getStartIndex()) {
+				if (prev.getFragLength() <= next.getFragLength()) {
 					segmentList.remove(i);
 					size--;
+					i--;
 				} else {
 					segmentList.remove(i + 1);
 					size--;
 				}
-			}
-			if (segmentList.get(i).getStopIndex() >= segmentList.get(i + 1)
-					.getStartIndex()) {
-				if (segmentList.get(i).getStopIndex() >= segmentList.get(i + 1)
-						.getStopIndex()) {
-					segmentList.remove(i + 1);
-					size--;
-				} else {
-					segmentList.get(i).setStopIndex(
-							segmentList.get(i + 1).getStopIndex());
-					int newLength = segmentList.get(i + 1).getStopIndex()
-							- segmentList.get(i).getStartIndex() + 1;
-					segmentList.get(i).setFragLength(newLength);
-					segmentList.get(i).setData(
-							segmentList.get(i).getData(),
-							segmentList.get(i + 1).getData(),
-							segmentList.get(i).getStopIndex()
-									- segmentList.get(i + 1).getStartIndex()
-									+ 1, newLength);
-					segmentList.remove(i + 1);
-					size--;
-				}
+				continue;
+			} else if (prev.getStartIndex() < next.getStartIndex()) {
+				prev.setData(next.getData(), next.getStartIndex());
+				segmentList.remove(i + 1);
+				size--;
+			} else {
+				throw new Exception("Not Sort");
 			}
 		}
 	}
@@ -87,7 +73,11 @@ public class Segment {
 			if (segmentList == null) {
 				return false;
 			}
-			merge();
+			try {
+				merge();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			if (segmentList.size() == 1
 					&& segmentList.get(0).getFragLength() == segLength) {
@@ -106,11 +96,10 @@ public class Segment {
 	}
 
 	public byte[] getData() {
-		// TODO Auto-generated method stub
-		synchronized(this){
+		synchronized (this) {
 			return segmentList.get(0).getData();
 		}
-		
+
 	}
 
 }
