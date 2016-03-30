@@ -49,17 +49,19 @@ public class Segment {
 			if (prev.getStartIndex() == next.getStartIndex()) {
 				if (prev.getFragLength() <= next.getFragLength()) {
 					segmentList.remove(i);
-					size--;
-					i--;
 				} else {
 					segmentList.remove(i + 1);
-					size--;
 				}
+				size--;
+				i--;
 				continue;
 			} else if (prev.getStartIndex() < next.getStartIndex()) {
-				prev.setData(next.getData(), next.getStartIndex());
+				if (prev.getStopIndex() < next.getStopIndex()) {
+					prev.setData(next.getData(), next.getStartIndex());
+				}
 				segmentList.remove(i + 1);
 				size--;
+				i--;
 			} else {
 				throw new Exception("Not Sort");
 			}
@@ -96,6 +98,8 @@ public class Segment {
 	}
 
 	public byte[] getData() {
+		if (segmentList.size() == 0)
+			return null;
 		synchronized (this) {
 			return segmentList.get(0).getData();
 		}
