@@ -107,7 +107,10 @@ public class Segment {
 
 	public byte[] getData() {
 		// TODO Auto-generated method stub
-		return null;
+		synchronized(this){
+			return segmentList.get(0).getData();
+		}
+		
 	}
 
 }

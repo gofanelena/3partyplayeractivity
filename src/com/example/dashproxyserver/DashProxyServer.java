@@ -30,16 +30,11 @@ public class DashProxyServer extends NanoHTTPD {
 	public Response serve(IHTTPSession session) {
 		FileInputStream fis = null;
 		int length = 0;
-
-		Log.v("DashProxy", "uri:" + session.getUri());
-		String s1 = getFileName(session, ".mp4");
-		String playist = getFileName(session, ".mp4");
-
-		if (MainFragment.configureData.getWorkingMode() == ConfigureData.LOCAL_MODE) {
+		if(!getFileName(session,".m3u8").equals("")){
+			Log.v("filename", session.getUri());
 			try {
 				fis = new FileInputStream(
-						Environment.getExternalStorageDirectory() + "/video/4/"
-								+ playist);
+						Environment.getExternalStorageDirectory() + "/video/4/index.m3u8");
 
 				length = fis.available();
 
@@ -49,21 +44,44 @@ public class DashProxyServer extends NanoHTTPD {
 			}
 			return newFixedLengthResponse(Response.Status.OK,
 					"application/x-mpegurl", fis, length);
+		}else{
+			Log.v("DashProxy", "uri:" + session.getUri());
+			String s1 = getFileName(session, ".mp4");
+			String playist = getFileName(session, ".mp4");
+			Log.v("playist", playist);
 
-		} else if (MainFragment.configureData.getWorkingMode() == ConfigureData.G_MDOE) {
+			if (MainFragment.configureData.getWorkingMode() == ConfigureData.LOCAL_MODE) {
+				try {
+					fis = new FileInputStream(
+							Environment.getExternalStorageDirectory() + "/video/4/"
+									+ playist);
 
-			IntegrityCheck iTC = IntegrityCheck.getInstance();
-			byte[] tmp = iTC
-					.getSegments("http://buptant.cn/autoChart/du/video/1/"
-							+ playist);
-			return newFixedLengthResponse(Response.Status.OK,
-					"application/x-mpegurl", fis, length);
+					length = fis.available();
 
-		} else {
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return newFixedLengthResponse(Response.Status.OK,
+						"application/x-mpegurl", fis, length);
 
-			return newFixedLengthResponse(Response.Status.OK,
-					"application/x-mpegurl", fis, length);
+			} else if (MainFragment.configureData.getWorkingMode() == ConfigureData.G_MDOE) {
+
+				IntegrityCheck iTC = IntegrityCheck.getInstance();
+				byte[] tmp = iTC
+						.getSegments("http://buptant.cn/autoChart/du/video/1/"
+								+ playist);
+				return newFixedLengthResponse(Response.Status.OK,
+						"application/x-mpegurl", new String(tmp));
+
+			} else {
+
+				return newFixedLengthResponse(Response.Status.OK,
+						"application/x-mpegurl", fis, length);
+			}
 		}
+
+		
 
 		// switch(MainFragment.configureData.getWorkingMode()){
 		// case ConfigureData.LOCAL_MODE:
