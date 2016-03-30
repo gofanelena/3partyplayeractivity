@@ -69,8 +69,7 @@ public class DashProxyServer extends NanoHTTPD {
 
 				IntegrityCheck iTC = IntegrityCheck.getInstance();
 				byte[] tmp = iTC
-						.getSegments("http://buptant.cn/autoChart/du/video/1/"
-								+ playist);
+						.getSegments(iTC.URI_TAG + playist);
 				return newFixedLengthResponse(Response.Status.OK,
 						"application/x-mpegurl", new String(tmp));
 
