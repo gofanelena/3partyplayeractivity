@@ -1,25 +1,25 @@
 package com.example.entities;
 
-public class FileFragment implements Comparable<FileFragment>{
-	
+public class FileFragment implements Comparable<FileFragment> {
+
 	private int fragLength;
 	private int startIndex;
 	private int stopIndex;
 	private int segmentID;
 	private byte[] data;
 	private boolean written = false;
-	
-	public FileFragment(int start, int stop, int segID){
-		
+
+	public FileFragment(int start, int stop, int segID) {
+
 		this.startIndex = start;
 		this.stopIndex = stop;
 		this.segmentID = segID;
 		this.fragLength = stopIndex - startIndex + 1;
 		this.data = new byte[fragLength];
-		
+
 	}
-	
-	public FileFragment(FileFragment fm){
+
+	public FileFragment(FileFragment fm) {
 		this.startIndex = fm.getStartIndex();
 		this.stopIndex = fm.getStopIndex();
 		this.segmentID = fm.getSegmentID();
@@ -51,17 +51,24 @@ public class FileFragment implements Comparable<FileFragment>{
 	public byte[] getData() {
 		return data;
 	}
-	
-	public void setData(byte[] data1, byte[] data2, int offset, int newLength){
-		this.data = new byte[newLength];
-		System.arraycopy(data1, 0, data, 0, data1.length);
-		System.arraycopy(data2, offset, data, data1.length, data2.length-offset);
-		this.written = true;
+
+	public void setData(byte[] data, int offset) {
+		synchronized (this) {
+			offset = offset - this.startIndex;
+			int len = data.length;
+			byte[] tmpdata = new byte[len];
+			System.arraycopy(this.data, 0, tmpdata, 0, this.data.length);
+			System.arraycopy(data, 0, tmpdata, offset, data.length);
+			this.data = tmpdata;
+			this.written = true;
+		}
 	}
 
 	public void setData(byte[] data) {
-		System.arraycopy(data, 0, this.data, 0, fragLength);
-		this.written = true;
+		synchronized (this) {
+			System.arraycopy(data, 0, this.data, 0, fragLength);
+			this.written = true;
+		}
 	}
 
 	public boolean isWritten() {
@@ -86,11 +93,8 @@ public class FileFragment implements Comparable<FileFragment>{
 
 	@Override
 	public int compareTo(FileFragment another) {
-		// TODO Auto-generated method stub
-		return new Integer(this.getStartIndex()).compareTo(new Integer(another.getStartIndex()));
+		return Integer.valueOf(this.getStartIndex()).compareTo(
+				Integer.valueOf(another.getStartIndex()));
 	}
-
-
-		
 
 }
