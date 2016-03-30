@@ -16,8 +16,8 @@ public class CellularDown {
 
 	public void queryFragment(String url) {
 		// handle 3G downloading
-		//CellThread a = new CellThread(url);
-		//a.start();
+		// CellThread a = new CellThread(url);
+		// a.start();
 		new CellThread(url).start();
 	}
 
@@ -30,8 +30,8 @@ public class CellularDown {
 			this.url = url;
 			fileNameIndex = getFileNumFromUrl(url);
 		}
-		
-		private int getFileNumFromUrl(String uri){
+
+		private int getFileNumFromUrl(String uri) {
 			String ss = null;
 			for (String s : uri.split("/")) {
 				if (s.contains(".php")) {
@@ -39,12 +39,13 @@ public class CellularDown {
 					break;
 				}
 			}
-			String[] tmp = ss.split(".");
+			String[] tmp = ss.split("\\.");
 			return Integer.parseInt(tmp[0]);
 		}
-		
+
 		@Override
 		public void run() {
+			System.out.println("Test");
 			HttpURLConnection connection = null;
 			try {
 				URL uurl = new URL(url);
@@ -56,7 +57,8 @@ public class CellularDown {
 					connection.setDoInput(true);
 					connection.setDoOutput(true);
 					// data need to be modified
-					String data = "filename="+fileNameIndex+".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bqo3a2";
+					String data = "filename=" + fileNameIndex
+							+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bqo3a2";
 					OutputStream out = connection.getOutputStream();
 					out.write(data.getBytes());
 					out.flush();
@@ -107,7 +109,7 @@ public class CellularDown {
 			} catch (IOException e) {
 				e.printStackTrace();
 				Log.d("Test", "IOException");
-			}  catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				Log.d("Test", "Exception");
 			} finally {
