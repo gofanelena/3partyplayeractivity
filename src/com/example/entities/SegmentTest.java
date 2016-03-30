@@ -3,9 +3,6 @@
  */
 package com.example.entities;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -23,8 +20,8 @@ public class SegmentTest {
 	private String data;
 	private HashSet<Integer> numSet = new HashSet<Integer>();
 	private LinkedList<FileFragment> fraList = new LinkedList<>();
-	private int base = 5000;
-	private int fra = 50;
+	private int base = 5000000;
+	private int fra = 500;
 
 	/**
 	 * @throws java.lang.Exception
@@ -63,7 +60,6 @@ public class SegmentTest {
 	public final void testInsert() {
 		Segment seg = new Segment(1, base);
 		for (FileFragment ff : fraList) {
-			// System.out.println(""+ff.getStartIndex()+" "+ff.getStopIndex());
 			seg.insert(ff);
 		}
 	}
