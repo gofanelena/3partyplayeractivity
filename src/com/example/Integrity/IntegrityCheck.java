@@ -1,5 +1,6 @@
 package com.example.Integrity;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.example.celluar.CellularDown;
@@ -31,6 +32,7 @@ public class IntegrityCheck {
 		for(int i = 1; i<= TOTAL_SEGS; i++){
 			idUri.put(++idCount, URI_TAG+i+".mp4");
 			idUrl.put(idCount, URL_TAG+i+".php");
+			//Log.v("map", idUrl.get(0));
 		}
 		
 	}
@@ -44,6 +46,7 @@ public class IntegrityCheck {
 
 	public byte[] getSegments(String uri) {
 		int id = uri2id(uri);
+		//Log.v("uri", uri);
 		synchronized (this) {
 			if (urlMap.indexOfKey(id) < 0) {
 				urlMap.put(id, new Segment(id, -1));
@@ -53,6 +56,7 @@ public class IntegrityCheck {
 				return segment.getData();
 			} else {
 				celluDown.queryFragment(id2url(id));
+				Log.v("url", id2url(id));
 			}
 		}
 		while (true) {
@@ -75,8 +79,19 @@ public class IntegrityCheck {
 	private int uri2id(String uri) {
 		// TODO Auto-generated method stub
 		synchronized(this){
+			boolean t = false;
+			int i = 0;
+			while(!t) {
+				if(i==TOTAL_SEGS){
+					return -2;
+				}
+			    t = idURIMap.get(i).equals(uri);
+				i++;
+				
+			}
 			
-			return idURIMap.indexOfValue(uri);
+			//return idURIMap.indexOfValue(uri);
+			return (--i);
 		
 			
 		}

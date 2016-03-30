@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
+import android.test.AndroidTestCase; 
 
 import org.junit.Assert;
 import org.junit.Before;

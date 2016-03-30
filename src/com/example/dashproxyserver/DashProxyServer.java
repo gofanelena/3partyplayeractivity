@@ -66,10 +66,13 @@ public class DashProxyServer extends NanoHTTPD {
 						"application/x-mpegurl", fis, length);
 
 			} else if (MainFragment.configureData.getWorkingMode() == ConfigureData.G_MDOE) {
-
+						
 				IntegrityCheck iTC = IntegrityCheck.getInstance();
-				byte[] tmp = iTC
-						.getSegments(iTC.URI_TAG + playist);
+				
+				String tmpp = iTC.URI_TAG + playist;
+				
+				byte[] tmp = iTC.getSegments(tmpp);
+				
 				return newFixedLengthResponse(Response.Status.OK,
 						"application/x-mpegurl", new String(tmp));
 

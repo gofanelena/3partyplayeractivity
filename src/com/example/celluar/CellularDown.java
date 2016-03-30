@@ -16,8 +16,9 @@ public class CellularDown {
 
 	public void queryFragment(String url) {
 		// handle 3G downloading
-		CellThread a = new CellThread(url);
-		a.start();
+		//CellThread a = new CellThread(url);
+		//a.start();
+		new CellThread(url).start();
 	}
 
 	private class CellThread extends Thread {
@@ -42,6 +43,7 @@ public class CellularDown {
 			return Integer.parseInt(tmp[0]);
 		}
 		
+		@Override
 		public void run() {
 			HttpURLConnection connection = null;
 			try {
@@ -54,7 +56,7 @@ public class CellularDown {
 					connection.setDoInput(true);
 					connection.setDoOutput(true);
 					// data need to be modified
-					String data = "filename=photo.jpg&sessionid=lykfr9oyqipf2q3tvy2l73bqo3a2&id=1";
+					String data = "filename="+fileNameIndex+".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bqo3a2";
 					OutputStream out = connection.getOutputStream();
 					out.write(data.getBytes());
 					out.flush();
