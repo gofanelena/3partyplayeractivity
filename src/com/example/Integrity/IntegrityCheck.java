@@ -13,14 +13,26 @@ public class IntegrityCheck {
 	private SparseArray<String> idURLMap;
 	private SparseArray<String> idURIMap;
 	private static int idCount = -1;  
+    public static final String URL_TAG = "http://buptant.cn/autoChart/du/video/ljw2016/phps/";
+    public static final String URI_TAG = "http://127.1.1.1:9999/";
+    private static final int TOTAL_SEGS = 5;
 
 	private CellularDown celluDown;
 
 	private IntegrityCheck() {
 		urlMap = new SparseArray<Segment>();
-	    idURLMap = new SparseArray<String>();
+		idURLMap = new SparseArray<String>();
 		idURIMap = new SparseArray<String>();
+		insertURLtoMaps(idURLMap, idURIMap);
 		celluDown = new CellularDown();
+	}
+	
+	private void insertURLtoMaps(SparseArray<String> idUrl, SparseArray<String> idUri){
+		for(int i = 1; i<= TOTAL_SEGS; i++){
+			idUri.put(++idCount, URI_TAG+i+".mp4");
+			idUrl.put(idCount, URL_TAG+i+".php");
+		}
+		
 	}
 
 	public static synchronized IntegrityCheck getInstance() {
@@ -63,12 +75,9 @@ public class IntegrityCheck {
 	private int uri2id(String uri) {
 		// TODO Auto-generated method stub
 		synchronized(this){
-			if(idURIMap.indexOfValue(uri)<0){
-				idURIMap.put(++idCount, uri);
-				return idCount;
-			}else{
-				return idURIMap.indexOfValue(uri);
-			}
+			
+			return idURIMap.indexOfValue(uri);
+		
 			
 		}
 			
@@ -78,14 +87,9 @@ public class IntegrityCheck {
 	private String id2url(int id) {
 		// TODO Auto-generated method stub
 		synchronized(this){
-			if(idURLMap.get(id)==null){
-				int segNum = getFileNumFromName(idURIMap.get(id));
-				String url = "http://buptant.cn/autoChart/du/video/1/phps/"+segNum+".php";
-				idURLMap.put(id, url);
-				return url;
-			}else{
-				return idURLMap.get(id);
-			}
+			
+			return idURLMap.get(id);
+			
 		}
 	}
 
@@ -110,17 +114,7 @@ public class IntegrityCheck {
 		s.insert(fm);
 	}
 	
-	public int getFileNumFromName(String uri){
-		String ss = null;
-		for (String s : uri.split("/")) {
-			if (s.contains(".mp4")) {
-				ss = s;
-				break;
-			}
-		}
-		String[] tmp = ss.split(".");
-		return Integer.parseInt(tmp[0]);
-	}
+	
 	
 
 }

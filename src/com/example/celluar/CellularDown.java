@@ -22,12 +22,26 @@ public class CellularDown {
 
 	private class CellThread extends Thread {
 		private String url;
+		private int fileNameIndex;
 
 		private CellThread(String url) {
 			super();
 			this.url = url;
+			fileNameIndex = getFileNumFromUrl(url);
 		}
-
+		
+		private int getFileNumFromUrl(String uri){
+			String ss = null;
+			for (String s : uri.split("/")) {
+				if (s.contains(".php")) {
+					ss = s;
+					break;
+				}
+			}
+			String[] tmp = ss.split(".");
+			return Integer.parseInt(tmp[0]);
+		}
+		
 		public void run() {
 			HttpURLConnection connection = null;
 			try {
