@@ -5,6 +5,7 @@ public class FileFragment implements Comparable<FileFragment> {
 	private int startIndex;
 	private int stopIndex;
 	private int segmentID;
+	private int fragLength;
 	private byte[] data;
 	private boolean written = false;
 
@@ -13,23 +14,45 @@ public class FileFragment implements Comparable<FileFragment> {
 		this.startIndex = start;
 		this.stopIndex = stop;
 		this.segmentID = segID;
-		int fragLength = stopIndex - startIndex;
+		this.fragLength = stopIndex - startIndex + 1;
 		this.data = new byte[fragLength];
 
 	}
 
+	
 	public FileFragment(FileFragment fm) throws Exception {
 		this.startIndex = fm.getStartIndex();
 		this.stopIndex = fm.getStopIndex();
 		this.segmentID = fm.getSegmentID();
-		int fragLength = fm.getFragLength();
+		this.fragLength = fm.getFragLength();
 		this.data = new byte[fragLength];
 		this.setData(fm.getData());
 	}
 
+	public void setFragLength(int fragLength) {
+		this.fragLength = fragLength;
+	}
+
+
 	public byte[] getData() {
 		return data;
 	}
+	
+	public void setData(byte[] d, byte[] e) {
+		synchronized (this) {
+			int len = d.length + e.length;
+			byte[] tmp = new byte[len];
+			System.arraycopy(d, 0, tmp, 0, d.length);
+			System.arraycopy(e, 0, tmp, d.length, e.length);
+			this.data = tmp;
+			
+		}
+	}
+
+	public void setStopIndex(int stopIndex) {
+		this.stopIndex = stopIndex;
+	}
+
 
 	public void setData(byte[] d, int offset) {
 		synchronized (this) {
@@ -59,7 +82,8 @@ public class FileFragment implements Comparable<FileFragment> {
 	}
 
 	public int getFragLength() {
-		return data.length;
+		//return data.length;
+		return this.fragLength;
 	}
 
 	public int getStartIndex() {

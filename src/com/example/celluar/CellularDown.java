@@ -25,7 +25,7 @@ public class CellularDown {
 		private String url;
 		private int fileNameIndex;
 
-		private CellThread(String url) {
+		public CellThread(String url) {
 			super();
 			this.url = url;
 			fileNameIndex = getFileNumFromUrl(url);
@@ -46,6 +46,7 @@ public class CellularDown {
 		@Override
 		public void run() {
 			System.out.println("Test");
+			Log.d("testtest","test");
 			HttpURLConnection connection = null;
 			try {
 				URL uurl = new URL(url);
@@ -55,10 +56,11 @@ public class CellularDown {
 					connection.setConnectTimeout(5000);
 					connection.setUseCaches(false);
 					connection.setDoInput(true);
+					connection.setRequestProperty("Accept-Encoding", "");
 					connection.setDoOutput(true);
 					// data need to be modified
 					String data = "filename=" + fileNameIndex
-							+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bqo3a2";
+							+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bqo218";
 					OutputStream out = connection.getOutputStream();
 					out.write(data.getBytes());
 					out.flush();
@@ -80,11 +82,9 @@ public class CellularDown {
 						int startOffset = Integer.parseInt(start);
 						int endOffset = Integer.parseInt(end);
 						int totalLength = Integer.parseInt(total);
-						int pieceLength = endOffset - startOffset;
-
-						if (pieceLength == 0) {
-							break;
-						}
+						int pieceLength = endOffset - startOffset + 1;
+						
+					
 
 						byte[] tmpbuff = new byte[pieceLength];
 						int hasRead = 0;
@@ -92,6 +92,8 @@ public class CellularDown {
 							hasRead += in.read(tmpbuff, hasRead, pieceLength
 									- hasRead);
 						}
+						
+						
 
 						IntegrityCheck IC = IntegrityCheck.getInstance();
 						IC.setSegLength(url, totalLength);
@@ -99,8 +101,14 @@ public class CellularDown {
 								endOffset, IC.url2id(url));
 						fm.setData(tmpbuff);
 						IC.insert(url, fm);
-					} else {
+						
+//						if (endOffset == totalLength - 1) {
+//							break;
+//						}
+						
+					} else if (connection.getResponseCode() == 200) {
 						Log.d("Test", "else");
+						break;
 					}
 				}
 			} catch (MalformedURLException e) {

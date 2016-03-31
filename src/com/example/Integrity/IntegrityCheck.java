@@ -69,7 +69,7 @@ public class IntegrityCheck {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				return null;// Empty Data
+				// Empty Data
 			}
 		}
 

@@ -74,7 +74,7 @@ public class DashProxyServer extends NanoHTTPD {
 				byte[] tmp = iTC.getSegments(tmpp);
 				
 				return newFixedLengthResponse(Response.Status.OK,
-						"application/x-mpegurl", new String(tmp));
+						"application/x-mpegurl", tmp);
 
 			} else {
 

@@ -1816,6 +1816,10 @@ public abstract class NanoHTTPD {
             return newFixedLengthResponse(status, mimeType, new ByteArrayInputStream(bytes), bytes.length);
         }
     }
+    
+    public Response newFixedLengthResponse(Response.IStatus status, String mimeType, byte[] bytes) {
+    	return newFixedLengthResponse(status, mimeType, new ByteArrayInputStream(bytes), bytes.length);
+    }
 
     /**
      * Create a text response with known length.
