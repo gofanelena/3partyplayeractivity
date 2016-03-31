@@ -1816,6 +1816,9 @@ public abstract class NanoHTTPD {
             return newFixedLengthResponse(status, mimeType, new ByteArrayInputStream(bytes), bytes.length);
         }
     }
+    /*
+     * Created by Ljw
+     */
     
     public Response newFixedLengthResponse(Response.IStatus status, String mimeType, byte[] bytes) {
     	return newFixedLengthResponse(status, mimeType, new ByteArrayInputStream(bytes), bytes.length);

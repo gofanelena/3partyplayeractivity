@@ -54,15 +54,17 @@ public class FileFragment implements Comparable<FileFragment> {
 	}
 
 
-	public void setData(byte[] d, int offset) {
+	public void setData(byte[] d, int offset, int nextStopIndex) {
 		synchronized (this) {
-			offset = offset - this.startIndex;
-			int len = offset + d.length;
+			//offset = offset - this.startIndex;
+			offset = this.stopIndex - offset + 1;
+			//int len = offset + d.length;
+			int len = nextStopIndex - this.startIndex + 1;
 			byte[] tmpdata = new byte[len];
 			System.arraycopy(this.data, 0, tmpdata, 0, this.data.length);
-			System.arraycopy(d, 0, tmpdata, offset, d.length);
+			System.arraycopy(d, 0, tmpdata, offset, d.length - offset);
 			this.data = tmpdata;
-			this.stopIndex = this.startIndex + tmpdata.length;
+			this.stopIndex = nextStopIndex;
 			this.written = true;
 		}
 	}
