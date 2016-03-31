@@ -14,42 +14,25 @@ import com.example.entities.FileFragment;
 
 public class CellularDown {
 
-	public void queryFragment(String url) {
-		// handle 3G downloading
-		// CellThread a = new CellThread(url);
-		// a.start();
+	public void queryFragment(int url) {
 		new CellThread(url).start();
 	}
 
 	private class CellThread extends Thread {
-		private String url;
-		private int fileNameIndex;
+		private int url;
 
-		public CellThread(String url) {
+		CellThread(int url) {
 			super();
 			this.url = url;
-			fileNameIndex = getFileNumFromUrl(url);
-		}
-
-		private int getFileNumFromUrl(String uri) {
-			String ss = null;
-			for (String s : uri.split("/")) {
-				if (s.contains(".php")) {
-					ss = s;
-					break;
-				}
-			}
-			String[] tmp = ss.split("\\.");
-			return Integer.parseInt(tmp[0]);
 		}
 
 		@Override
 		public void run() {
 			System.out.println("Test");
-			Log.d("testtest","test");
+			//Log.d("testtest","test");
 			HttpURLConnection connection = null;
 			try {
-				URL uurl = new URL(url);
+				URL uurl = new URL(IntegrityCheck.URL_TAG);
 				while (true) {
 					connection = (HttpURLConnection) uurl.openConnection();
 					connection.setRequestMethod("POST");
@@ -59,7 +42,7 @@ public class CellularDown {
 					connection.setRequestProperty("Accept-Encoding", "");
 					connection.setDoOutput(true);
 					// data need to be modified
-					String data = "filename=" + fileNameIndex
+					String data = "filename=" + url
 							+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bqo216";
 					OutputStream out = connection.getOutputStream();
 					out.write(data.getBytes());
@@ -98,7 +81,7 @@ public class CellularDown {
 						IntegrityCheck IC = IntegrityCheck.getInstance();
 						IC.setSegLength(url, totalLength);
 						FileFragment fm = new FileFragment(startOffset,
-								endOffset, IC.url2id(url));
+								endOffset, url);
 						fm.setData(tmpbuff);
 						IC.insert(url, fm);
 						

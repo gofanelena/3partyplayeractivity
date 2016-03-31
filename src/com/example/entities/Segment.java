@@ -43,24 +43,9 @@ public class Segment {
 		for (int i = 0; i < size - 1; i++) {
 			FileFragment prev = segmentList.get(i);
 			FileFragment next = segmentList.get(i + 1);
-			
-			/*
-			 * ljw 2016 3 31
-			 */
-			if (prev.getStopIndex() == next.getStartIndex()-1) {
-				prev.setFragLength(prev.getFragLength()+next.getFragLength());
-				prev.setData(prev.getData(), next.getData());
-				prev.setStopIndex(next.getStopIndex());
-				segmentList.remove(i + 1);
-				size--;
-				i--;
-				continue;
-			}
-			
 			if (prev.getStopIndex() < next.getStartIndex()) {
 				continue;
 			}
-			
 			if (prev.getStartIndex() == next.getStartIndex()) {
 				if (prev.getFragLength() <= next.getFragLength()) {
 					segmentList.remove(i);
@@ -71,8 +56,8 @@ public class Segment {
 				i--;
 				continue;
 			} else if (prev.getStartIndex() < next.getStartIndex()) {
-				if (prev.getStopIndex() > next.getStartIndex()) {
-					prev.setData(next.getData(), next.getStartIndex(), next.getStopIndex());
+				if (prev.getStopIndex() < next.getStopIndex()) {
+					prev.setData(next.getData(), next.getStartIndex());
 				}
 				segmentList.remove(i + 1);
 				size--;
