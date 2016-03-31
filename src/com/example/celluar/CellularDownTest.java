@@ -27,8 +27,10 @@ public class CellularDownTest extends AndroidTestCase {
 	 */
 	public final void testQueryFragment() {
 		IntegrityCheck iTC = IntegrityCheck.getInstance();
-		String tmpp = IntegrityCheck.URI_TAG + "1.mp4";
-		byte[] tmp = iTC.getSegments(tmpp);
-		Assert.assertNotNull(tmp);
+		for (int i = 1; i < 6; i++) {
+			String tmpp = IntegrityCheck.URI_TAG + i + ".mp4";
+			byte[] tmp = iTC.getSegments(tmpp);
+			Assert.assertNotNull(tmp);
+		}
 	}
 }
