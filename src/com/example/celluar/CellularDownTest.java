@@ -3,8 +3,7 @@
  */
 package com.example.celluar;
 
-import org.junit.Assert;
-
+import junit.framework.Assert;
 import android.test.AndroidTestCase;
 
 import com.example.Integrity.IntegrityCheck;
