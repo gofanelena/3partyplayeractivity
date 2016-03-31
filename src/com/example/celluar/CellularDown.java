@@ -43,7 +43,7 @@ public class CellularDown {
 					connection.setDoOutput(true);
 					// data need to be modified
 					String data = "filename=" + url
-							+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bqo216";
+							+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216";
 					OutputStream out = connection.getOutputStream();
 					out.write(data.getBytes());
 					out.flush();
@@ -65,9 +65,7 @@ public class CellularDown {
 						int startOffset = Integer.parseInt(start);
 						int endOffset = Integer.parseInt(end);
 						int totalLength = Integer.parseInt(total);
-						int pieceLength = endOffset - startOffset + 1;
-						
-					
+						int pieceLength = endOffset - startOffset;	
 
 						byte[] tmpbuff = new byte[pieceLength];
 						int hasRead = 0;
@@ -76,19 +74,13 @@ public class CellularDown {
 									- hasRead);
 						}
 						
-						
-
 						IntegrityCheck IC = IntegrityCheck.getInstance();
 						IC.setSegLength(url, totalLength);
 						FileFragment fm = new FileFragment(startOffset,
 								endOffset, url);
+						Log.d("test", ""+fm);
 						fm.setData(tmpbuff);
-						IC.insert(url, fm);
-						
-//						if (endOffset == totalLength - 1) {
-//							break;
-//						}
-						
+						IC.insert(url, fm);						
 					} else if (connection.getResponseCode() == 200) {
 						Log.d("Test", "else");
 						break;

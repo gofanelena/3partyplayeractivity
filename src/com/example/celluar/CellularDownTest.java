@@ -3,8 +3,7 @@
  */
 package com.example.celluar;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.Assert;
 
 import android.test.AndroidTestCase;
 
@@ -14,12 +13,12 @@ import com.example.Integrity.IntegrityCheck;
  * @author zxyqwe
  * 
  */
-public class CellularDownTest{
+public class CellularDownTest extends AndroidTestCase {
 
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@Override
 	public void setUp() throws Exception {
 	}
 
@@ -27,10 +26,10 @@ public class CellularDownTest{
 	 * Test method for
 	 * {@link com.example.celluar.CellularDown#queryFragment(java.lang.String)}.
 	 */
-	@Test
 	public final void testQueryFragment() {
-		CellularDown cs = new CellularDown();
-		cs.queryFragment(1);
+		IntegrityCheck iTC = IntegrityCheck.getInstance();
+		String tmpp = IntegrityCheck.URI_TAG + "1.mp4";
+		byte[] tmp = iTC.getSegments(tmpp);
+		Assert.assertNotNull(tmp);
 	}
-
 }

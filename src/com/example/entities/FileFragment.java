@@ -1,5 +1,7 @@
 package com.example.entities;
 
+import android.util.Log;
+
 public class FileFragment implements Comparable<FileFragment> {
 
 	private int startIndex;
@@ -33,6 +35,7 @@ public class FileFragment implements Comparable<FileFragment> {
 
 	public void setData(byte[] d, int offset) {
 		synchronized (this) {
+			Log.d("test", ""+startIndex+" "+stopIndex+" "+data.length+" "+offset+" "+d.length);
 			offset = offset - this.startIndex;
 			int len = offset + d.length;
 			byte[] tmpdata = new byte[len];

@@ -3,6 +3,8 @@ package com.example.entities;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.util.Log;
+
 public class Segment {
 
 	private int segmentID;

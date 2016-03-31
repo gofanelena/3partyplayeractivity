@@ -5,25 +5,24 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import junit.framework.Assert;
+import android.test.AndroidTestCase;
 
 /**
  * @author zxyqwe
  * 
  */
-public class SegmentTest {
+public class SegmentTest extends AndroidTestCase{
 	private String data;
 	private HashSet<Integer> numSet = new HashSet<Integer>();
 	private LinkedList<FileFragment> fraList = new LinkedList<>();
-	private int base = 5000;
-	private int fra = 50;
+	private int base = 50;
+	private int fra = 5;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@Override
 	public void setUp() throws Exception {
 		data = getRandomString(base);
 		Random random = new Random();
@@ -53,7 +52,6 @@ public class SegmentTest {
 	 * {@link com.example.entities.Segment#insert(com.example.entities.FileFragment)}
 	 * .
 	 */
-	@Test
 	public final void testInsert() {
 		Segment seg = new Segment(1, base);
 		for (FileFragment ff : fraList) {
@@ -64,7 +62,6 @@ public class SegmentTest {
 	/**
 	 * Test method for {@link com.example.entities.Segment#checkIntegrity()}.
 	 */
-	@Test
 	public final void testCheckIntegrity() {
 		Segment seg = new Segment(1, base);
 		boolean b = seg.checkIntegrity();
@@ -79,7 +76,6 @@ public class SegmentTest {
 	/**
 	 * Test method for {@link com.example.entities.Segment#getData()}.
 	 */
-	@Test
 	public final void testGetData() {
 		Segment seg = new Segment(1, base);
 		byte[] tmp = seg.getData();
@@ -88,11 +84,11 @@ public class SegmentTest {
 			seg.insert(ff);
 		}
 		tmp = seg.getData();
-		Assert.assertNotEquals(tmp, data.getBytes());
+		Assert.assertFalse(new String(tmp).compareTo(data)==0);
 		boolean b = seg.checkIntegrity();
 		Assert.assertTrue(b);
 		tmp = seg.getData();
-		Assert.assertArrayEquals(tmp, data.getBytes());
+		Assert.assertTrue(new String(tmp).compareTo(data)==0);
 	}
 
 	private String getRandomString(int length) {
