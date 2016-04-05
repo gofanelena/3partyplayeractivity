@@ -6,7 +6,7 @@ public class WiFiBroad extends WiFiPulic {
 	private static final String TAG = WiFiBroad.class.getSimpleName();
 
 	@Override
-	public void init() {
+	protected void init() {
 		// TODO Auto-generated method stub
 		
 	}

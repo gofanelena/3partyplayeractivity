@@ -6,7 +6,7 @@ public class WiFiNCP2 extends WiFiPulic {
 	private static final String TAG = WiFiNCP2.class.getSimpleName();
 
 	@Override
-	public void init() {
+	protected void init() {
 		// TODO Auto-generated method stub
 
 	}

@@ -6,7 +6,7 @@ public class WiFiTCP extends WiFiPulic {
 	private static final String TAG = WiFiTCP.class.getSimpleName();
 
 	@Override
-	public void init() {
+	protected void init() {
 		// TODO Auto-generated method stub
 
 	}
