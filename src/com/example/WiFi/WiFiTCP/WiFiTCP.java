@@ -12,13 +12,13 @@ public class WiFiTCP extends WiFiPulic {
 	}
 
 	@Override
-	public void notify(int start) {
+	public void destroy() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void destroy() {
+	public void notify(int seg, int start) {
 		// TODO Auto-generated method stub
 		
 	}

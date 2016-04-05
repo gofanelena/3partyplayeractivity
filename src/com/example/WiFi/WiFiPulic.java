@@ -19,7 +19,7 @@ public abstract class WiFiPulic {
 
 	protected abstract void init();
 
-	public abstract void notify(int start);
+	public abstract void notify(int seg, int start);
 
 	public abstract void destroy();
 }

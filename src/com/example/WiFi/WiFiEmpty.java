@@ -10,10 +10,10 @@ public class WiFiEmpty extends WiFiPulic {
 	}
 
 	@Override
-	public void notify(int start) {
+	public void destroy() {
 	}
 
 	@Override
-	public void destroy() {
+	public void notify(int seg, int start) {
 	}
 }
