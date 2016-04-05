@@ -34,7 +34,7 @@ public class CellularDown {
 			try {
 				URL uurl = new URL(IntegrityCheck.URL_TAG + "?filename="
 						+ (url)
-						+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216" + "&" + MainFragment.rateTag);
+						+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216" + "&rate=" + MainFragment.rateTag);
 				Log.d(TAG, "" + uurl);
 				while (true) {
 					connection = (HttpURLConnection) uurl.openConnection();
