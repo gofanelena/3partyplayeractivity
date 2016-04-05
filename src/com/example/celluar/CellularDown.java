@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.Integrity.IntegrityCheck;
 import com.example.entities.FileFragment;
+import com.example.partyplayeractivity.MainFragment;
 
 public class CellularDown {
 	private static final String TAG = CellularDown.class.getSimpleName();
@@ -33,7 +34,7 @@ public class CellularDown {
 			try {
 				URL uurl = new URL(IntegrityCheck.URL_TAG + "?filename="
 						+ (url)
-						+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216");
+						+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216" + "&" + MainFragment.rateTag);
 				Log.d(TAG, "" + uurl);
 				while (true) {
 					connection = (HttpURLConnection) uurl.openConnection();
