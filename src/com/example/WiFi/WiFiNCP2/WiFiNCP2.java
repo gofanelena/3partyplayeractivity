@@ -16,4 +16,10 @@ public class WiFiNCP2 extends WiFiPulic {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
 }

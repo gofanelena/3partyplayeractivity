@@ -9,16 +9,23 @@ import com.example.WiFi.WiFiTCP.WiFiTCP;
 
 public class WiFiFactory {
 	private static final String TAG = WiFiFactory.class.getSimpleName();
-	private static WiFiPulic instance;
 
-	public enum Integer {
-		TCP_ALL, BROAD, NCP2, BT
+	public static enum Integer {
+		EMPTY, TCP_ALL, BROAD, NCP2, BT
 	}
+
+	private static WiFiPulic instance = new WiFiEmpty();
+	private static Integer ins_type = WiFiFactory.Integer.EMPTY;
 
 	private WiFiFactory() {
 	}
 
 	public static synchronized WiFiPulic getInstance(Integer type) {
+		if (type != WiFiFactory.ins_type) {
+			Log.d(TAG, "INS_TYPE " + WiFiFactory.ins_type + " " + type);
+			instance.destroy();
+			instance = null;
+		}
 		if (instance == null) {
 			Log.d(TAG, "" + type);
 			switch (type) {
