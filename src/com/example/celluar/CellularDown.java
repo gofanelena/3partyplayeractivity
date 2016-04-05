@@ -32,7 +32,7 @@ public class CellularDown {
 			HttpURLConnection connection = null;
 			try {
 				URL uurl = new URL(IntegrityCheck.URL_TAG + "?filename="
-						+ (url + 1)
+						+ (url)
 						+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216");
 				Log.d("testtest", "" + uurl);
 				while (true) {

@@ -69,7 +69,8 @@ public class DashProxyServer extends NanoHTTPD {
 						
 				IntegrityCheck iTC = IntegrityCheck.getInstance();
 				
-				String tmpp = iTC.URI_TAG + playist;
+				//String tmpp = iTC.URI_TAG + playist;
+				int tmpp = Integer.parseInt(playist.substring(0,1));
 				
 				byte[] tmp = iTC.getSegments(tmpp);
 				
