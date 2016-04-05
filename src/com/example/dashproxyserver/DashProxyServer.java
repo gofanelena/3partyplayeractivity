@@ -69,7 +69,6 @@ public class DashProxyServer extends NanoHTTPD {
 						
 				IntegrityCheck iTC = IntegrityCheck.getInstance();
 				
-				//String tmpp = iTC.URI_TAG + playist;
 				int tmpp = Integer.parseInt(playist.substring(0,1));
 				
 				byte[] tmp = iTC.getSegments(tmpp);
@@ -84,76 +83,6 @@ public class DashProxyServer extends NanoHTTPD {
 			}
 		}
 
-		
-
-		// switch(MainFragment.configureData.getWorkingMode()){
-		// case ConfigureData.LOCAL_MODE:
-		// try {
-		// fis = new FileInputStream(Environment.getExternalStorageDirectory()
-		// + "/video/4/"+playist);
-		//
-		// length=fis.available();
-		//
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// break;
-		// case ConfigureData.G_MDOE:
-		//
-		// break;
-		// case ConfigureData.COOPERATIVE_MODE:
-		// break;
-		// }
-
-		// try {
-		// fis = new FileInputStream(Environment.getExternalStorageDirectory()
-		// + "/video/4/"+playist);
-		//
-		// length=fis.available();
-		//
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
-		// return
-		// newFixedLengthResponse(Response.Status.OK,"application/x-mpegurl",fis,length);
-
-		// }else if(!getFileName(session,".ts").equals("")){
-		// String tsFile=getFileName(session,".ts");
-		//
-		// if(tsFile.equals("output107.ts")){
-		// Log.v("DashProxy","sleep");
-		// try {
-		// Thread.sleep(3000);
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
-		//
-		//
-		// }
-		//
-		//
-		// try {
-		// fis = new FileInputStream(Environment.getExternalStorageDirectory()
-		// + "/dash/"+tsFile);
-		//
-		// length=fis.available();
-		//
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		//
-		// return
-		// newFixedLengthResponse(Response.Status.OK,"video/mp2t",fis,length);
-		//
-		// }
-		// else{
-		//
-		// return newFixedLengthResponse("Joke");
-		// }
 
 	}
 

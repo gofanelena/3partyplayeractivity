@@ -43,13 +43,6 @@ public class CellularDown {
 					connection.setDoInput(true);
 					connection.setRequestProperty("Accept-Encoding", "");
 					connection.setDoOutput(true);
-					// data need to be modified
-					// String data = "filename=" + url
-					// + ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216";
-					// OutputStream out = connection.getOutputStream();
-					// out.write(data.getBytes());
-					// out.flush();
-					// out.close();
 					Log.d("ResponseCode",
 							String.valueOf(connection.getResponseCode()));
 
