@@ -14,6 +14,8 @@ import com.example.partyplayeractivity.MainFragment;
  * Created by ljw on 6/18/15.
  */
 public class DashProxyServer extends NanoHTTPD {
+	private static final String TAG = DashProxyServer.class.getSimpleName();
+
 	public DashProxyServer(int port) {
 		super(port);
 	}
@@ -30,11 +32,12 @@ public class DashProxyServer extends NanoHTTPD {
 	public Response serve(IHTTPSession session) {
 		FileInputStream fis = null;
 		int length = 0;
-		if(!getFileName(session,".m3u8").equals("")){
-			Log.v("filename", session.getUri());
+		if (!getFileName(session, ".m3u8").equals("")) {
+			Log.v(TAG, "filename" + session.getUri());
 			try {
 				fis = new FileInputStream(
-						Environment.getExternalStorageDirectory() + "/video/4/index.m3u8");
+						Environment.getExternalStorageDirectory()
+								+ "/video/4/index.m3u8");
 
 				length = fis.available();
 
@@ -44,17 +47,16 @@ public class DashProxyServer extends NanoHTTPD {
 			}
 			return newFixedLengthResponse(Response.Status.OK,
 					"application/x-mpegurl", fis, length);
-		}else{
-			Log.v("DashProxy", "uri:" + session.getUri());
-			String s1 = getFileName(session, ".mp4");
+		} else {
+			Log.v(TAG, "DashProxy uri:" + session.getUri());
 			String playist = getFileName(session, ".mp4");
-			Log.v("playist", playist);
+			Log.v(TAG, "playist" + playist);
 
 			if (MainFragment.configureData.getWorkingMode() == ConfigureData.LOCAL_MODE) {
 				try {
 					fis = new FileInputStream(
-							Environment.getExternalStorageDirectory() + "/video/4/"
-									+ playist);
+							Environment.getExternalStorageDirectory()
+									+ "/video/4/" + playist);
 
 					length = fis.available();
 
@@ -66,13 +68,11 @@ public class DashProxyServer extends NanoHTTPD {
 						"application/x-mpegurl", fis, length);
 
 			} else if (MainFragment.configureData.getWorkingMode() == ConfigureData.G_MDOE) {
-						
+
 				IntegrityCheck iTC = IntegrityCheck.getInstance();
-				
-				int tmpp = Integer.parseInt(playist.substring(0,1));
-				
+				int tmpp = Integer.parseInt(playist.substring(0, 1));
 				byte[] tmp = iTC.getSegments(tmpp);
-				
+
 				return newFixedLengthResponse(Response.Status.OK,
 						"application/x-mpegurl", tmp);
 
@@ -82,8 +82,6 @@ public class DashProxyServer extends NanoHTTPD {
 						"application/x-mpegurl", fis, length);
 			}
 		}
-
-
 	}
 
 	public String getFileName(IHTTPSession session, String key) {

@@ -1,23 +1,21 @@
 package com.example.partyplayeractivity;
 
-
 public class ConfigureData {
-	
+	private static final String TAG = ConfigureData.class.getSimpleName();
+
 	private String url;
 	private boolean serviceAlive;
 	private int workingMode;
 	public static final int LOCAL_MODE = 0;
 	public static final int G_MDOE = 1;
 	public static final int COOPERATIVE_MODE = 2;
-	
-	
-	public ConfigureData(String url){
+
+	public ConfigureData(String url) {
 		this.url = url;
 		serviceAlive = false;
 		workingMode = LOCAL_MODE;
 	}
-	
-	
+
 	public int getWorkingMode() {
 		return workingMode;
 	}
@@ -26,7 +24,6 @@ public class ConfigureData {
 		this.workingMode = workingMode;
 	}
 
-	
 	public String getUrl() {
 		return url;
 	}

@@ -6,17 +6,16 @@ import java.util.Collections;
 import android.util.Log;
 
 public class Segment {
+	private static final String TAG = Segment.class.getSimpleName();
 
 	private int segmentID;
 	private ArrayList<FileFragment> segmentList;
 	private int segLength = -1;
 	private boolean Intergrity = false;
 
-	public void setSegLength(int segLength) {
-		synchronized (this) {
-			if (this.segLength == -1) {
-				this.segLength = segLength;
-			}
+	public synchronized void setSegLength(int segLength) {
+		if (this.segLength == -1) {
+			this.segLength = segLength;
 		}
 	}
 
@@ -30,7 +29,7 @@ public class Segment {
 		synchronized (this) {
 			if (fm.isWritten() && fm.getSegmentID() == segmentID) {
 				segmentList.add(fm);
-				collectionSort();
+				Collections.sort(segmentList);
 				return true;
 			}
 			return false;
@@ -59,6 +58,9 @@ public class Segment {
 				continue;
 			} else if (prev.getStartIndex() < next.getStartIndex()) {
 				if (prev.getStopIndex() < next.getStopIndex()) {
+					Log.d(TAG,
+							"" + next.getStartIndex() + " "
+									+ prev.getStopIndex());
 					prev.setData(next.getData(), next.getStartIndex());
 				}
 				segmentList.remove(i + 1);
@@ -93,16 +95,10 @@ public class Segment {
 
 	}
 
-	private void collectionSort() {
-		synchronized (this) {
-			Collections.sort(segmentList);
-		}
-	}
-
 	public byte[] getData() {
-		if (segmentList.size() == 0)
-			return null;
 		synchronized (this) {
+			if (segmentList.size() == 0)
+				return null;
 			return segmentList.get(0).getData();
 		}
 

@@ -10,15 +10,16 @@ import android.os.IBinder;
 import com.example.dashproxyserver.DashProxyServer;
 
 public class ProxyService extends Service {
-	
+	private static final String TAG = ProxyService.class.getSimpleName();
+
 	public MyBinder sBinder;
-	
-	public class MyBinder extends Binder{
-		
-		public ProxyService getProxyService(){
+
+	public class MyBinder extends Binder {
+
+		public ProxyService getProxyService() {
 			return ProxyService.this;
 		}
-				
+
 	}
 
 	@Override
@@ -26,23 +27,22 @@ public class ProxyService extends Service {
 		// TODO Auto-generated method stub
 		return sBinder;
 	}
-	
+
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startedId){
-		
+	public int onStartCommand(Intent intent, int flags, int startedId) {
+
 		DashProxyServer server = new DashProxyServer();
 		try {
-            server.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
-		
+			server.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return START_STICKY;
 	}
-	
+
 	@Override
-	public void onCreate(){
+	public void onCreate() {
 		super.onCreate();
 		sBinder = new MyBinder();
 	}

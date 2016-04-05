@@ -12,7 +12,8 @@ import android.test.AndroidTestCase;
  * @author zxyqwe
  * 
  */
-public class SegmentTest extends AndroidTestCase{
+public class SegmentTest extends AndroidTestCase {
+	private static final String TAG = SegmentTest.class.getSimpleName();
 	private String data;
 	private HashSet<Integer> numSet = new HashSet<Integer>();
 	private LinkedList<FileFragment> fraList = new LinkedList<>();
@@ -84,11 +85,11 @@ public class SegmentTest extends AndroidTestCase{
 			seg.insert(ff);
 		}
 		tmp = seg.getData();
-		Assert.assertFalse(new String(tmp).compareTo(data)==0);
+		Assert.assertFalse(new String(tmp).compareTo(data) == 0);
 		boolean b = seg.checkIntegrity();
 		Assert.assertTrue(b);
 		tmp = seg.getData();
-		Assert.assertTrue(new String(tmp).compareTo(data)==0);
+		Assert.assertTrue(new String(tmp).compareTo(data) == 0);
 	}
 
 	private String getRandomString(int length) {

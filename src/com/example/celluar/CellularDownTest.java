@@ -5,6 +5,7 @@ package com.example.celluar;
 
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.example.Integrity.IntegrityCheck;
 
@@ -13,6 +14,7 @@ import com.example.Integrity.IntegrityCheck;
  * 
  */
 public class CellularDownTest extends AndroidTestCase {
+	private static final String TAG = CellularDownTest.class.getSimpleName();
 
 	/**
 	 * @throws java.lang.Exception
@@ -26,12 +28,12 @@ public class CellularDownTest extends AndroidTestCase {
 	 * {@link com.example.celluar.CellularDown#queryFragment(java.lang.String)}.
 	 */
 	public final void testQueryFragment() {
-		IntegrityCheck iTC = IntegrityCheck.getInstance();
+		final IntegrityCheck iTC = IntegrityCheck.getInstance();
 		for (int i = 1; i < 6; i++) {
 			int tmpp = i;
-			//String tmpp = IntegrityCheck.URI_TAG + i + ".mp4";
 			byte[] tmp = iTC.getSegments(tmpp);
 			Assert.assertNotNull(tmp);
+			Log.e(TAG, "" + tmp.length);
 		}
 	}
 }

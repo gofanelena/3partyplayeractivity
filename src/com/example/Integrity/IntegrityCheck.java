@@ -8,11 +8,11 @@ import com.example.entities.FileFragment;
 import com.example.entities.Segment;
 
 public class IntegrityCheck {
+	private static final String TAG = IntegrityCheck.class.getSimpleName();
 	// single instance mode
 	private static IntegrityCheck instance;
 	private SparseArray<Segment> urlMap;
-	public static final String URL_TAG = 
-			"http://buptant.cn/autoChart/du/video/ljw2016/zxyqwe/download.php";
+	public static final String URL_TAG = "http://buptant.cn/autoChart/du/video/ljw2016/zxyqwe/download.php";
 	public static final String URI_TAG = "http://127.1.1.1:9999/";
 
 	private CellularDown celluDown;
@@ -22,8 +22,6 @@ public class IntegrityCheck {
 		celluDown = new CellularDown();
 	}
 
-
-
 	public static synchronized IntegrityCheck getInstance() {
 		if (instance == null) {
 			instance = new IntegrityCheck();
@@ -32,7 +30,7 @@ public class IntegrityCheck {
 	}
 
 	public byte[] getSegments(int uri) {
-		int id = uri2id(uri);
+		int id = uri;
 		// Log.v("uri", uri);
 		synchronized (this) {
 			if (urlMap.indexOfKey(id) < 0) {
@@ -43,7 +41,7 @@ public class IntegrityCheck {
 				return segment.getData();
 			} else {
 				celluDown.queryFragment(id);
-				Log.v("url", "" + id);
+				Log.v(TAG, "url" + id);
 			}
 		}
 		while (true) {
@@ -62,14 +60,6 @@ public class IntegrityCheck {
 
 	}
 
-	// uri->proxy
-	private int uri2id(int uri) {
-		// TODO Auto-generated method stub
-		synchronized (this) {
-			return uri;
-		}
-	}
-
 	public void setSegLength(int id, int totalLength) {
 		Segment s = urlMap.get(id);
 		s.setSegLength(totalLength);
@@ -78,5 +68,9 @@ public class IntegrityCheck {
 	public void insert(int id, FileFragment fm) {
 		Segment s = urlMap.get(id);
 		s.insert(fm);
+	}
+
+	public Segment getSeg(int id) {
+		return urlMap.get(id);
 	}
 }
