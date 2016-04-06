@@ -33,7 +33,7 @@ public class CellularDownTest extends AndroidTestCase {
 			int tmpp = i;
 			byte[] tmp = iTC.getSegments(tmpp);
 			Assert.assertNotNull(tmp);
-			Log.e(TAG, "" + tmp.length);
+			Log.e(TAG, "" + tmpp + " " + tmp.length);
 		}
 	}
 }

@@ -20,15 +20,15 @@ public class CellularMore extends Thread {
 		Segment Seg = IC.getSeg(url);
 		if (Seg != null) {
 			while (!Seg.checkIntegrity()) {
-				Log.d(TAG, "no");
+				Log.d(TAG, "no " + url);
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 				}
 			}
-			Log.d(TAG, "yes");
+			Log.d(TAG, "yes " + url);
 		} else {
-			Log.e(TAG, "a");
+			Log.e(TAG, "a " + url);
 		}
 	}
 }

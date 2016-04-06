@@ -24,12 +24,12 @@ public class SingleCell extends Thread {
 
 	@Override
 	public void run() {
-		Log.d(TAG, "test");
+		Log.d(TAG, "test " + url);
 		HttpURLConnection connection = null;
 		try {
-			URL uurl = new URL(IntegrityCheck.URL_TAG + "?filename=" + (url)
-					+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216" + "&rate="
-					+ MainFragment.rateTag);
+			URL uurl = new URL(IntegrityCheck.URL_TAG + "?filename=" + url
+					+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao21" + url
+					+ "&rate=" + MainFragment.rateTag);
 			Log.d(TAG, "" + uurl);
 			while (true) {
 				connection = (HttpURLConnection) uurl.openConnection();
@@ -39,7 +39,9 @@ public class SingleCell extends Thread {
 				connection.setDoInput(true);
 				connection.setRequestProperty("Accept-Encoding", "");
 				connection.setDoOutput(true);
-				Log.d(TAG, "ResponseCode " + connection.getResponseCode());
+				Log.d(TAG,
+						"ResponseCode " + url + " "
+								+ connection.getResponseCode());
 
 				if (connection.getResponseCode() == 206) {
 					InputStream in = connection.getInputStream();
@@ -49,9 +51,9 @@ public class SingleCell extends Thread {
 					String start = range.split("-")[0];
 					String end = range.split("-")[1].split("/")[0];
 					String total = range.split("-")[1].split("/")[1];
-					Log.d(TAG, "Total " + total);
-					Log.d(TAG, "PieceStart " + start);
-					Log.d(TAG, "PieceEnd " + end);
+					Log.d(TAG, "Total " + url + " " + total);
+					Log.d(TAG, "PieceStart " + url + " " + start);
+					Log.d(TAG, "PieceEnd " + url + " " + end);
 					int startOffset = Integer.parseInt(start);
 					int endOffset = Integer.parseInt(end);
 					int totalLength = Integer.parseInt(total);
@@ -68,11 +70,11 @@ public class SingleCell extends Thread {
 					IC.setSegLength(url, totalLength);
 					FileFragment fm = new FileFragment(startOffset, endOffset,
 							url);
-					Log.d(TAG, "" + fm);
+					Log.d(TAG, "" + url + " " + fm);
 					fm.setData(tmpbuff);
 					IC.insert(url, fm);
 				} else if (connection.getResponseCode() == 200) {
-					Log.d(TAG, "else");
+					Log.d(TAG, "else " + url);
 					CellularDown.queryFragment(CellularDown.CellType.More, url);
 					break;
 				}

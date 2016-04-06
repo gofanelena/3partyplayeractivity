@@ -14,14 +14,14 @@ public class CellularDown {
 			.newCachedThreadPool();
 
 	public static enum CellType {
-		More,Single, DASH, GROUP
+		More, Single, DASH, GROUP
 	}
 
 	private CellularDown() {
 	}
 
 	public static void queryFragment(CellType type, int url) {
-		Log.d(TAG, "" + type);
+		Log.d(TAG, "" + type + " " + url);
 		switch (type) {
 		default:
 			cachedThreadPool.execute(new SingleCell(url));
