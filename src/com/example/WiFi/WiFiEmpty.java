@@ -1,12 +1,14 @@
 package com.example.WiFi;
 
+import android.content.Context;
+
 import com.example.WiFi.WiFiPulic;
 
 public class WiFiEmpty extends WiFiPulic {
 	private static final String TAG = WiFiEmpty.class.getSimpleName();
 
-	@Override
-	public void init() {
+	public WiFiEmpty(Context contect) {
+		super(contect);
 	}
 
 	@Override
