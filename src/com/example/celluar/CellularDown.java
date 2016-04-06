@@ -1,101 +1,42 @@
 package com.example.celluar;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import android.util.Log;
 
-import com.example.Integrity.IntegrityCheck;
-import com.example.entities.FileFragment;
-import com.example.partyplayeractivity.MainFragment;
+import com.example.celluar.SingleCell.SingleCell;
+import com.example.celluar.more.CellularMore;
 
 public class CellularDown {
 	private static final String TAG = CellularDown.class.getSimpleName();
+	private static final ExecutorService cachedThreadPool = Executors
+			.newCachedThreadPool();
 
-	public void queryFragment(int url) {
-		new CellThread(url).start();
+	public static enum CellType {
+		More,Single, DASH, GROUP
 	}
 
-	private class CellThread extends Thread {
-		private int url;
+	private CellularDown() {
+	}
 
-		CellThread(int url) {
-			super();
-			this.url = url;
+	public static void queryFragment(CellType type, int url) {
+		Log.d(TAG, "" + type);
+		switch (type) {
+		default:
+			cachedThreadPool.execute(new SingleCell(url));
+			break;
+		case Single:
+			cachedThreadPool.execute(new SingleCell(url));
+			break;
+		case More:
+			cachedThreadPool.execute(new CellularMore(url));
+			break;
 		}
+	}
 
-		@Override
-		public void run() {
-			Log.d(TAG, "test");
-			HttpURLConnection connection = null;
-			try {
-				URL uurl = new URL(IntegrityCheck.URL_TAG + "?filename="
-						+ (url)
-						+ ".mp4&sessionid=lykfr9oyqipf2q3tvy2l73bao216" + "&rate=" + MainFragment.rateTag);
-				Log.d(TAG, "" + uurl);
-				while (true) {
-					connection = (HttpURLConnection) uurl.openConnection();
-					connection.setRequestMethod("POST");
-					connection.setConnectTimeout(5000);
-					connection.setUseCaches(false);
-					connection.setDoInput(true);
-					connection.setRequestProperty("Accept-Encoding", "");
-					connection.setDoOutput(true);
-					Log.d(TAG, "ResponseCode " + connection.getResponseCode());
-
-					if (connection.getResponseCode() == 206) {
-						InputStream in = connection.getInputStream();
-						String contentRange = connection.getHeaderField(
-								"Content-Range").toString();
-						String range = contentRange.split(" ")[1].trim();
-						String start = range.split("-")[0];
-						String end = range.split("-")[1].split("/")[0];
-						String total = range.split("-")[1].split("/")[1];
-						Log.d(TAG, "Total " + total);
-						Log.d(TAG, "PieceStart " + start);
-						Log.d(TAG, "PieceEnd " + end);
-						int startOffset = Integer.parseInt(start);
-						int endOffset = Integer.parseInt(end);
-						int totalLength = Integer.parseInt(total);
-						int pieceLength = endOffset - startOffset;
-
-						byte[] tmpbuff = new byte[pieceLength];
-						int hasRead = 0;
-						while (hasRead < pieceLength) {
-							hasRead += in.read(tmpbuff, hasRead, pieceLength
-									- hasRead);
-						}
-
-						IntegrityCheck IC = IntegrityCheck.getInstance();
-						IC.setSegLength(url, totalLength);
-						FileFragment fm = new FileFragment(startOffset,
-								endOffset, url);
-						Log.d(TAG, "" + fm);
-						fm.setData(tmpbuff);
-						IC.insert(url, fm);
-					} else if (connection.getResponseCode() == 200) {
-						Log.d(TAG, "else");
-						new CellularMore(url).start();
-						break;
-					}
-				}
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				Log.d(TAG, "MalformedURLException");
-			} catch (IOException e) {
-				e.printStackTrace();
-				Log.d(TAG, "IOException");
-			} catch (Exception e) {
-				e.printStackTrace();
-				Log.d(TAG, "Exception");
-			} finally {
-				connection.disconnect();
-			}
-		}
-
+	public static void queryFragment(int url) {
+		queryFragment(CellularDown.CellType.Single, url);
 	}
 
 }

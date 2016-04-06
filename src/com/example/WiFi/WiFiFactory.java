@@ -11,18 +11,18 @@ import com.example.WiFi.WiFiTCP.WiFiTCP;
 public class WiFiFactory {
 	private static final String TAG = WiFiFactory.class.getSimpleName();
 
-	public static enum Integer {
+	public static enum WiFiType {
 		EMPTY, TCP_ALL, BROAD, NCP2, BT
 	}
 
 	private static WiFiPulic instance = new WiFiEmpty(null);
-	private static Integer ins_type = WiFiFactory.Integer.EMPTY;
+	private static WiFiType ins_type = WiFiFactory.WiFiType.EMPTY;
 
 	private WiFiFactory() {
 	}
 
 	public static synchronized WiFiPulic getInstance(Context contect,
-			Integer type) {
+			WiFiType type) {
 		if (type != WiFiFactory.ins_type) {
 			Log.d(TAG, "INS_TYPE " + WiFiFactory.ins_type + " " + type);
 			instance.destroy();

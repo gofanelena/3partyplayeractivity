@@ -15,11 +15,8 @@ public class IntegrityCheck {
 	public static final String URL_TAG = "http://buptant.cn/autoChart/du/video/ljw2016/zxyqwe/download.php";
 	public static final String URI_TAG = "http://127.1.1.1:9999/";
 
-	private CellularDown celluDown;
-
 	private IntegrityCheck() {
 		urlMap = new SparseArray<Segment>();
-		celluDown = new CellularDown();
 	}
 
 	public static synchronized IntegrityCheck getInstance() {
@@ -40,7 +37,7 @@ public class IntegrityCheck {
 			if (segment.checkIntegrity()) {
 				return segment.getData();
 			} else {
-				celluDown.queryFragment(id);
+				CellularDown.queryFragment(id);
 				Log.v(TAG, "url" + id);
 			}
 		}
