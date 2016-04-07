@@ -2,6 +2,7 @@ package com.example.WiFi.WiFiBroad;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
@@ -80,10 +81,20 @@ public class WiFiBroad extends WiFiPulic {
 			e.printStackTrace();
 		}
 	}
+	
+	public void send(String s) throws Exception {
+		byte[] sendMSG = s.getBytes("UTF-8");
+
+		DatagramPacket dp = new DatagramPacket(sendMSG, sendMSG.length,
+				InetAddress.getByName(multicastHost), localPort);
+
+		socket.send(dp);
+	}
 
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
+		recvThd.stop();
 
 	}
 

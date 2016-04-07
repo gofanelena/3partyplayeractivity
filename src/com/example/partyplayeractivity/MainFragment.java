@@ -41,9 +41,9 @@ public class MainFragment extends Fragment {
 	private EditText etUrl;
 	private Button btConfirm;
 	private Button btPlayer;
-	private Button btLow;
-	private Button btMid;
-	private Button btHigh;
+	//private Button btLow;
+	//private Button btMid;
+    //private Button btHigh;
 	
 	private DashProxyServer server;
 	public static ConfigureData configureData;
@@ -72,36 +72,36 @@ public class MainFragment extends Fragment {
 		btPlayer = (Button) v.findViewById(R.id.btChoose);
 		etUrl = (EditText) v.findViewById(R.id.url_edit_text);
 		
-		btLow = (Button) v.findViewById(R.id.rate_low);
-		btMid = (Button) v.findViewById(R.id.rate_mid);
-		btHigh = (Button) v.findViewById(R.id.rate_high);
-		
-		btLow.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				rateTag = "100";
-			}
-		});
-		
-		btMid.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				rateTag = "300";
-			}
-		});
-		
-		btHigh.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				rateTag = "500";
-			}
-		});
+//		btLow = (Button) v.findViewById(R.id.rate_low);
+//		btMid = (Button) v.findViewById(R.id.rate_mid);
+//		btHigh = (Button) v.findViewById(R.id.rate_high);
+//		
+//		btLow.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				rateTag = "100";
+//			}
+//		});
+//		
+//		btMid.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				rateTag = "300";
+//			}
+//		});
+//		
+//		btHigh.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				rateTag = "500";
+//			}
+//		});
 
 		btStart.setOnClickListener(new View.OnClickListener() {
 
