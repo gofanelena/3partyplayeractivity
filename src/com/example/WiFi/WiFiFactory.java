@@ -1,6 +1,7 @@
 package com.example.WiFi;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.WiFi.WiFiBT.WiFiBT;
@@ -21,7 +22,7 @@ public class WiFiFactory {
 	private WiFiFactory() {
 	}
 
-	public static synchronized WiFiPulic getInstance(Context contect,
+	public static synchronized WiFiPulic getInstance(Context contect, Handler handler,
 			WiFiType type) {
 		if (type != WiFiFactory.ins_type) {
 			Log.d(TAG, "INS_TYPE " + WiFiFactory.ins_type + " " + type);
@@ -35,7 +36,7 @@ public class WiFiFactory {
 				instance = new WiFiTCP(contect);
 				break;
 			case BROAD:
-				instance = new WiFiBroad(contect);
+				instance = new WiFiBroad(contect, handler);
 				break;
 			case NCP2:
 				instance = new WiFiNCP2(contect);

@@ -9,6 +9,7 @@ import java.net.MulticastSocket;
 import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.telephony.TelephonyManager;
 
 import com.example.WiFi.WiFiPulic;
@@ -23,9 +24,11 @@ public class WiFiBroad extends WiFiPulic {
 	private int localPort = 9998;
 	private TelephonyManager tm;
 	private ReceiveThread recvThd;
+	private Handler myHandler;
 
-	public WiFiBroad(Context contect) {
+	public WiFiBroad(Context contect, Handler handler) {
 		super(contect);
+		myHandler = handler;
 		tm = (TelephonyManager)contect.getSystemService
 				(Activity.TELEPHONY_SERVICE);		
 		
@@ -71,7 +74,7 @@ public class WiFiBroad extends WiFiPulic {
 			}
 
 			if (recvThd == null) {
-				recvThd = new ReceiveThread(wifi, contect, socket);
+				recvThd = new ReceiveThread(wifi, contect, socket, myHandler);
 				recvThd.start();
 
 			}

@@ -16,10 +16,9 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +30,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -59,15 +57,21 @@ public class MainFragment extends Fragment {
 	private static final String SETTING_DIALOG_TAG = "setting";
 	public static String rateTag = "";
 	
+	private Handler myHandler;
+	private boolean adhocSelect = false;
+	
 	private List<String> list = new ArrayList<String>();
 	private ArrayAdapter<String> adapter;  
 	private Spinner mySpinner;  
+	
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		configureData = new ConfigureData(null);
+		myHandler = new Handler();
 		
 		list.add("NONE");
 		list.add("ADHOC MODE");
@@ -105,15 +109,19 @@ public class MainFragment extends Fragment {
 				// TODO Auto-generated method stub
 				switch (arg2){
 				case 0: //none
+					adhocSelect = false;
 					break;
 				case 1: //adhoc
-					btCaptain.setClickable(true);
+					adhocSelect = true;
 					break;
 				case 2: //bt
+					adhocSelect = false;
 					break;
 				case 3: //ncp2
+					adhocSelect = false;
 				    break;
 				case 4: //tcp
+					adhocSelect = false;
 					break;
 					
 				}
@@ -132,6 +140,18 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if(adhocSelect){
+					myHandler.post(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							Toast.makeText(getActivity(), "I am captain!", Toast.LENGTH_SHORT)
+							.show();
+						}
+					});
+				}
+				
 				
 			}
 		});
