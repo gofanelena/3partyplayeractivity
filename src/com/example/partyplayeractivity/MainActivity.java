@@ -11,6 +11,7 @@ import android.view.Window;
 
 public class MainActivity extends FragmentActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

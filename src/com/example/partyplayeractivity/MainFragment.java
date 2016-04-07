@@ -1,6 +1,8 @@
 package com.example.partyplayeractivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -25,8 +27,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.dashproxyserver.DashProxyServer;
@@ -51,12 +57,22 @@ public class MainFragment extends Fragment {
 	private static final boolean SEVER_STOP_TAG = false;
 	private static final String SETTING_DIALOG_TAG = "setting";
 	public static String rateTag = "";
+	
+	private List<String> list = new ArrayList<String>();
+	private ArrayAdapter<String> adapter;  
+	private Spinner mySpinner;  
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		configureData = new ConfigureData(null);
+		
+		list.add("NONE");
+		list.add("ADHOC MODE");
+		list.add("BT MODE");
+		list.add("NCP2 MODE");
+		list.add("TCP MODE");
 
 	}
 
@@ -71,6 +87,43 @@ public class MainFragment extends Fragment {
 		btConfirm = (Button) v.findViewById(R.id.btConfirm);
 		btPlayer = (Button) v.findViewById(R.id.btChoose);
 		etUrl = (EditText) v.findViewById(R.id.url_edit_text);
+		
+		mySpinner = (Spinner) v.findViewById(R.id.Spinner_wifi_);
+		adapter = new ArrayAdapter<String>
+			(getActivity(),android.R.layout.simple_spinner_item, list);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mySpinner.setAdapter(adapter);
+		
+		mySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				switch (arg2){
+				case 0: //none
+					break;
+				case 1: //adhoc
+					break;
+				case 2: //bt
+					break;
+				case 3: //ncp2
+				    break;
+				case 4: //tcp
+					break;
+					
+				}
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				// arg0.setSelection(0);
+			}
+		});
+		
+
 		
 //		btLow = (Button) v.findViewById(R.id.rate_low);
 //		btMid = (Button) v.findViewById(R.id.rate_mid);

@@ -3,11 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="20dp" 
+    android:layout_marginTop="7dp" 
     >
-    
-    	
-    	
+   	
     	<TextView 
     	    android:layout_width="match_parent"
     	    android:layout_height="wrap_content"
@@ -43,7 +41,25 @@
     	
     	<TextView
         	android:layout_width="match_parent"
-        	android:layout_marginTop="25dp"
+        	android:layout_marginTop="7dp"
+        	android:layout_height="wrap_content"
+        	android:text="Wi-fi mode"
+        	style="?android:listSeparatorTextViewStyle"
+        	android:padding="0dp"
+        	android:layout_marginLeft="6dp"/> 
+        	
+    	<Spinner     
+        	android:id = "@+id/Spinner_wifi_"     
+        	android:layout_width = "match_parent"     
+        	android:layout_height ="wrap_content"
+        	android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            >     
+    	</Spinner>
+    	
+    	<TextView
+        	android:layout_width="match_parent"
+        	android:layout_marginTop="7dp"
         	android:layout_height="wrap_content"
         	android:text="@string/url"
         	style="?android:listSeparatorTextViewStyle"
@@ -70,7 +86,7 @@
     	
         <TextView
         	android:layout_width="match_parent"
-        	android:layout_marginTop="25dp"
+        	android:layout_marginTop="7dp"
         	android:layout_height="wrap_content"
         	android:text="@string/player"
         	style="?android:listSeparatorTextViewStyle"
@@ -85,6 +101,10 @@
             android:layout_marginRight="16dp"
             android:text="@string/choose"
             android:padding="0dp"/>
+        
+               
+      
+       
         
        <!--   <LinearLayout 
             
