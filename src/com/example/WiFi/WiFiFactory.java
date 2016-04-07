@@ -22,8 +22,7 @@ public class WiFiFactory {
 	private WiFiFactory() {
 	}
 
-	public static synchronized WiFiPulic getInstance(Context contect, Handler handler,
-			WiFiType type) {
+	public static synchronized WiFiPulic getInstance(Context contect,WiFiType type) {
 		if (type != WiFiFactory.ins_type) {
 			Log.d(TAG, "INS_TYPE " + WiFiFactory.ins_type + " " + type);
 			instance.destroy();
@@ -36,7 +35,7 @@ public class WiFiFactory {
 				instance = new WiFiTCP(contect);
 				break;
 			case BROAD:
-				instance = new WiFiBroad(contect, handler);
+				instance = new WiFiBroad(contect);
 				break;
 			case NCP2:
 				instance = new WiFiNCP2(contect);

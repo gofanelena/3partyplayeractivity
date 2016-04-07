@@ -25,11 +25,10 @@ public class WiFiBroad extends WiFiPulic {
 	private static int localPort = 9998;
 	private TelephonyManager tm;
 	private ReceiveThread recvThd;
-	private Handler myHandler;
 
-	public WiFiBroad(Context contect, Handler handler) {
+	public WiFiBroad(Context contect) {
 		super(contect);
-		myHandler = handler;
+		
 		tm = (TelephonyManager)contect.getSystemService
 				(Activity.TELEPHONY_SERVICE);		
 		
@@ -76,7 +75,7 @@ public class WiFiBroad extends WiFiPulic {
 			}
 
 			if (recvThd == null) {
-				recvThd = new ReceiveThread(wifi, contect, socket, myHandler);
+				recvThd = new ReceiveThread(wifi, contect, socket);
 				recvThd.start();
 
 			}

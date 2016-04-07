@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,14 +16,14 @@ public class ReceiveThread extends Thread {
 	WifiManager wifi;
 	MulticastSocket socket;
 	public int signal; //2015demo w
-	Handler myHandler;
+	;
 	
 	public ReceiveThread(WifiManager wifi, Context activity,
-			MulticastSocket socket, Handler handler) {
+			MulticastSocket socket) {
 		this.activity = activity;
 		this.wifi = wifi;
 		this.socket = socket;
-		this.myHandler = handler;
+		
 
 	}
 
@@ -41,9 +41,9 @@ public class ReceiveThread extends Thread {
 				if(s.contains("I am Captain!")){
 				
 				     String[] strarray=s.split(" ");//2015demo w
-				       signal=Integer.parseInt(strarray[4]);   //2015demo w
+				     signal=Integer.parseInt(strarray[4]);   //2015demo w
 
-					myHandler.post(new Runnable() {
+					 ((Activity) activity).runOnUiThread(new Runnable(){
 
 						@Override
 						public void run() {
@@ -51,8 +51,10 @@ public class ReceiveThread extends Thread {
 							Toast.makeText(activity, "I am slave!",
 									Toast.LENGTH_LONG).show();
 						}
-
-					});
+						 
+					 });
+				       
+				   
 				}else if(s.contains("start play")){
 					Log.v("ReceiveThread", "start play");
 					
