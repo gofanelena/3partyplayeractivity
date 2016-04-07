@@ -44,8 +44,9 @@ public class MainFragment extends Fragment {
 
 	private Button btStart;
 	private Button btStop;
-	private EditText etUrl;
-	private Button btConfirm;
+//	private EditText etUrl;
+//	private Button btConfirm;
+	private Button btCaptain;
 	private Button btPlayer;
 	//private Button btLow;
 	//private Button btMid;
@@ -84,9 +85,11 @@ public class MainFragment extends Fragment {
 
 		btStart = (Button) v.findViewById(R.id.btStart);
 		btStop = (Button) v.findViewById(R.id.btStop);
-		btConfirm = (Button) v.findViewById(R.id.btConfirm);
+//		btConfirm = (Button) v.findViewById(R.id.btConfirm);
 		btPlayer = (Button) v.findViewById(R.id.btChoose);
-		etUrl = (EditText) v.findViewById(R.id.url_edit_text);
+		btCaptain = (Button) v.findViewById(R.id.btCaptain);
+//		btCaptain.setClickable(false);
+//		etUrl = (EditText) v.findViewById(R.id.url_edit_text);
 		
 		mySpinner = (Spinner) v.findViewById(R.id.Spinner_wifi_);
 		adapter = new ArrayAdapter<String>
@@ -104,6 +107,7 @@ public class MainFragment extends Fragment {
 				case 0: //none
 					break;
 				case 1: //adhoc
+					btCaptain.setClickable(true);
 					break;
 				case 2: //bt
 					break;
@@ -123,6 +127,14 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
+		btCaptain.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		
 //		btLow = (Button) v.findViewById(R.id.rate_low);
@@ -195,47 +207,47 @@ public class MainFragment extends Fragment {
 
 		configureData.setUrl("http://127.0.0.1:9999/4/s-1.mp4");
 
-		etUrl.addTextChangedListener(new TextWatcher() {
+//  		etUrl.addTextChangedListener(new TextWatcher() {
+//
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before,
+//					int count) {
+//				// TODO Auto-generated method stub
+//				configureData.setUrl(s.toString());
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				configureData.setUrl(s.toString());
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		btConfirm.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-				if (configureData.getUrl() != null
-						&& isLegel(configureData.getUrl())) {
-					Toast.makeText(getActivity(),
-							"URL is\n" + configureData.getUrl(),
-							Toast.LENGTH_SHORT).show();
-				} else {
-					Toast.makeText(getActivity(), "URL illegal",
-							Toast.LENGTH_SHORT).show();
-				}
-
-			}
-		});
+//		btConfirm.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//
+//				if (configureData.getUrl() != null
+//						&& isLegel(configureData.getUrl())) {
+//					Toast.makeText(getActivity(),
+//							"URL is\n" + configureData.getUrl(),
+//							Toast.LENGTH_SHORT).show();
+//				} else {
+//					Toast.makeText(getActivity(), "URL illegal",
+//							Toast.LENGTH_SHORT).show();
+//				}
+//
+//			}
+//		});
 
 		btPlayer.setOnClickListener(new View.OnClickListener() {
 

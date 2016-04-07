@@ -18,5 +18,6 @@
     <string name="cooperativemode">Cooperative Mode</string>
     <string name="alerttitle">WORKING MODE:</string>
     <string name="bt_confirm">CONFIRM</string>
+    <string name="captain">CAPTAIN</string>
 
 </resources>
