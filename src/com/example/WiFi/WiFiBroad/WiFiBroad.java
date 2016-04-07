@@ -11,6 +11,7 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.example.WiFi.WiFiPulic;
 
@@ -19,9 +20,9 @@ public class WiFiBroad extends WiFiPulic {
 	
 	private Process proc;
 	private WifiManager wifi;
-	private MulticastSocket socket;
-	private String multicastHost = "224.0.0.1";
-	private int localPort = 9998;
+	private static MulticastSocket socket;
+	private static String multicastHost = "224.0.0.1";
+	private static int localPort = 9998;
 	private TelephonyManager tm;
 	private ReceiveThread recvThd;
 	private Handler myHandler;
@@ -38,6 +39,7 @@ public class WiFiBroad extends WiFiPulic {
 			int len = s.length();
 			int number = Integer.parseInt(s.substring(len - 2));
 			String ip = "192.168.1." + number;
+			Log.v("ip", ip);
 			proc = Runtime.getRuntime().exec("su");
 			DataOutputStream os = new DataOutputStream(
 					proc.getOutputStream());
@@ -85,7 +87,7 @@ public class WiFiBroad extends WiFiPulic {
 		}
 	}
 	
-	public void send(String s) throws Exception {
+	public static void send(String s) throws Exception {
 		byte[] sendMSG = s.getBytes("UTF-8");
 
 		DatagramPacket dp = new DatagramPacket(sendMSG, sendMSG.length,

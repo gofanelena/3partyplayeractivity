@@ -38,7 +38,7 @@ public class ReceiveThread extends Thread {
 				socket.receive(packet);
 				final String s = new String(packet.getData(), "UTF-8");
 				Log.v("ReceiveThread", "received string:"+s);
-				if(s.contains("I am Captain Device")){
+				if(s.contains("I am Captain!")){
 				
 				     String[] strarray=s.split(" ");//2015demo w
 				       signal=Integer.parseInt(strarray[4]);   //2015demo w
@@ -48,7 +48,7 @@ public class ReceiveThread extends Thread {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							Toast.makeText(activity, "I am slave device",
+							Toast.makeText(activity, "I am slave!",
 									Toast.LENGTH_LONG).show();
 						}
 

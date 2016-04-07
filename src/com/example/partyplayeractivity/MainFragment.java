@@ -33,6 +33,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.WiFi.WiFiFactory;
+import com.example.WiFi.WiFiFactory.WiFiType;
+import com.example.WiFi.WiFiPulic;
+import com.example.WiFi.WiFiBroad.WiFiBroad;
 import com.example.dashproxyserver.DashProxyServer;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -63,7 +67,7 @@ public class MainFragment extends Fragment {
 	private List<String> list = new ArrayList<String>();
 	private ArrayAdapter<String> adapter;  
 	private Spinner mySpinner;  
-	
+	private WiFiPulic wifiInstance;
 	
 
 	@Override
@@ -113,6 +117,8 @@ public class MainFragment extends Fragment {
 					break;
 				case 1: //adhoc
 					adhocSelect = true;
+					wifiInstance = WiFiFactory.getInstance(getActivity(), myHandler, WiFiType.BROAD);
+					
 					break;
 				case 2: //bt
 					adhocSelect = false;
@@ -141,6 +147,13 @@ public class MainFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if(adhocSelect){
+					
+					try {
+						WiFiBroad.send("I am captain!");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					myHandler.post(new Runnable() {
 						
 						@Override
