@@ -119,7 +119,12 @@ public class Segment {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return segmentList.get(0).getData(start);
+			for (FileFragment f : segmentList) {
+				byte[] tmp = f.getData(start);
+				if (tmp != null)
+					return tmp;
+			}
+			return null;
 		}
 	}
 
