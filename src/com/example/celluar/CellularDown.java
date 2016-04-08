@@ -15,7 +15,7 @@ public class CellularDown {
 			.newCachedThreadPool();
 
 	public static enum CellType {
-		CellMore, WiFiMore, Single, DASH, GROUP
+		CellMore, WiFiMore, Single, DASH, GROUP, NOCELL
 	}
 
 	private CellularDown() {
@@ -32,6 +32,8 @@ public class CellularDown {
 			break;
 		case WiFiMore:
 			cachedThreadPool.execute(new WiFiMore(url));
+			break;
+		case NOCELL:
 			break;
 		default:
 			break;
