@@ -115,7 +115,11 @@ public class MainFragment extends Fragment {
 					break;
 				case 1: //adhoc
 					adhocSelect = true;
-					WiFiFactory.changeInstance(getActivity(), WiFiType.BROAD);
+					try {
+						WiFiFactory.changeInstance(getActivity(), WiFiType.BROAD);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					
 					break;
 				case 2: //bt

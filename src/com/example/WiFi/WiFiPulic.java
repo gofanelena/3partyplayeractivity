@@ -26,5 +26,5 @@ public abstract class WiFiPulic {
 
 	public abstract void notify(int seg, int start);
 
-	public abstract void destroy();
+	public abstract void destroy() throws InterruptedException;
 }

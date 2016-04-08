@@ -1,7 +1,6 @@
 package com.example.WiFi;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 
 import com.example.WiFi.WiFiBT.WiFiBT;
@@ -23,7 +22,7 @@ public class WiFiFactory {
 	private WiFiFactory() {
 	}
 
-	public static void changeInstance(Context contect, WiFiType type) {
+	public static void changeInstance(Context contect, WiFiType type) throws Exception {
 		synchronized (instance) {
 			if (type != WiFiFactory.ins_type) {
 				Log.d(TAG, "INS_TYPE " + WiFiFactory.ins_type + " " + type);
