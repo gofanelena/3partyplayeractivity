@@ -103,7 +103,6 @@ public class FileFragment implements Comparable<FileFragment>, Serializable {
 		byte[] buf = new byte[len];
 		synchronized (this) {
 			System.arraycopy(this.data, start - startIndex, buf, 0, buf.length);
-			this.written = true;
 		}
 		return buf;
 	}

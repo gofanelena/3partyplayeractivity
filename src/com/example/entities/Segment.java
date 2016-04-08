@@ -123,6 +123,15 @@ public class Segment {
 		}
 	}
 
+	public FileFragment getFragment(int start) throws Exception {
+		byte[] data = getData(start);
+		if (data == null)
+			return null;
+		FileFragment f = new FileFragment(start, start + data.length, segmentID);
+		f.setData(data);
+		return f;
+	}
+
 	public int getMiss() {
 		try {
 			Thread.sleep(10);

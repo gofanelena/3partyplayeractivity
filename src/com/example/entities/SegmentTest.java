@@ -7,6 +7,7 @@ import java.util.Random;
 
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 /**
  * @author zxyqwe
@@ -17,8 +18,8 @@ public class SegmentTest extends AndroidTestCase {
 	private String data;
 	private HashSet<Integer> numSet = new HashSet<Integer>();
 	private LinkedList<FileFragment> fraList = new LinkedList<>();
-	private int base = 50;
-	private int fra = 5;
+	private int base = 5000;
+	private int fra = 50;
 
 	/**
 	 * @throws java.lang.Exception
@@ -78,14 +79,23 @@ public class SegmentTest extends AndroidTestCase {
 	 * Test method for {@link com.example.entities.Segment#getData()}.
 	 */
 	public final void testGetData() {
+		Random random = new Random();
 		Segment seg = new Segment(1, base);
 		byte[] tmp = seg.getData();
 		Assert.assertNull(tmp);
 		for (FileFragment ff : fraList) {
 			seg.insert(ff);
+			for (int i = 0; i < fra; i++) {
+				int start = random.nextInt(base);
+				byte[] buf = seg.getData(start);
+				if (buf != null) {
+					Assert.assertTrue(new String(buf).compareTo(data.substring(
+							start, start + buf.length)) == 0);
+				}
+			}
 		}
 		tmp = seg.getData();
-		Assert.assertFalse(new String(tmp).compareTo(data) == 0);
+		// Assert.assertFalse(new String(tmp).compareTo(data) == 0);
 		boolean b = seg.checkIntegrity();
 		Assert.assertTrue(b);
 		tmp = seg.getData();
