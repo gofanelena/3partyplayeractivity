@@ -149,7 +149,7 @@ public class MainFragment extends Fragment {
 				if(adhocSelect){
 					
 					try {
-						WiFiBroad.send("I am captain!");
+						WiFiBroad.send("I am Captain!");
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

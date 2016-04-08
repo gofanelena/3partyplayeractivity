@@ -33,6 +33,7 @@ public class ReceiveThread extends Thread {
 		byte[] buf = new byte[256];
 		DatagramPacket packet;
 		packet = new DatagramPacket(buf, buf.length);
+		
 		while (true) {
 			try {
 				socket.receive(packet);
@@ -40,8 +41,8 @@ public class ReceiveThread extends Thread {
 				Log.v("ReceiveThread", "received string:"+s);
 				if(s.contains("I am Captain!")){
 				
-				     String[] strarray=s.split(" ");//2015demo w
-				     signal=Integer.parseInt(strarray[4]);   //2015demo w
+				     //String[] strarray=s.split(" ");//2015demo w
+				     //signal=Integer.parseInt(strarray[4]);   //2015demo w
 
 					 ((Activity) activity).runOnUiThread(new Runnable(){
 

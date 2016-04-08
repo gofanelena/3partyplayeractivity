@@ -22,7 +22,7 @@ public class WiFiBroad extends WiFiPulic {
 	private WifiManager wifi;
 	private static MulticastSocket socket;
 	private static String multicastHost = "224.0.0.1";
-	private static int localPort = 9998;
+	private static int localPort = 9988;
 	private TelephonyManager tm;
 	private ReceiveThread recvThd;
 
@@ -98,7 +98,10 @@ public class WiFiBroad extends WiFiPulic {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		recvThd.stop();
+		//recvThd.stop();
+		if (recvThd != null) {
+            recvThd.interrupt();
+        }
 
 	}
 

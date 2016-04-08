@@ -1,8 +1,10 @@
 package com.example.entities;
 
+import java.io.Serializable;
+
 import android.util.Log;
 
-public class FileFragment implements Comparable<FileFragment> {
+public class FileFragment implements Comparable<FileFragment>, Serializable {
 	private static final String TAG = FileFragment.class.getSimpleName();
 
 	private int startIndex;
