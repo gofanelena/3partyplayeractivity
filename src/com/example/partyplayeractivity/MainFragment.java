@@ -35,8 +35,6 @@ import android.widget.Toast;
 
 import com.example.WiFi.WiFiFactory;
 import com.example.WiFi.WiFiFactory.WiFiType;
-import com.example.WiFi.WiFiPulic;
-import com.example.WiFi.WiFiBroad.WiFiBroad;
 import com.example.dashproxyserver.DashProxyServer;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)

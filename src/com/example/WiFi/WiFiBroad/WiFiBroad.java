@@ -71,6 +71,7 @@ public class WiFiBroad extends WiFiPulic {
 		objThd.start();
 	}
 
+	@Override
 	public void EmergencySend(byte[] data) throws Exception {
 		DatagramPacket dp = new DatagramPacket(data, data.length,
 				InetAddress.getByName(multicastHost), localPort);
