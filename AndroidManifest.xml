@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.partyplayeractivity" >
+    package="com.ANT.MiddleWare.PartyPlayerActivity" >
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -28,5 +28,5 @@
     </application>
 
     <instrumentation android:name="android.test.InstrumentationTestRunner"  
-        android:targetPackage="com.example.partyplayeractivity" android:label="Tests for My App" />  
+        android:targetPackage="com.ANT.MiddleWare.PartyPlayerActivity" android:label="Tests for My App" />  
 </manifest>
