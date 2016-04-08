@@ -104,4 +104,41 @@ public class Segment {
 
 	}
 
+	public byte[] getData(int start) {
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		synchronized (this) {
+			if (segmentList == null || segmentList.size() == 0) {
+				return null;
+			}
+			try {
+				merge();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return segmentList.get(0).getData(start);
+		}
+	}
+
+	public int getMiss() {
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		synchronized (this) {
+			if (segmentList == null || segmentList.size() == 0) {
+				return 0;
+			}
+			try {
+				merge();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return segmentList.get(0).getStopIndex();
+		}
+	}
 }
