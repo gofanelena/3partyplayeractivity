@@ -3,6 +3,7 @@ package com.example.celluar.wifimore;
 import android.util.Log;
 
 import com.example.Integrity.IntegrityCheck;
+import com.example.WiFi.WiFiFactory;
 import com.example.entities.Segment;
 
 public class WiFiMore extends Thread {
@@ -20,11 +21,9 @@ public class WiFiMore extends Thread {
 		Segment Seg = IC.getSeg(url);
 		if (Seg != null) {
 			while (!Seg.checkIntegrity()) {
-				Log.d(TAG, "no " + url);
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-				}
+				int miss = Seg.getMiss();
+				Log.d(TAG, "no " + url + " " + miss);
+				WiFiFactory.notify(url, miss);
 			}
 			Log.d(TAG, "yes " + url);
 		} else {

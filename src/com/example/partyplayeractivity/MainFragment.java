@@ -66,9 +66,7 @@ public class MainFragment extends Fragment {
 	
 	private List<String> list = new ArrayList<String>();
 	private ArrayAdapter<String> adapter;  
-	private Spinner mySpinner;  
-	private WiFiPulic wifiInstance;
-	
+	private Spinner mySpinner;  	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +115,7 @@ public class MainFragment extends Fragment {
 					break;
 				case 1: //adhoc
 					adhocSelect = true;
-					wifiInstance = WiFiFactory.getInstance(getActivity(), WiFiType.BROAD);
+					WiFiFactory.changeInstance(getActivity(), WiFiType.BROAD);
 					
 					break;
 				case 2: //bt
