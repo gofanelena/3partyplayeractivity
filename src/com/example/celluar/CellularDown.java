@@ -6,7 +6,8 @@ import java.util.concurrent.Executors;
 import android.util.Log;
 
 import com.example.celluar.SingleCell.SingleCell;
-import com.example.celluar.more.CellularMore;
+import com.example.celluar.cellmore.CellularMore;
+import com.example.celluar.wifimore.WiFiMore;
 
 public class CellularDown {
 	private static final String TAG = CellularDown.class.getSimpleName();
@@ -14,7 +15,7 @@ public class CellularDown {
 			.newCachedThreadPool();
 
 	public static enum CellType {
-		More, Single, DASH, GROUP
+		CellMore, WiFiMore, Single, DASH, GROUP
 	}
 
 	private CellularDown() {
@@ -23,14 +24,16 @@ public class CellularDown {
 	public static void queryFragment(CellType type, int url) {
 		Log.d(TAG, "" + type + " " + url);
 		switch (type) {
-		default:
-			cachedThreadPool.execute(new SingleCell(url));
-			break;
 		case Single:
 			cachedThreadPool.execute(new SingleCell(url));
 			break;
-		case More:
+		case CellMore:
 			cachedThreadPool.execute(new CellularMore(url));
+			break;
+		case WiFiMore:
+			cachedThreadPool.execute(new WiFiMore(url));
+			break;
+		default:
 			break;
 		}
 	}
