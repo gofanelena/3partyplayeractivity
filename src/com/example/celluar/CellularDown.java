@@ -13,7 +13,6 @@ public class CellularDown {
 	private static final String TAG = CellularDown.class.getSimpleName();
 	private static final ExecutorService cachedThreadPool = Executors
 			.newCachedThreadPool();
-	private static CellType m_type = CellType.Single;
 
 	public static enum CellType {
 		CellMore, WiFiMore, Single, DASH, GROUP
@@ -24,7 +23,6 @@ public class CellularDown {
 
 	public static void queryFragment(CellType type, int url) {
 		Log.d(TAG, "" + type + " " + url);
-		m_type = type;
 		switch (type) {
 		case Single:
 			cachedThreadPool.execute(new SingleCell(url));
@@ -38,10 +36,6 @@ public class CellularDown {
 		default:
 			break;
 		}
-	}
-
-	public static void queryFragment(int url) {
-		queryFragment(m_type, url);
 	}
 
 }

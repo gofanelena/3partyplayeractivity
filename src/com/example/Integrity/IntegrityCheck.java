@@ -4,6 +4,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.example.celluar.CellularDown;
+import com.example.celluar.CellularDown.CellType;
 import com.example.entities.FileFragment;
 import com.example.entities.Segment;
 
@@ -27,6 +28,10 @@ public class IntegrityCheck {
 	}
 
 	public byte[] getSegments(int uri) {
+		return getSegments(uri, CellType.Single);
+	}
+
+	public byte[] getSegments(int uri, CellType ct) {
 		int id = uri;
 		// Log.v("uri", uri);
 		synchronized (this) {
@@ -37,7 +42,7 @@ public class IntegrityCheck {
 			if (segment.checkIntegrity()) {
 				return segment.getData();
 			} else {
-				CellularDown.queryFragment(id);
+				CellularDown.queryFragment(ct, id);
 				Log.v(TAG, "url" + id);
 			}
 		}
