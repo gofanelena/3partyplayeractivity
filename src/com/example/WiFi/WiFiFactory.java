@@ -22,7 +22,8 @@ public class WiFiFactory {
 	private WiFiFactory() {
 	}
 
-	public static void changeInstance(Context contect, WiFiType type) throws Exception {
+	public static void changeInstance(Context contect, WiFiType type)
+			throws Exception {
 		synchronized (instance) {
 			if (type != WiFiFactory.ins_type) {
 				Log.d(TAG, "INS_TYPE " + WiFiFactory.ins_type + " " + type);
@@ -61,6 +62,12 @@ public class WiFiFactory {
 	public static void notify(int seg, int start) {
 		synchronized (instance) {
 			instance.notify(seg, start);
+		}
+	}
+
+	public static void EmergencySend(byte[] data) throws Exception {
+		synchronized (instance) {
+			instance.EmergencySend(data);
 		}
 	}
 }

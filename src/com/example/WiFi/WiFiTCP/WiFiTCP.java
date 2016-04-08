@@ -22,4 +22,10 @@ public class WiFiTCP extends WiFiPulic {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void EmergencySend(byte[] data) {
+		// TODO Auto-generated method stub
+		
+	}
 }

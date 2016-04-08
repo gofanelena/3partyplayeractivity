@@ -26,5 +26,7 @@ public abstract class WiFiPulic {
 
 	public abstract void notify(int seg, int start);
 
+	public abstract void EmergencySend(byte[] data) throws Exception;
+
 	public abstract void destroy() throws InterruptedException;
 }

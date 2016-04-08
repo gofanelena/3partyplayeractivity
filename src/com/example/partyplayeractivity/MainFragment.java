@@ -151,7 +151,7 @@ public class MainFragment extends Fragment {
 				if(adhocSelect){
 					
 					try {
-						WiFiBroad.send("I am Captain!");
+						WiFiFactory.EmergencySend("I am Captain!".getBytes("UTF-8"));
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

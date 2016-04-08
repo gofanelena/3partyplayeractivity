@@ -20,7 +20,7 @@ public class WiFiBroad extends WiFiPulic {
 
 	private Process proc;
 	private WifiManager wifi;
-	private static MulticastSocket socket = null;
+	private MulticastSocket socket = null;
 	private static String multicastHost = "224.0.0.1";
 	private static int localPort = 9988;
 	private TelephonyManager tm;
@@ -71,10 +71,8 @@ public class WiFiBroad extends WiFiPulic {
 		objThd.start();
 	}
 
-	public static void send(String s) throws Exception {
-		byte[] sendMSG = s.getBytes("UTF-8");
-
-		DatagramPacket dp = new DatagramPacket(sendMSG, sendMSG.length,
+	public void EmergencySend(byte[] data) throws Exception {
+		DatagramPacket dp = new DatagramPacket(data, data.length,
 				InetAddress.getByName(multicastHost), localPort);
 
 		socket.send(dp);

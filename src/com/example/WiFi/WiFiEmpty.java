@@ -18,4 +18,8 @@ public class WiFiEmpty extends WiFiPulic {
 	@Override
 	public void notify(int seg, int start) {
 	}
+
+	@Override
+	public void EmergencySend(byte[] data) {
+	}
 }
