@@ -17,9 +17,15 @@ public class SegmentTest extends AndroidTestCase {
 	private static final String TAG = SegmentTest.class.getSimpleName();
 	private String data;
 	private HashSet<Integer> numSet = new HashSet<Integer>();
+<<<<<<< Updated upstream:src/com/ANT/MiddleWare/Entities/SegmentTest.java
 	private LinkedList<FileFragment> fraList = new LinkedList<>();
 	private int base = 5000;
 	private int fra = 50;
+=======
+	private LinkedList<FileFragment> fraList = new LinkedList<FileFragment>();
+	private int base = 50;
+	private int fra = 5;
+>>>>>>> Stashed changes:src/com/example/entities/SegmentTest.java
 
 	/**
 	 * @throws java.lang.Exception
