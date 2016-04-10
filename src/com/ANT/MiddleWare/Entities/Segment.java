@@ -2,6 +2,7 @@ package com.ANT.MiddleWare.Entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import android.util.Log;
 
@@ -12,6 +13,7 @@ public class Segment {
 	private ArrayList<FileFragment> segmentList;
 	private int segLength = -1;
 	private boolean Intergrity = false;
+	private static Random random = new Random();
 
 	public synchronized void setSegLength(int segLength) {
 		if (this.segLength == -1) {
@@ -37,7 +39,7 @@ public class Segment {
 	}
 
 	private void merge() throws Exception {
-		if (segmentList == null || segmentList.size() == 1) {
+		if (segmentList == null || segmentList.size() <= 1) {
 			return;
 		}
 		int size = segmentList.size();
@@ -97,8 +99,9 @@ public class Segment {
 
 	public byte[] getData() {
 		synchronized (this) {
-			if (segmentList.size() == 0)
+			if (segmentList == null || segmentList.size() == 0)
 				return null;
+			checkIntegrity();
 			return segmentList.get(0).getData();
 		}
 
@@ -114,11 +117,7 @@ public class Segment {
 			if (segmentList == null || segmentList.size() == 0) {
 				return null;
 			}
-			try {
-				merge();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			checkIntegrity();
 			for (FileFragment f : segmentList) {
 				byte[] tmp = f.getData(start);
 				if (tmp != null)
@@ -137,22 +136,23 @@ public class Segment {
 		return f;
 	}
 
-	public int getMiss() {
+	public int getMiss() throws Exception {
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
 		synchronized (this) {
-			if (segmentList == null || segmentList.size() == 0) {
+			if (segmentList == null) {
 				return 0;
 			}
-			try {
-				merge();
-			} catch (Exception e) {
-				e.printStackTrace();
+			int size = segmentList.size();
+			if (size == 0) {
+				return 0;
 			}
-			return segmentList.get(0).getStopIndex();
+			if (checkIntegrity())
+				throw new Exception("No Fragment Miss");
+			return segmentList.get(random.nextInt(size - 1)).getStopIndex();
 		}
 	}
 }

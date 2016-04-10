@@ -33,7 +33,6 @@ public class IntegrityCheck {
 
 	public byte[] getSegments(int uri, CellType ct) {
 		int id = uri;
-		// Log.v("uri", uri);
 		synchronized (this) {
 			if (urlMap.indexOfKey(id) < 0) {
 				urlMap.put(id, new Segment(id, -1));
