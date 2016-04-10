@@ -99,6 +99,10 @@ public class WiFiBroad extends WiFiPulic {
 			objThd.interrupt();
 			objThd.join();
 		}
+		if (sendThd != null) {
+			sendThd.interrupt();
+			sendThd.join();
+		}
 	}
 
 	@Override
