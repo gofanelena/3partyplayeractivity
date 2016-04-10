@@ -9,27 +9,26 @@ import java.net.MulticastSocket;
 import java.util.Stack;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
+import com.ANT.MiddleWare.WiFi.WiFiPulic;
 
 public class SendThread extends Thread {
 	
 	private MulticastSocket socket;
-	private Stack<FileFragment> taskList;
 	private FileFragment ffToSend;
 	private ByteArrayOutputStream bOs;
 	private ObjectOutputStream oOs;
 	
-	public SendThread(MulticastSocket mSocket, Stack<FileFragment> mTaskList) {		
+	public SendThread(MulticastSocket mSocket) {		
 		this.socket = mSocket;		
-		this.taskList = mTaskList;
 	}
 	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true){
-			synchronized(taskList){
-				if(taskList.peek()!= null) {
-				    ffToSend = taskList.pop();
+			synchronized(WiFiPulic.taskList){
+				if(WiFiPulic.taskList.peek()!= null) {
+				    ffToSend = WiFiPulic.taskList.pop();
 				    send(ffToSend);
 				}
 			}
