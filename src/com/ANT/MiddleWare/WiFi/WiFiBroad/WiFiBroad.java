@@ -30,7 +30,7 @@ public class WiFiBroad extends WiFiPulic {
 	private PipedInputStream pi = new PipedInputStream();
 	private PipedOutputStream po = new PipedOutputStream();
 
-	public final static int EmeSend = 1;
+	public final static int EmeSend = -2;
 
 	public WiFiBroad(Context contect) throws Exception {
 		super(contect);
