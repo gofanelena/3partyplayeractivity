@@ -1,5 +1,9 @@
 package com.ANT.MiddleWare.Entities;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import android.util.Log;
@@ -107,6 +111,18 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 			e.printStackTrace();
 		}
 		return o;
+	}
+
+	public byte[] toBytes() {
+		byte[] b = null;
+		try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ObjectOutput out = new ObjectOutputStream(bos)) {
+			out.writeObject(this);
+			b = bos.toByteArray();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	public byte[] getData(int start) {

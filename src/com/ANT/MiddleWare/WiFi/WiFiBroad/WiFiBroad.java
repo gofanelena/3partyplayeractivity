@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.WiFi.WiFiPulic;
 
 public class WiFiBroad extends WiFiPulic {
@@ -28,6 +29,8 @@ public class WiFiBroad extends WiFiPulic {
 	private ObjectMulti objThd = null;
 	private PipedInputStream pi = new PipedInputStream();
 	private PipedOutputStream po = new PipedOutputStream();
+
+	public final static int EmeSend = 1;
 
 	public WiFiBroad(Context contect) throws Exception {
 		super(contect);
@@ -73,6 +76,9 @@ public class WiFiBroad extends WiFiPulic {
 
 	@Override
 	public void EmergencySend(byte[] data) throws Exception {
+		FileFragment f = new FileFragment(0, data.length, EmeSend);
+		f.setData(data);
+		data = f.toBytes();
 		DatagramPacket dp = new DatagramPacket(data, data.length,
 				InetAddress.getByName(multicastHost), localPort);
 
