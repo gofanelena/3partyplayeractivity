@@ -21,13 +21,11 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	private boolean written = false;
 
 	public FileFragment(int start, int stop, int segID) {
-
 		this.startIndex = start;
 		this.stopIndex = stop;
 		this.segmentID = segID;
 		int fragLength = stopIndex - startIndex;
 		this.data = new byte[fragLength];
-
 	}
 
 	public FileFragment(FileFragment fm) throws Exception {
