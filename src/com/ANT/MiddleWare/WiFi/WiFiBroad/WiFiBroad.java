@@ -74,7 +74,7 @@ public class WiFiBroad extends WiFiPulic {
 
 		objThd = new ObjectMulti(pi, contect);
 		objThd.start();
-		
+
 		sendThd = new SendMulti(socket, taskList);
 		sendThd.start();
 	}
@@ -86,8 +86,9 @@ public class WiFiBroad extends WiFiPulic {
 		data = f.toBytes();
 		DatagramPacket dp = new DatagramPacket(data, data.length,
 				InetAddress.getByName(multicastHost), localPort);
-
-		socket.send(dp);
+		synchronized (taskList) {
+			socket.send(dp);
+		}
 	}
 
 	@Override
@@ -108,11 +109,7 @@ public class WiFiBroad extends WiFiPulic {
 
 	@Override
 	public void notify(int seg, int start) {
-		// TODO Auto-generated method stub
-		// segID = -2 ---- Emergency Send
-		// segID = -3 ---- fragment request
 		FileFragment ff = new FileFragment(start, start, FRAG_REQST_TAG);
 		WiFiFactory.insertF(ff);
-
 	}
 }

@@ -1,10 +1,7 @@
 package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.OptionalDataException;
 import java.io.PipedInputStream;
-import java.io.StreamCorruptedException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,9 +19,7 @@ public class ObjectMulti extends Thread {
 		this.activity = activity;
 		try {
 			oi = new ObjectInputStream(pi);
-		} catch (StreamCorruptedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -34,25 +29,26 @@ public class ObjectMulti extends Thread {
 		while (true) {
 			try {
 				final FileFragment ff = (FileFragment) oi.readObject();
-				if (ff!=null) {
-					if (ff.getSegmentID() == WiFiBroad.FRAG_REQST_TAG) {
-						//handle fragment request
+				if (ff != null) {
+					((Activity) activity).runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(activity, ff.toString(),
+									Toast.LENGTH_SHORT).show();
+						}
+					});
+					switch (ff.getSegmentID()) {
+					case WiFiBroad.FRAG_REQST_TAG:
 						WiFiFactory.insertF(ff);
+						break;
+					case WiFiBroad.EMERGEN_SEND_TAG:
+						break;
+					default:
+						break;
 					}
 				}
-				
-				((Activity) activity).runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Toast.makeText(activity, ff.toString(),
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-			} catch (OptionalDataException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
