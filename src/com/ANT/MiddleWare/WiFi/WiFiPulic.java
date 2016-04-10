@@ -18,7 +18,7 @@ public abstract class WiFiPulic {
 	private void WiFiPublic() {
 	}
 
-	public  final void insertF(FileFragment fm) {
+	public final void insertF(FileFragment fm) {
 		synchronized (taskList) {
 			taskList.add(fm);
 		}

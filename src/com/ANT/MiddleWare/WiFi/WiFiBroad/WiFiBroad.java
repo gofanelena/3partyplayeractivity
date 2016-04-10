@@ -30,9 +30,9 @@ public class WiFiBroad extends WiFiPulic {
 	private ObjectMulti objThd = null;
 	private PipedInputStream pi = new PipedInputStream();
 	private PipedOutputStream po = new PipedOutputStream();
-	private SendThread sendThd;
+	private SendMulti sendThd;
+	public static final int EMERGEN_SEND_TAG = -2;
 	public static final int FRAG_REQST_TAG = -3;
-	public final static int EMERGEN_SEND_TAG = -2;
 
 	public WiFiBroad(Context contect) throws Exception {
 		super(contect);
@@ -75,7 +75,7 @@ public class WiFiBroad extends WiFiPulic {
 		objThd = new ObjectMulti(pi, contect);
 		objThd.start();
 		
-		sendThd = new SendThread(socket, taskList);
+		sendThd = new SendMulti(socket, taskList);
 		sendThd.start();
 	}
 
