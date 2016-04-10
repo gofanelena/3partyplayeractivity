@@ -109,7 +109,7 @@ public class WiFiBroad extends WiFiPulic {
 
 	@Override
 	public void notify(int seg, int start) {
-		FileFragment ff = new FileFragment(start, start, FRAG_REQST_TAG);
+		FileFragment ff = new FileFragment(seg, start, FRAG_REQST_TAG);
 		WiFiFactory.insertF(ff);
 	}
 }

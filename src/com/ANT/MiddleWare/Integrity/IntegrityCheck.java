@@ -7,6 +7,7 @@ import com.ANT.MiddleWare.Celluar.CellularDown;
 import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.Segment;
+import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class IntegrityCheck {
 	private static final String TAG = IntegrityCheck.class.getSimpleName();
@@ -68,6 +69,7 @@ public class IntegrityCheck {
 
 	public void insert(int id, FileFragment fm) {
 		Segment s = urlMap.get(id);
+		WiFiFactory.insertF(fm);
 		s.insert(fm);
 	}
 

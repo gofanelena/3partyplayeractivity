@@ -8,6 +8,8 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
+import com.ANT.MiddleWare.Entities.Segment;
+import com.ANT.MiddleWare.Integrity.IntegrityCheck;
 import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class ObjectMulti extends Thread {
@@ -39,7 +41,10 @@ public class ObjectMulti extends Thread {
 					});
 					switch (ff.getSegmentID()) {
 					case WiFiBroad.FRAG_REQST_TAG:
-						WiFiFactory.insertF(ff);
+						Segment s = IntegrityCheck.getInstance().getSeg(
+								ff.getStartIndex());
+						FileFragment f = s.getFragment(ff.getStopIndex());
+						WiFiFactory.insertF(f);
 						break;
 					case WiFiBroad.EMERGEN_SEND_TAG:
 						((Activity) activity).runOnUiThread(new Runnable() {
@@ -51,6 +56,8 @@ public class ObjectMulti extends Thread {
 						});
 						break;
 					default:
+						IntegrityCheck.getInstance().insert(ff.getSegmentID(),
+								ff);
 						break;
 					}
 				}
