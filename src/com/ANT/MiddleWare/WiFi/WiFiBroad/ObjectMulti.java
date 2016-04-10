@@ -42,6 +42,13 @@ public class ObjectMulti extends Thread {
 						WiFiFactory.insertF(ff);
 						break;
 					case WiFiBroad.EMERGEN_SEND_TAG:
+						((Activity) activity).runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Toast.makeText(activity, "I am slave",
+										Toast.LENGTH_SHORT).show();
+							}
+						});
 						break;
 					default:
 						break;
