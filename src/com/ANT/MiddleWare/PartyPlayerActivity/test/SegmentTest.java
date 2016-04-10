@@ -1,9 +1,12 @@
-package com.ANT.MiddleWare.Entities;
+package com.ANT.MiddleWare.PartyPlayerActivity.test;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
+
+import com.ANT.MiddleWare.Entities.FileFragment;
+import com.ANT.MiddleWare.Entities.Segment;
 
 import junit.framework.Assert;
 import android.test.AndroidTestCase;

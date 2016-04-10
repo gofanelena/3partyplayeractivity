@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ANT.MiddleWare.Celluar;
+package com.ANT.MiddleWare.PartyPlayerActivity.test;
 
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
