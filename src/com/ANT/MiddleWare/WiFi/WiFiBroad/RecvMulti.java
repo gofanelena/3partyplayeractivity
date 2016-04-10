@@ -8,9 +8,11 @@ import java.net.SocketException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 public class RecvMulti extends Thread {
+	private static final String TAG = RecvMulti.class.getSimpleName();
 
 	private Context activity;
 	private MulticastSocket socket;
@@ -46,6 +48,7 @@ public class RecvMulti extends Thread {
 		while (true) {
 			try {
 				socket.receive(packet);
+				Log.d(TAG, packet.toString());
 				po.write(packet.getData(), packet.getOffset(),
 						packet.getLength());
 			} catch (IOException e) {

@@ -123,6 +123,12 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		return b;
 	}
 
+	public void check() throws Exception {
+		if ((stopIndex - startIndex != data.length) || segmentID < 1
+				|| written == false)
+			throw new Exception("Fragment Check Fail!");
+	}
+
 	public byte[] getData(int start) {
 		if (start < startIndex || start >= stopIndex)
 			return null;

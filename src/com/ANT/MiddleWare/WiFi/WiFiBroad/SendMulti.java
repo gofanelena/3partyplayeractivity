@@ -5,9 +5,12 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.Stack;
 
+import android.util.Log;
+
 import com.ANT.MiddleWare.Entities.FileFragment;
 
 public class SendMulti extends Thread {
+	private static final String TAG = SendMulti.class.getSimpleName();
 
 	private MulticastSocket socket;
 	private Stack<FileFragment> taskList;
@@ -29,7 +32,7 @@ public class SendMulti extends Thread {
 								data.length,
 								InetAddress.getByName(WiFiBroad.multicastHost),
 								WiFiBroad.localPort);
-
+						Log.d(TAG, "send");
 						socket.send(dp);
 					} catch (Exception e) {
 						taskList.push(ff);

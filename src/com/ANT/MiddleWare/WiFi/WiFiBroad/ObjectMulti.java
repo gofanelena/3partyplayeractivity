@@ -5,6 +5,7 @@ import java.io.PipedInputStream;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
@@ -13,6 +14,7 @@ import com.ANT.MiddleWare.Integrity.IntegrityCheck;
 import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class ObjectMulti extends Thread {
+	private static final String TAG = ObjectMulti.class.getSimpleName();
 
 	private Context activity;
 	private ObjectInputStream oi;
@@ -32,6 +34,7 @@ public class ObjectMulti extends Thread {
 			try {
 				final FileFragment ff = (FileFragment) oi.readObject();
 				if (ff != null) {
+					Log.d(TAG, ff.toString());
 					((Activity) activity).runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
@@ -56,6 +59,7 @@ public class ObjectMulti extends Thread {
 						});
 						break;
 					default:
+						ff.check();
 						IntegrityCheck.getInstance().insert(ff.getSegmentID(),
 								ff);
 						break;
