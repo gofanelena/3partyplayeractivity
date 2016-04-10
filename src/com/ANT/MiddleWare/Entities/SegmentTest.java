@@ -17,7 +17,7 @@ public class SegmentTest extends AndroidTestCase {
 	private static final String TAG = SegmentTest.class.getSimpleName();
 	private String data;
 	private HashSet<Integer> numSet = new HashSet<Integer>();
-	private LinkedList<FileFragment> fraList = new LinkedList<>();
+	private LinkedList<FileFragment> fraList = new LinkedList<FileFragment>();
 	private int base = 5000;
 	private int fra = 50;
 
