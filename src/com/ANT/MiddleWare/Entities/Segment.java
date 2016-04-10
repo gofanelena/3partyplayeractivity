@@ -30,7 +30,7 @@ public class Segment {
 	public boolean insert(FileFragment fm) {
 		synchronized (this) {
 			if (fm.isWritten() && fm.getSegmentID() == segmentID) {
-				segmentList.add(fm);
+				segmentList.add(fm.clone());
 				Collections.sort(segmentList);
 				return true;
 			}

@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 import android.util.Log;
 
-public class FileFragment implements Comparable<FileFragment>, Serializable {
+public class FileFragment implements Comparable<FileFragment>, Serializable,
+		Cloneable {
 	private static final long serialVersionUID = -7869356592846635319L;
 
 	private static final String TAG = FileFragment.class.getSimpleName();
@@ -95,6 +96,17 @@ public class FileFragment implements Comparable<FileFragment>, Serializable {
 	@Override
 	public String toString() {
 		return "Frag " + startIndex + " " + stopIndex + " " + data.length;
+	}
+
+	@Override
+	public FileFragment clone() {
+		FileFragment o = null;
+		try {
+			o = (FileFragment) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return o;
 	}
 
 	public byte[] getData(int start) {
