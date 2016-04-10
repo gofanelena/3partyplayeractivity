@@ -22,13 +22,14 @@ public class WiFiBroad extends WiFiPulic {
 	private Process proc;
 	private WifiManager wifi;
 	private MulticastSocket socket = null;
-	private static String multicastHost = "224.0.0.1";
-	private static int localPort = 9988;
+	public static final String multicastHost = "224.0.0.1";
+	public static final int localPort = 9988;
 	private TelephonyManager tm;
 	private RecvMulti recvThd = null;
 	private ObjectMulti objThd = null;
 	private PipedInputStream pi = new PipedInputStream();
 	private PipedOutputStream po = new PipedOutputStream();
+	private SendThread sendThd;
 
 	public final static int EmeSend = -2;
 
@@ -72,6 +73,9 @@ public class WiFiBroad extends WiFiPulic {
 
 		objThd = new ObjectMulti(pi, contect);
 		objThd.start();
+		
+		sendThd = new SendThread(socket, taskList);
+		sendThd.start();
 	}
 
 	@Override
@@ -100,6 +104,10 @@ public class WiFiBroad extends WiFiPulic {
 	@Override
 	public void notify(int seg, int start) {
 		// TODO Auto-generated method stub
+		// fragLength = -2 ---- Emergency Send
+		// fragLength = -3 ---- fragment request
+		FileFragment ff = new FileFragment(start, start-3, seg);
+		super.insertF(ff);
 
 	}
 }
