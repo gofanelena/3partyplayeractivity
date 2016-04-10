@@ -112,15 +112,28 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	}
 
 	public byte[] toBytes() {
-		byte[] b = null;
-		try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				ObjectOutput out = new ObjectOutputStream(bos)) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = null;
+		try {
+			out = new ObjectOutputStream(bos);
 			out.writeObject(this);
-			b = bos.toByteArray();
+			byte[] b = bos.toByteArray();
+			return b;
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+			} catch (IOException ex) {
+			}
+			try {
+				bos.close();
+			} catch (IOException ex) {
+			}
 		}
-		return b;
+		return null;
 	}
 
 	public void check() throws Exception {

@@ -4,6 +4,6 @@ android:
     - build-tools-19.1.0
     - android-19
     - extra
-jdk:
-  - oraclejdk7
-  - openjdk7
+  jdk:
+    - oraclejdk7
+    - openjdk7
