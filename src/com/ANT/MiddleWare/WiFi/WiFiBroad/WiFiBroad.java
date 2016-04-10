@@ -13,6 +13,8 @@ import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.ANT.MiddleWare.Entities.FileFragment;
+import com.ANT.MiddleWare.WiFi.WiFiFactory;
 import com.ANT.MiddleWare.WiFi.WiFiPulic;
 
 public class WiFiBroad extends WiFiPulic {
@@ -21,13 +23,16 @@ public class WiFiBroad extends WiFiPulic {
 	private Process proc;
 	private WifiManager wifi;
 	private MulticastSocket socket = null;
-	private static String multicastHost = "224.0.0.1";
-	private static int localPort = 9988;
+	public static final String multicastHost = "224.0.0.1";
+	public static final int localPort = 9988;
 	private TelephonyManager tm;
 	private RecvMulti recvThd = null;
 	private ObjectMulti objThd = null;
 	private PipedInputStream pi = new PipedInputStream();
 	private PipedOutputStream po = new PipedOutputStream();
+	private SendMulti sendThd;
+	public static final int EMERGEN_SEND_TAG = -2;
+	public static final int FRAG_REQST_TAG = -3;
 
 	public WiFiBroad(Context contect) throws Exception {
 		super(contect);
@@ -69,14 +74,21 @@ public class WiFiBroad extends WiFiPulic {
 
 		objThd = new ObjectMulti(pi, contect);
 		objThd.start();
+
+		sendThd = new SendMulti(socket, taskList);
+		sendThd.start();
 	}
 
 	@Override
 	public void EmergencySend(byte[] data) throws Exception {
+		FileFragment f = new FileFragment(0, data.length, EMERGEN_SEND_TAG);
+		f.setData(data);
+		data = f.toBytes();
 		DatagramPacket dp = new DatagramPacket(data, data.length,
 				InetAddress.getByName(multicastHost), localPort);
-
-		socket.send(dp);
+		synchronized (taskList) {
+			socket.send(dp);
+		}
 	}
 
 	@Override
@@ -89,11 +101,15 @@ public class WiFiBroad extends WiFiPulic {
 			objThd.interrupt();
 			objThd.join();
 		}
+		if (sendThd != null) {
+			sendThd.interrupt();
+			sendThd.join();
+		}
 	}
 
 	@Override
 	public void notify(int seg, int start) {
-		// TODO Auto-generated method stub
-
+		FileFragment ff = new FileFragment(seg, start, FRAG_REQST_TAG);
+		WiFiFactory.insertF(ff);
 	}
 }

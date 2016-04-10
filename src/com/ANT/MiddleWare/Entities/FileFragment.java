@@ -1,10 +1,15 @@
 package com.ANT.MiddleWare.Entities;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import android.util.Log;
 
-public class FileFragment implements Comparable<FileFragment>, Serializable {
+public class FileFragment implements Comparable<FileFragment>, Serializable,
+		Cloneable {
 	private static final long serialVersionUID = -7869356592846635319L;
 
 	private static final String TAG = FileFragment.class.getSimpleName();
@@ -16,13 +21,11 @@ public class FileFragment implements Comparable<FileFragment>, Serializable {
 	private boolean written = false;
 
 	public FileFragment(int start, int stop, int segID) {
-
 		this.startIndex = start;
 		this.stopIndex = stop;
 		this.segmentID = segID;
 		int fragLength = stopIndex - startIndex;
 		this.data = new byte[fragLength];
-
 	}
 
 	public FileFragment(FileFragment fm) throws Exception {
@@ -44,6 +47,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable {
 		synchronized (this) {
 			Log.d(TAG, "" + startIndex + " " + stopIndex + " " + data.length
 					+ " " + offset + " " + d.length);
+			Log.w(TAG, "Waste " + (stopIndex - offset));
 			offset = offset - this.startIndex;
 			int len = offset + d.length;
 			byte[] tmpdata = new byte[len];
@@ -94,6 +98,48 @@ public class FileFragment implements Comparable<FileFragment>, Serializable {
 	@Override
 	public String toString() {
 		return "Frag " + startIndex + " " + stopIndex + " " + data.length;
+	}
+
+	@Override
+	public FileFragment clone() {
+		FileFragment o = null;
+		try {
+			o = (FileFragment) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return o;
+	}
+
+	public byte[] toBytes() {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = null;
+		try {
+			out = new ObjectOutputStream(bos);
+			out.writeObject(this);
+			byte[] b = bos.toByteArray();
+			return b;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+			} catch (IOException ex) {
+			}
+			try {
+				bos.close();
+			} catch (IOException ex) {
+			}
+		}
+		return null;
+	}
+
+	public void check() throws Exception {
+		if ((stopIndex - startIndex != data.length) || segmentID < 1
+				|| written == false)
+			throw new Exception("Fragment Check Fail!");
 	}
 
 	public byte[] getData(int start) {

@@ -21,7 +21,13 @@ public class WiFiMore extends Thread {
 		Segment Seg = IC.getSeg(url);
 		if (Seg != null) {
 			while (!Seg.checkIntegrity()) {
-				int miss = Seg.getMiss();
+				int miss;
+				try {
+					miss = Seg.getMiss();
+				} catch (Exception e) {
+					e.printStackTrace();
+					break;
+				}
 				Log.d(TAG, "no " + url + " " + miss);
 				WiFiFactory.notify(url, miss);
 			}

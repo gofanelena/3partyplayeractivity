@@ -55,7 +55,7 @@ public class WiFiFactory {
 
 	public static void insertF(FileFragment fm) {
 		synchronized (instance) {
-			instance.insertF(fm);
+			instance.insertF(fm.clone());
 		}
 	}
 
