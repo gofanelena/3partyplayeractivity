@@ -17,18 +17,20 @@ public class SendThread extends Thread {
 	private FileFragment ffToSend;
 	private ByteArrayOutputStream bOs;
 	private ObjectOutputStream oOs;
+	private Stack<FileFragment> taskList;
 	
-	public SendThread(MulticastSocket mSocket) {		
+	public SendThread(MulticastSocket mSocket,  Stack<FileFragment> mTaskList) {		
 		this.socket = mSocket;		
+		this.taskList = mTaskList;
 	}
 	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true){
-			synchronized(WiFiPulic.taskList){
-				if(WiFiPulic.taskList.peek()!= null) {
-				    ffToSend = WiFiPulic.taskList.pop();
+			synchronized(taskList){
+				if(taskList.peek()!= null) {
+				    ffToSend = taskList.pop();
 				    send(ffToSend);
 				}
 			}

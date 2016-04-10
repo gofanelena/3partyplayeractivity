@@ -7,7 +7,7 @@ import android.content.Context;
 import com.ANT.MiddleWare.Entities.FileFragment;
 
 public abstract class WiFiPulic {
-	public static Stack<FileFragment> taskList;
+	protected Stack<FileFragment> taskList;
 	protected Context contect;
 
 	public WiFiPulic(Context contect) {
@@ -18,7 +18,7 @@ public abstract class WiFiPulic {
 	private void WiFiPublic() {
 	}
 
-	public static final void insertF(FileFragment fm) {
+	public  final void insertF(FileFragment fm) {
 		synchronized (taskList) {
 			taskList.add(fm);
 		}

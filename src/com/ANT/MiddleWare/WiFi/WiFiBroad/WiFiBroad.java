@@ -14,6 +14,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
+import com.ANT.MiddleWare.WiFi.WiFiFactory;
 import com.ANT.MiddleWare.WiFi.WiFiPulic;
 
 public class WiFiBroad extends WiFiPulic {
@@ -30,8 +31,8 @@ public class WiFiBroad extends WiFiPulic {
 	private PipedInputStream pi = new PipedInputStream();
 	private PipedOutputStream po = new PipedOutputStream();
 	private SendThread sendThd;
-
-	public final static int EmeSend = -2;
+	public static final int FRAG_REQST_TAG = -3;
+	public final static int EMERGEN_SEND_TAG = -2;
 
 	public WiFiBroad(Context contect) throws Exception {
 		super(contect);
@@ -74,13 +75,13 @@ public class WiFiBroad extends WiFiPulic {
 		objThd = new ObjectMulti(pi, contect);
 		objThd.start();
 		
-		sendThd = new SendThread(socket);
+		sendThd = new SendThread(socket, taskList);
 		sendThd.start();
 	}
 
 	@Override
 	public void EmergencySend(byte[] data) throws Exception {
-		FileFragment f = new FileFragment(0, data.length, EmeSend);
+		FileFragment f = new FileFragment(0, data.length, EMERGEN_SEND_TAG);
 		f.setData(data);
 		data = f.toBytes();
 		DatagramPacket dp = new DatagramPacket(data, data.length,
@@ -103,10 +104,6 @@ public class WiFiBroad extends WiFiPulic {
 			sendThd.interrupt();
 			sendThd.join();
 		}
-		// clear stack
-		synchronized (WiFiPulic.taskList) {
-			WiFiPulic.taskList.clear();
-		}
 	}
 
 	@Override
@@ -114,8 +111,8 @@ public class WiFiBroad extends WiFiPulic {
 		// TODO Auto-generated method stub
 		// segID = -2 ---- Emergency Send
 		// segID = -3 ---- fragment request
-		FileFragment ff = new FileFragment(start, start, -3);
-		super.insertF(ff);
+		FileFragment ff = new FileFragment(start, start, FRAG_REQST_TAG);
+		WiFiFactory.insertF(ff);
 
 	}
 }

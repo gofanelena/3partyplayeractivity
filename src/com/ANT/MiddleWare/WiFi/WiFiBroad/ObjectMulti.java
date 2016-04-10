@@ -11,7 +11,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
-import com.ANT.MiddleWare.WiFi.WiFiPulic;
+import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class ObjectMulti extends Thread {
 
@@ -35,9 +35,9 @@ public class ObjectMulti extends Thread {
 			try {
 				final FileFragment ff = (FileFragment) oi.readObject();
 				if (ff!=null) {
-					if (ff.getSegmentID() == -3) {
+					if (ff.getSegmentID() == WiFiBroad.FRAG_REQST_TAG) {
 						//handle fragment request
-						WiFiPulic.insertF(ff);
+						WiFiFactory.insertF(ff);
 					}
 				}
 				
