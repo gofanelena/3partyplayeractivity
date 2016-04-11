@@ -25,10 +25,11 @@ public class WiFiFactory {
 	public static void changeInstance(Context contect, WiFiType type)
 			throws Exception {
 		synchronized (TAG) {
-			if (type != WiFiFactory.ins_type) {
-				Log.d(TAG, "INS_TYPE " + WiFiFactory.ins_type + " " + type);
+			if (type != ins_type) {
+				Log.d(TAG, "INS_TYPE " + ins_type + " " + type);
 				instance.destroy();
 				instance = null;
+				ins_type = type;
 			}
 			if (instance == null) {
 				Log.d(TAG, "" + type);
