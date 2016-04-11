@@ -28,8 +28,8 @@ public class WiFiBroad extends WiFiPulic {
 	private TelephonyManager tm;
 	private RecvMulti recvThd = null;
 	private ObjectMulti objThd = null;
-	private PipedInputStream pi = new PipedInputStream();
-	private PipedOutputStream po = new PipedOutputStream();
+	private final PipedOutputStream po = new PipedOutputStream();
+	private final PipedInputStream pi = new PipedInputStream(po);
 	private SendMulti sendThd;
 	public static final int EMERGEN_SEND_TAG = -2;
 	public static final int FRAG_REQST_TAG = -3;
@@ -40,7 +40,8 @@ public class WiFiBroad extends WiFiPulic {
 		tm = (TelephonyManager) contect
 				.getSystemService(Activity.TELEPHONY_SERVICE);
 
-		pi.connect(po);
+		//pi.connect(po);
+		//po.connect(pi);
 
 		String s = tm.getDeviceId();
 		int len = s.length();
