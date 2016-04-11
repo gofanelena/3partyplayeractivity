@@ -31,9 +31,9 @@ public class CellularDownTest extends AndroidTestCase {
 		final IntegrityCheck iTC = IntegrityCheck.getInstance();
 		for (int i = 1; i < 6; i++) {
 			int tmpp = i;
-			//byte[] tmp = iTC.getSegments(tmpp);
-			//Assert.assertNotNull(tmp);
-			//Log.e(TAG, "" + tmpp + " " + tmp.length);
+			byte[] tmp = iTC.getSegments(tmpp);
+			Assert.assertNotNull(tmp);
+			Log.e(TAG, "" + tmpp + " " + tmp.length);
 		}
 	}
 }
