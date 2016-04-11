@@ -57,6 +57,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 			this.data = tmpdata;
 			this.stopIndex = this.startIndex + tmpdata.length;
 			this.written = true;
+			System.gc();
 		}
 	}
 
