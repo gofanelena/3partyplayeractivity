@@ -47,7 +47,8 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		synchronized (this) {
 			Log.d(TAG, "" + startIndex + " " + stopIndex + " " + data.length
 					+ " " + offset + " " + d.length);
-			Log.w(TAG, "Waste " + (stopIndex - offset));
+			if (stopIndex - offset != 0)
+				Log.w(TAG, "Waste " + (stopIndex - offset));
 			offset = offset - this.startIndex;
 			int len = offset + d.length;
 			byte[] tmpdata = new byte[len];
