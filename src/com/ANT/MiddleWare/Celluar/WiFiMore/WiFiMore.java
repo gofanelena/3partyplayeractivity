@@ -28,8 +28,12 @@ public class WiFiMore extends Thread {
 					e.printStackTrace();
 					break;
 				}
-				Log.d(TAG, "no " + url + " " + miss);
+				Log.v(TAG, "no " + url + " " + miss);
 				WiFiFactory.notify(url, miss);
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+				}
 			}
 			Log.d(TAG, "yes " + url);
 		} else {

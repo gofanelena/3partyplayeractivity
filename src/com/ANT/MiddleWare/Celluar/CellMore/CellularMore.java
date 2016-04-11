@@ -27,7 +27,7 @@ public class CellularMore extends Thread {
 					e.printStackTrace();
 					break;
 				}
-				Log.d(TAG, "no " + url + " " + miss);
+				Log.v(TAG, "no " + url + " " + miss);
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
