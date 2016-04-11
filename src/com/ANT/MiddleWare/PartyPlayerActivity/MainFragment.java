@@ -149,11 +149,7 @@ public class MainFragment extends Fragment {
 				if(adhocSelect){
 					
 					try {
-<<<<<<< HEAD:src/com/ANT/MiddleWare/PartyPlayerActivity/MainFragment.java
 						WiFiFactory.EmergencySend("I am Captain!".getBytes("UTF-8"));
-=======
-						WiFiBroad.send("I am captain!");
->>>>>>> parent of 59af644... small bugs fixed; currently inter component supports broadcasting string:src/com/example/partyplayeractivity/MainFragment.java
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
