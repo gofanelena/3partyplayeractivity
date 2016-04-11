@@ -1,5 +1,6 @@
 package com.ANT.MiddleWare.DASHProxyServer;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Stack;
@@ -9,9 +10,10 @@ import android.util.Log;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
-import com.ANT.MiddleWare.NanoHTTPD.NanoHTTPD;
 import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 import com.ANT.MiddleWare.PartyPlayerActivity.test.CellularDownTest;
+
+import fi.iki.elonen.NanoHTTPD;
 
 /**
  * Created by ljw on 6/18/15.
@@ -87,4 +89,8 @@ public class DashProxyServer extends NanoHTTPD {
 		return newFixedLengthResponse(Response.Status.OK,
 				"application/x-mpegurl", fis, length);
 	}
+	
+	private Response newFixedLengthResponse(Response.IStatus status, String mimeType, byte[] bytes) {
+    	return newFixedLengthResponse(status, mimeType, new ByteArrayInputStream(bytes), bytes.length);
+    }
 }
