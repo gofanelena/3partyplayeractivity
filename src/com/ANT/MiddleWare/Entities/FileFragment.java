@@ -1,5 +1,6 @@
 package com.ANT.MiddleWare.Entities;
 
+<<<<<<< HEAD:src/com/ANT/MiddleWare/Entities/FileFragment.java
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
@@ -12,6 +13,11 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		Cloneable {
 	private static final long serialVersionUID = -7869356592846635319L;
 
+=======
+import android.util.Log;
+
+public class FileFragment implements Comparable<FileFragment> {
+>>>>>>> parent of 59af644... small bugs fixed; currently inter component supports broadcasting string:src/com/example/entities/FileFragment.java
 	private static final String TAG = FileFragment.class.getSimpleName();
 
 	private int startIndex;
