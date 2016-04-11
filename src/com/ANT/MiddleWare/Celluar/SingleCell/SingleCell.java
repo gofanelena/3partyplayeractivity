@@ -12,6 +12,7 @@ import android.util.Log;
 import com.ANT.MiddleWare.Celluar.CellularDown;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData;
 import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 
 public class SingleCell extends Thread {
@@ -30,9 +31,14 @@ public class SingleCell extends Thread {
 		Log.d(TAG, "test " + url);
 		HttpURLConnection connection = null;
 		try {
-			URL uurl = new URL(IntegrityCheck.URL_TAG + "?filename=" + url
-					+ ".mp4&sessionid=lykfr9oyqipf2q3tvy" + time
-					+ "&rate=" + MainFragment.rateTag);
+			URL uurl;
+			if (MainFragment.configureData.getWorkingMode() == ConfigureData.WorkMode.JUNIT_TEST_MODE) {
+				uurl = new URL(IntegrityCheck.JUNIT_TAG);
+			} else {
+				uurl = new URL(IntegrityCheck.URL_TAG + "?filename=" + url
+						+ ".mp4&sessionid=lykfr9oyqipf2q3tvy" + time + "&rate="
+						+ MainFragment.rateTag);
+			}
 			Log.d(TAG, "" + uurl);
 			while (true) {
 				connection = (HttpURLConnection) uurl.openConnection();
@@ -50,6 +56,7 @@ public class SingleCell extends Thread {
 					InputStream in = connection.getInputStream();
 					String contentRange = connection.getHeaderField(
 							"Content-Range").toString();
+					Log.d(TAG, "Content-Range " + contentRange);
 					String range = contentRange.split(" ")[1].trim();
 					String start = range.split("-")[0];
 					String end = range.split("-")[1].split("/")[0];
