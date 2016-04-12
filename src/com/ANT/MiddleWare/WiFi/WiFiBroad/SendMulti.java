@@ -14,41 +14,57 @@ public class SendMulti extends Thread {
 
 	private MulticastSocket socket;
 	private Stack<FileFragment> taskList;
-	private FileFragment[] fragArray;
 
 	public SendMulti(MulticastSocket mSocket, Stack<FileFragment> mTaskList) {
 		this.socket = mSocket;
 		this.taskList = mTaskList;
 	}
 
+	private boolean send(FileFragment f) {
+		try {
+			byte[] data = f.toBytes();
+			DatagramPacket dp = new DatagramPacket(data, data.length,
+					InetAddress.getByName(WiFiBroad.multicastHost),
+					WiFiBroad.localPort);
+			Log.d(TAG, "send");
+			socket.send(dp);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	@Override
 	public void run() {
 		while (true) {
-			synchronized (taskList) {				
-				if(!taskList.empty()) {
-					if (taskList.peek() != null) {
-						FileFragment ff = taskList.pop();
-						try {
-							fragArray = ff.split();
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+			synchronized (taskList) {
+				if (taskList.empty()) {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					continue;
+				}
+				FileFragment ff = taskList.pop();
+				if (ff.isTooBig()) {
+					FileFragment[] fragArray = null;
+					try {
+						fragArray = ff.split();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					for (FileFragment f : fragArray) {
+						boolean is = send(f);
+						if (!is) {
+							taskList.add(f);
 						}
-						for (int i = 0; i < fragArray.length; i++) {
-							byte[] data = fragArray[i].toBytes();
-							try {
-								DatagramPacket dp = new DatagramPacket(data,
-										data.length,
-										InetAddress.getByName(WiFiBroad.multicastHost),
-										WiFiBroad.localPort);
-								Log.d(TAG, "send");
-								socket.send(dp);
-							} catch (Exception e) {
-								taskList.push(ff);
-								e.printStackTrace();
-								break;
-							}
-						}						
+					}
+				} else {
+					boolean is = send(ff);
+					if (!is) {
+						taskList.add(ff);
 					}
 				}
 			}

@@ -173,6 +173,9 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	public FileFragment[] split() throws Exception {
 		FileFragment base = this.clone();
 		int piece = (int) Math.ceil(base.getFragLength() / LIMIT_LEN);
+		if (piece == 1) {
+			return new FileFragment[] { base };
+		}
 		FileFragment[] ff = new FileFragment[piece];
 		for (int i = 0; i < piece; i++) {
 			int start = LIMIT_LEN * i;
@@ -181,5 +184,11 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 			ff[i].setData(base.getData(start));
 		}
 		return ff;
+	}
+
+	public boolean isTooBig() {
+		synchronized (this) {
+			return data.length > LIMIT_LEN;
+		}
 	}
 }
