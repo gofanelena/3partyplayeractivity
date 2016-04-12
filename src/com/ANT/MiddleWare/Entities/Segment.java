@@ -14,6 +14,7 @@ public class Segment {
 	private int segLength = -1;
 	private boolean Intergrity = false;
 	private static Random random = new Random();
+	private int percent = 0;
 
 	public synchronized void setSegLength(int segLength) {
 		if (this.segLength == -1) {
@@ -30,6 +31,7 @@ public class Segment {
 	public boolean insert(FileFragment fm) {
 		synchronized (this) {
 			if (fm.isWritten() && fm.getSegmentID() == segmentID && !Intergrity) {
+				percent += fm.getFragLength();
 				segmentList.add(fm.clone());
 				Collections.sort(segmentList);
 				return true;
@@ -52,18 +54,23 @@ public class Segment {
 			if (prev.getStartIndex() == next.getStartIndex()) {
 				if (prev.getFragLength() <= next.getFragLength()) {
 					segmentList.remove(i);
+					percent -= prev.getFragLength();
 				} else {
 					segmentList.remove(i + 1);
+					percent -= next.getFragLength();
 				}
 				size--;
 				i--;
 				continue;
 			} else if (prev.getStartIndex() < next.getStartIndex()) {
 				if (prev.getStopIndex() < next.getStopIndex()) {
+					percent -= prev.getFragLength();
 					prev.setData(next.getData(), next.getStartIndex());
+					percent += prev.getFragLength();
 					Log.d(TAG, "" + segLength + " " + prev.getStopIndex());
 				}
 				segmentList.remove(i + 1);
+				percent -= next.getFragLength();
 				size--;
 				i--;
 			} else {
@@ -74,10 +81,10 @@ public class Segment {
 
 	public boolean checkIntegrity() {
 		if (Intergrity)
-			return true;
+			return Intergrity;
 		synchronized (this) {
 			if (segmentList == null) {
-				return false;
+				return Intergrity;
 			}
 			try {
 				merge();
@@ -88,9 +95,10 @@ public class Segment {
 			if (segmentList.size() == 1
 					&& segmentList.get(0).getFragLength() == segLength) {
 				Intergrity = true;
-				return true;
+				return Intergrity;
 			}
-			return false;
+			Log.w(TAG, "Percent " + getPercent());
+			return Intergrity;
 		}
 
 	}
@@ -155,5 +163,9 @@ public class Segment {
 			}
 			return segmentList.get(random.nextInt(size - 1)).getStopIndex();
 		}
+	}
+
+	public double getPercent() {
+		return ((double) percent) / segLength;
 	}
 }
