@@ -5,12 +5,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
-import com.ANT.MiddleWare.Entities.FileFragment;
-import com.ANT.MiddleWare.Entities.Segment;
-
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
-import android.util.Log;
+
+import com.ANT.MiddleWare.Entities.FileFragment;
+import com.ANT.MiddleWare.Entities.Segment;
 
 /**
  * @author zxyqwe
