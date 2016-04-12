@@ -1,6 +1,7 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ANT.MiddleWare.DASHProxyServer.DashProxyServer;
+import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
 import com.ANT.MiddleWare.WiFi.WiFiFactory;
 import com.ANT.MiddleWare.WiFi.WiFiFactory.WiFiType;
 
@@ -118,7 +120,9 @@ public class MainFragment extends Fragment {
 					try {
 						WiFiFactory.changeInstance(getActivity(),
 								WiFiType.BROAD);
-					} catch (Exception e) {
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 
@@ -154,8 +158,11 @@ public class MainFragment extends Fragment {
 					try {
 						WiFiFactory.EmergencySend("I am Captain!"
 								.getBytes("UTF-8"));
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					} catch (FileFragmentException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					myHandler.post(new Runnable() {

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.ANT.MiddleWare.Celluar.CellularDown;
 import com.ANT.MiddleWare.Entities.FileFragment;
+import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
 import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData;
 import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
@@ -93,9 +94,8 @@ public class GroupCell extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.d(TAG, "IOException");
-		} catch (Exception e) {
+		} catch (FileFragmentException e) {
 			e.printStackTrace();
-			Log.d(TAG, "Exception");
 		} finally {
 			connection.disconnect();
 		}

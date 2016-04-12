@@ -1,13 +1,16 @@
 package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.UnknownHostException;
 import java.util.Stack;
 
 import android.util.Log;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
+import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
 
 public class SendMulti extends Thread {
 	private static final String TAG = SendMulti.class.getSimpleName();
@@ -29,7 +32,10 @@ public class SendMulti extends Thread {
 			Log.d(TAG, "send");
 			socket.send(dp);
 			return true;
-		} catch (Exception e) {
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -56,8 +62,8 @@ public class SendMulti extends Thread {
 				FileFragment[] fragArray = null;
 				try {
 					fragArray = ff.split();
-				} catch (Exception e1) {
-					e1.printStackTrace();
+				} catch (FileFragmentException e) {
+					e.printStackTrace();
 				}
 				for (FileFragment f : fragArray) {
 					boolean is = send(f);

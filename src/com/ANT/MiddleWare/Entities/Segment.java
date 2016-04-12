@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
+
 import android.util.Log;
 
 public class Segment {
@@ -40,7 +42,7 @@ public class Segment {
 		}
 	}
 
-	private void merge() throws Exception {
+	private void merge() throws SegmentException {
 		if (segmentList == null || segmentList.size() <= 1) {
 			return;
 		}
@@ -74,7 +76,7 @@ public class Segment {
 				size--;
 				i--;
 			} else {
-				throw new Exception("Not Sort");
+				throw new SegmentException("Not Sort");
 			}
 		}
 	}
@@ -88,7 +90,7 @@ public class Segment {
 			}
 			try {
 				merge();
-			} catch (Exception e) {
+			} catch (SegmentException e) {
 				e.printStackTrace();
 			}
 
@@ -133,7 +135,7 @@ public class Segment {
 		}
 	}
 
-	public FileFragment getFragment(int start) throws Exception {
+	public FileFragment getFragment(int start) throws FileFragmentException {
 		byte[] data = getData(start);
 		if (data == null)
 			return null;
@@ -142,7 +144,7 @@ public class Segment {
 		return f;
 	}
 
-	public int getMiss() throws Exception {
+	public int getMiss() throws SegmentException {
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e1) {
@@ -157,7 +159,7 @@ public class Segment {
 				return 0;
 			}
 			if (checkIntegrity())
-				throw new Exception("No Fragment Miss");
+				throw new SegmentException("No Fragment Miss");
 			if (size == 1) {
 				return segmentList.get(0).getStopIndex();
 			}
@@ -167,5 +169,13 @@ public class Segment {
 
 	public double getPercent() {
 		return ((double) percent) / segLength;
+	}
+
+	public class SegmentException extends Exception {
+		private static final long serialVersionUID = 1187571347280690149L;
+
+		public SegmentException(String string) {
+			super(string);
+		}
 	}
 }

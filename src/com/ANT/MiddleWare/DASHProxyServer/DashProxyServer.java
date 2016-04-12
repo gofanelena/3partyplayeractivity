@@ -58,14 +58,17 @@ public class DashProxyServer extends NanoHTTPD {
 					Response res = newFixedLengthResponse(
 							Response.Status.PARTIAL_CONTENT,
 							"application/x-mpegurl", f.getData());
-					res.addHeader("Content-Range", "Content-Range " + f.getStartIndex() + "-"
-							+ f.getStopIndex() + "/" + CellularDownTest.base);
+					res.addHeader(
+							"Content-Range",
+							"Content-Range " + f.getStartIndex() + "-"
+									+ f.getStopIndex() + "/"
+									+ CellularDownTest.base);
 					return res;
 				default:
 					return newFixedLengthResponse("");
 				}
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return newFixedLengthResponse("");
 		}
@@ -82,15 +85,17 @@ public class DashProxyServer extends NanoHTTPD {
 		return playlist;
 	}
 
-	private Response localFile(String str) throws Exception {
+	private Response localFile(String str) throws IOException {
 		FileInputStream fis = new FileInputStream(
 				Environment.getExternalStorageDirectory() + str);
 		int length = fis.available();
 		return newFixedLengthResponse(Response.Status.OK,
 				"application/x-mpegurl", fis, length);
 	}
-	
-	private Response newFixedLengthResponse(Response.IStatus status, String mimeType, byte[] bytes) {
-    	return newFixedLengthResponse(status, mimeType, new ByteArrayInputStream(bytes), bytes.length);
-    }
+
+	private Response newFixedLengthResponse(Response.IStatus status,
+			String mimeType, byte[] bytes) {
+		return newFixedLengthResponse(status, mimeType,
+				new ByteArrayInputStream(bytes), bytes.length);
+	}
 }

@@ -30,7 +30,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		this.data = new byte[fragLength];
 	}
 
-	public FileFragment(FileFragment fm) throws Exception {
+	public FileFragment(FileFragment fm) throws FileFragmentException {
 		this.startIndex = fm.getStartIndex();
 		this.stopIndex = fm.getStopIndex();
 		this.segmentID = fm.getSegmentID();
@@ -83,10 +83,10 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		}
 	}
 
-	public void setData(byte[] d) throws Exception {
+	public void setData(byte[] d) throws FileFragmentException {
 		if (data.length != d.length)
-			throw new Exception("Fragment Length Wrong " + data.length + " "
-					+ d.length);
+			throw new FileFragmentException("Fragment Length Wrong "
+					+ data.length + " " + d.length);
 		synchronized (this) {
 			System.arraycopy(d, 0, this.data, 0, d.length);
 			this.written = true;
@@ -113,10 +113,10 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		return segmentID;
 	}
 
-	public void check() throws Exception {
+	public void check() throws FileFragmentException {
 		if ((stopIndex - startIndex != data.length) || segmentID < 1
 				|| written == false)
-			throw new Exception("Fragment Check Fail!");
+			throw new FileFragmentException("Fragment Check Fail!");
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		return null;
 	}
 
-	public FileFragment[] split() throws Exception {
+	public FileFragment[] split() throws FileFragmentException {
 		FileFragment base = this.clone();
 		int piece = (int) Math.ceil(base.getFragLength() / LIMIT_LEN);
 		if (piece == 1) {
@@ -189,6 +189,15 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	public boolean isTooBig() {
 		synchronized (this) {
 			return data.length > LIMIT_LEN;
+		}
+	}
+
+	public class FileFragmentException extends Exception {
+
+		private static final long serialVersionUID = -7646261501131644643L;
+
+		public FileFragmentException(String string) {
+			super(string);
 		}
 	}
 }
