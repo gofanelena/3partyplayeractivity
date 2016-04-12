@@ -54,7 +54,7 @@ public class MainFragment extends Fragment {
 	// private Button btHigh;
 
 	private DashProxyServer server = new DashProxyServer();
-	public static ConfigureData configureData = new ConfigureData(null);;
+	public static ConfigureData configureData = new ConfigureData(null);
 	private static final boolean SEVER_START_TAG = true;
 	private static final boolean SEVER_STOP_TAG = false;
 	private static final String SETTING_DIALOG_TAG = "setting";

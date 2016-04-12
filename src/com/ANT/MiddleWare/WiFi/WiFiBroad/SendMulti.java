@@ -24,19 +24,22 @@ public class SendMulti extends Thread {
 	public void run() {
 		while (true) {
 			synchronized (taskList) {
-				if (taskList.peek() != null) {
-					FileFragment ff = taskList.pop();
-					byte[] data = ff.toBytes();
-					try {
-						DatagramPacket dp = new DatagramPacket(data,
-								data.length,
-								InetAddress.getByName(WiFiBroad.multicastHost),
-								WiFiBroad.localPort);
-						Log.d(TAG, "send");
-						socket.send(dp);
-					} catch (Exception e) {
-						taskList.push(ff);
-						e.printStackTrace();
+				
+				if(taskList!=null) {
+					if (taskList.peek() != null) {
+						FileFragment ff = taskList.pop();
+						byte[] data = ff.toBytes();
+						try {
+							DatagramPacket dp = new DatagramPacket(data,
+									data.length,
+									InetAddress.getByName(WiFiBroad.multicastHost),
+									WiFiBroad.localPort);
+							Log.d(TAG, "send");
+							socket.send(dp);
+						} catch (Exception e) {
+							taskList.push(ff);
+							e.printStackTrace();
+						}
 					}
 				}
 			}
