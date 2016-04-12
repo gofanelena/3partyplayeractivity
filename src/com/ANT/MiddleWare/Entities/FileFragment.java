@@ -13,7 +13,8 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	private static final long serialVersionUID = -7869356592846635319L;
 
 	private static final String TAG = FileFragment.class.getSimpleName();
-	private static boolean TRY_LESS_GC = false;//Almost Same??
+	private static boolean TRY_LESS_GC = false;// Almost Same??
+	private static final int LIMIT_LEN = 16 * 1024;
 
 	private int startIndex;
 	private int stopIndex;
@@ -42,6 +43,17 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		synchronized (this) {
 			return data.clone();
 		}
+	}
+
+	public byte[] getData(int start) {
+		if (start < startIndex || start >= stopIndex)
+			return null;
+		int len = Math.min(stopIndex - start, LIMIT_LEN);
+		byte[] buf = new byte[len];
+		synchronized (this) {
+			System.arraycopy(this.data, start - startIndex, buf, 0, buf.length);
+		}
+		return buf;
 	}
 
 	public void setData(byte[] d, int offset) {
@@ -101,6 +113,12 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		return segmentID;
 	}
 
+	public void check() throws Exception {
+		if ((stopIndex - startIndex != data.length) || segmentID < 1
+				|| written == false)
+			throw new Exception("Fragment Check Fail!");
+	}
+
 	@Override
 	public int compareTo(FileFragment another) {
 		return Integer.valueOf(this.getStartIndex()).compareTo(
@@ -116,7 +134,9 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	public FileFragment clone() {
 		FileFragment o = null;
 		try {
-			o = (FileFragment) super.clone();
+			synchronized (this) {
+				o = (FileFragment) super.clone();
+			}
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -128,7 +148,9 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		ObjectOutput out = null;
 		try {
 			out = new ObjectOutputStream(bos);
-			out.writeObject(this);
+			synchronized (this) {
+				out.writeObject(this);
+			}
 			byte[] b = bos.toByteArray();
 			return b;
 		} catch (IOException e) {
@@ -148,20 +170,16 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		return null;
 	}
 
-	public void check() throws Exception {
-		if ((stopIndex - startIndex != data.length) || segmentID < 1
-				|| written == false)
-			throw new Exception("Fragment Check Fail!");
-	}
-
-	public byte[] getData(int start) {
-		if (start < startIndex || start >= stopIndex)
-			return null;
-		int len = Math.min(stopIndex - start, 16 * 1024);
-		byte[] buf = new byte[len];
-		synchronized (this) {
-			System.arraycopy(this.data, start - startIndex, buf, 0, buf.length);
+	public FileFragment[] split() throws Exception {
+		FileFragment base = this.clone();
+		int piece = (int) Math.ceil(base.getFragLength() / LIMIT_LEN);
+		FileFragment[] ff = new FileFragment[piece];
+		for (int i = 0; i < piece; i++) {
+			int start = LIMIT_LEN * i;
+			int len = Math.min(LIMIT_LEN, base.getFragLength() - start);
+			ff[i] = new FileFragment(start, len + start, base.getSegmentID());
+			ff[i].setData(base.getData(start));
 		}
-		return buf;
+		return ff;
 	}
 }
