@@ -19,7 +19,7 @@ public class FileFragmentTest extends AndroidTestCase {
 
 	public final void test() {
 		FileFragment.LIMIT_LEN = 3;
-		FileFragment f = new FileFragment(0, base, 1);
+		FileFragment f = new FileFragment(0, base, 1,base);
 		try {
 			f.setData(getRandomString(base).getBytes());
 		} catch (FileFragmentException e) {

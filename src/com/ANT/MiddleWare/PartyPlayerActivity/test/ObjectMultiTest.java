@@ -42,7 +42,7 @@ public class ObjectMultiTest  extends AndroidTestCase {
 			int stop = i == fra - 1 ? base : setSort.get(i + 1)
 					+ random.nextInt(base - setSort.get(i + 1));
 
-			FileFragment tmp = new FileFragment(start, stop, 1);
+			FileFragment tmp = new FileFragment(start, stop, 1,base);
 			tmp.setData(data.substring(start, stop).getBytes());
 			fraList.add(tmp);
 		}
