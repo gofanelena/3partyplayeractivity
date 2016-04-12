@@ -69,9 +69,14 @@ public class IntegrityCheck {
 	}
 
 	public void insert(int id, FileFragment fm) {
+		synchronized (this) {
+			if (urlMap.indexOfKey(id) < 0) {
+				urlMap.put(id, new Segment(id, -1));
+			}
+		}
 		Segment s = urlMap.get(id);
-		WiFiFactory.insertF(fm);
 		s.insert(fm);
+		WiFiFactory.insertF(fm);
 	}
 
 	public Segment getSeg(int id) {
