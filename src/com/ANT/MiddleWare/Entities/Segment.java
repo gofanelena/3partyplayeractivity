@@ -36,6 +36,7 @@ public class Segment {
 				percent += fm.getFragLength();
 				segmentList.add(fm.clone());
 				Collections.sort(segmentList);
+				setSegLength(fm.getSegmentLen());
 				return true;
 			}
 			return false;
@@ -140,7 +141,7 @@ public class Segment {
 		byte[] data = getData(start);
 		if (data == null)
 			return null;
-		FileFragment f = new FileFragment(start, start + data.length, segmentID);
+		FileFragment f = new FileFragment(start, start + data.length, segmentID,segLength);
 		f.setData(data);
 		return f;
 	}

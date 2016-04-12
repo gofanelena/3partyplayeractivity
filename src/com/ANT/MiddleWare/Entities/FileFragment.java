@@ -20,13 +20,15 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	private int startIndex;
 	private int stopIndex;
 	private int segmentID;
+	private int segmentLen;
 	private byte[] data;
 	private boolean written = false;
 
-	public FileFragment(int start, int stop, int segID) {
+	public FileFragment(int start, int stop, int segID,int seglen) {
 		this.startIndex = start;
 		this.stopIndex = stop;
 		this.segmentID = segID;
+		this.segmentLen=seglen;
 		int fragLength = stopIndex - startIndex;
 		this.data = new byte[fragLength];
 	}
@@ -35,6 +37,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		this.startIndex = fm.getStartIndex();
 		this.stopIndex = fm.getStopIndex();
 		this.segmentID = fm.getSegmentID();
+		this.segmentLen=fm.getSegmentLen();
 		int fragLength = fm.getFragLength();
 		this.data = new byte[fragLength];
 		this.setData(fm.getData());
@@ -104,6 +107,10 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 
 	public int getStartIndex() {
 		return startIndex;
+	}
+
+	public int getSegmentLen() {
+		return segmentLen;
 	}
 
 	public int getStopIndex() {
@@ -202,7 +209,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 			int start = LIMIT_LEN * i;
 			int len = Math.min(LIMIT_LEN, base.getFragLength() - start);
 			start += base.getStartIndex();
-			ff[i] = new FileFragment(start, len + start, base.getSegmentID());
+			ff[i] = new FileFragment(start, len + start, base.getSegmentID(),base.getSegmentLen());
 			byte[] newdata = base.getData(start);
 			if (newdata == null)
 				throw new FileFragmentException("data null");
