@@ -14,6 +14,7 @@ public class SendMulti extends Thread {
 
 	private MulticastSocket socket;
 	private Stack<FileFragment> taskList;
+	private FileFragment[] fragArray;
 
 	public SendMulti(MulticastSocket mSocket, Stack<FileFragment> mTaskList) {
 		this.socket = mSocket;
@@ -27,18 +28,27 @@ public class SendMulti extends Thread {
 				if(!taskList.empty()) {
 					if (taskList.peek() != null) {
 						FileFragment ff = taskList.pop();
-						byte[] data = ff.toBytes();
 						try {
-							DatagramPacket dp = new DatagramPacket(data,
-									data.length,
-									InetAddress.getByName(WiFiBroad.multicastHost),
-									WiFiBroad.localPort);
-							Log.d(TAG, "send");
-							socket.send(dp);
-						} catch (Exception e) {
-							taskList.push(ff);
-							e.printStackTrace();
+							fragArray = ff.split();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
+						for (int i = 0; i < fragArray.length; i++) {
+							byte[] data = fragArray[i].toBytes();
+							try {
+								DatagramPacket dp = new DatagramPacket(data,
+										data.length,
+										InetAddress.getByName(WiFiBroad.multicastHost),
+										WiFiBroad.localPort);
+								Log.d(TAG, "send");
+								socket.send(dp);
+							} catch (Exception e) {
+								taskList.push(ff);
+								e.printStackTrace();
+								break;
+							}
+						}						
 					}
 				}
 			}
