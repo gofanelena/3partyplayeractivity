@@ -97,6 +97,7 @@ public class Segment {
 			if (segmentList.size() == 1
 					&& segmentList.get(0).getFragLength() == segLength) {
 				Intergrity = true;
+				Log.w(TAG, "Percent " + getPercent());
 				return Intergrity;
 			}
 			Log.w(TAG, "Percent " + getPercent());

@@ -18,7 +18,7 @@ public class FileFragmentTest extends AndroidTestCase {
 	}
 
 	public final void test() {
-		FileFragment.LIMIT_LEN = 20;
+		FileFragment.LIMIT_LEN = 3;
 		FileFragment f = new FileFragment(0, base, 1);
 		try {
 			f.setData(getRandomString(base).getBytes());
@@ -34,6 +34,7 @@ public class FileFragmentTest extends AndroidTestCase {
 		Segment s = new Segment(1, base);
 		for (FileFragment f1 : data) {
 			s.insert(f1);
+			s.checkIntegrity();
 		}
 		Assert.assertTrue(s.checkIntegrity());
 	}

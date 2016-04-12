@@ -193,7 +193,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 
 	public FileFragment[] split() throws FileFragmentException {
 		FileFragment base = this.clone();
-		int piece = (int) Math.ceil(base.getFragLength() / LIMIT_LEN);
+		int piece = (int) Math.ceil(base.getFragLength() * 1.0 / LIMIT_LEN);
 		if (piece == 1) {
 			return new FileFragment[] { base };
 		}
