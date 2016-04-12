@@ -168,7 +168,7 @@ public class Segment {
 	}
 
 	public double getPercent() {
-		return ((double) percent) / segLength;
+		return percent * 100.0 / segLength;
 	}
 
 	public class SegmentException extends Exception {
