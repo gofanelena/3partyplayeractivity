@@ -38,32 +38,39 @@ public class SendMulti extends Thread {
 	@Override
 	public void run() {
 		while (true) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			FileFragment ff = null;
 			synchronized (taskList) {
 				if (taskList.empty()) {
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 					continue;
 				}
-				FileFragment ff = taskList.pop();
-				if (ff.isTooBig()) {
-					FileFragment[] fragArray = null;
-					try {
-						fragArray = ff.split();
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					for (FileFragment f : fragArray) {
-						boolean is = send(f);
-						if (!is) {
+				ff = taskList.pop();
+			}
+			if (ff == null)
+				continue;
+			if (ff.isTooBig()) {
+				FileFragment[] fragArray = null;
+				try {
+					fragArray = ff.split();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				for (FileFragment f : fragArray) {
+					boolean is = send(f);
+					if (!is) {
+						synchronized (taskList) {
 							taskList.add(f);
 						}
 					}
-				} else {
-					boolean is = send(ff);
-					if (!is) {
+				}
+			} else {
+				boolean is = send(ff);
+				if (!is) {
+					synchronized (taskList) {
 						taskList.add(ff);
 					}
 				}
