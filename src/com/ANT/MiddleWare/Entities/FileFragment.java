@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 
 import android.util.Log;
 
@@ -14,7 +15,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 
 	private static final String TAG = FileFragment.class.getSimpleName();
 	private static boolean TRY_LESS_GC = false;// Almost Same??
-	private static final int LIMIT_LEN = 16 * 1024;
+	public static int LIMIT_LEN = 16 * 1024;
 
 	private int startIndex;
 	private int stopIndex;
@@ -141,6 +142,26 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 			e.printStackTrace();
 		}
 		return o;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		FileFragment f = (FileFragment) obj;
+		if (f == null) {
+			return false;
+		} else if (f.startIndex != this.startIndex) {
+			return false;
+		} else if (f.stopIndex != this.stopIndex) {
+			return false;
+		} else if (f.segmentID != this.segmentID) {
+			return false;
+		} else if (f.written != this.written) {
+			return false;
+		} else if (!Arrays.equals(f.data, this.data)) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public byte[] toBytes() {
