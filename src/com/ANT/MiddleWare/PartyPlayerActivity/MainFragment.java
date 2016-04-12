@@ -2,6 +2,7 @@ package com.ANT.MiddleWare.PartyPlayerActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,6 +60,7 @@ public class MainFragment extends Fragment {
 	private static final boolean SEVER_STOP_TAG = false;
 	private static final String SETTING_DIALOG_TAG = "setting";
 	public static String rateTag = "";
+	public static String taskID = "" + new Date().getTime();
 
 	private Handler myHandler;
 	private boolean adhocSelect = false;
