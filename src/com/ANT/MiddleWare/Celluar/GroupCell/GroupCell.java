@@ -28,6 +28,7 @@ public class GroupCell extends Thread {
 	public void run() {
 		Log.d(TAG, "test " + url);
 		HttpURLConnection connection = null;
+		IntegrityCheck IC = IntegrityCheck.getInstance();
 		try {
 			URL uurl;
 			if (MainFragment.configureData.getWorkingMode() == ConfigureData.WorkMode.JUNIT_TEST_MODE) {
@@ -74,10 +75,9 @@ public class GroupCell extends Thread {
 								- hasRead);
 					}
 
-					IntegrityCheck IC = IntegrityCheck.getInstance();
 					IC.setSegLength(url, totalLength);
 					FileFragment fm = new FileFragment(startOffset, endOffset,
-							url);
+							url,totalLength);
 					Log.d(TAG, "" + url + " " + fm);
 					fm.setData(tmpbuff);
 					IC.insert(url, fm);
