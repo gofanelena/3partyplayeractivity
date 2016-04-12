@@ -180,8 +180,12 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		for (int i = 0; i < piece; i++) {
 			int start = LIMIT_LEN * i;
 			int len = Math.min(LIMIT_LEN, base.getFragLength() - start);
+			start += base.getStartIndex();
 			ff[i] = new FileFragment(start, len + start, base.getSegmentID());
-			ff[i].setData(base.getData(start));
+			byte[] newdata = base.getData(start);
+			if (newdata == null)
+				throw new FileFragmentException("data null");
+			ff[i].setData(newdata);
 		}
 		return ff;
 	}
