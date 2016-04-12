@@ -23,9 +23,8 @@ public class SendMulti extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			synchronized (taskList) {
-				
-				if(taskList!=null) {
+			synchronized (taskList) {				
+				if(!taskList.empty()) {
 					if (taskList.peek() != null) {
 						FileFragment ff = taskList.pop();
 						byte[] data = ff.toBytes();
