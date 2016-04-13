@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
+import java.util.HashSet;
 import java.util.Stack;
 
 import android.util.Log;
@@ -18,12 +19,47 @@ public class SendMulti extends Thread {
 	private MulticastSocket socket;
 	private Stack<FileFragment> taskList;
 
+	public HashSet<Integer> repeat = new HashSet<Integer>();
+
 	public SendMulti(MulticastSocket mSocket, Stack<FileFragment> mTaskList) {
 		this.socket = mSocket;
 		this.taskList = mTaskList;
 	}
 
-	private boolean send(FileFragment f) {
+	public boolean isRepeat(FileFragment f) {
+		if (f.getSegmentID() > 0) {
+			int hash = f.hashCode();
+			synchronized (repeat) {
+				if (repeat.contains(hash)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void addRepeat(FileFragment f) {
+		if (f.getSegmentID() > 0) {
+			int hash = f.hashCode();
+			synchronized (repeat) {
+				repeat.add(hash);
+			}
+		}
+	}
+
+	public void removeRepeat(FileFragment f) {
+		if (f.getSegmentID() > 0) {
+			int hash = f.hashCode();
+			synchronized (repeat) {
+				repeat.remove(hash);
+			}
+		}
+	}
+
+	private synchronized boolean send(FileFragment f) {
+		if (isRepeat(f)) {
+			return true;
+		}
 		try {
 			byte[] data = f.toBytes();
 			DatagramPacket dp = new DatagramPacket(data, data.length,
@@ -31,6 +67,7 @@ public class SendMulti extends Thread {
 					WiFiBroad.localPort);
 			Log.d(TAG, "send");
 			socket.send(dp);
+			addRepeat(f);
 			return true;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -48,6 +85,9 @@ public class SendMulti extends Thread {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				if(this.isInterrupted()){
+					return;
+				}
 			}
 			FileFragment ff = null;
 			synchronized (taskList) {
