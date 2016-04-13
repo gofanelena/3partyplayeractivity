@@ -24,11 +24,11 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	private byte[] data;
 	private boolean written = false;
 
-	public FileFragment(int start, int stop, int segID,int seglen) {
+	public FileFragment(int start, int stop, int segID, int seglen) {
 		this.startIndex = start;
 		this.stopIndex = stop;
 		this.segmentID = segID;
-		this.segmentLen=seglen;
+		this.segmentLen = seglen;
 		int fragLength = stopIndex - startIndex;
 		this.data = new byte[fragLength];
 	}
@@ -37,7 +37,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		this.startIndex = fm.getStartIndex();
 		this.stopIndex = fm.getStopIndex();
 		this.segmentID = fm.getSegmentID();
-		this.segmentLen=fm.getSegmentLen();
+		this.segmentLen = fm.getSegmentLen();
 		int fragLength = fm.getFragLength();
 		this.data = new byte[fragLength];
 		this.setData(fm.getData());
@@ -152,6 +152,18 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	}
 
 	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + startIndex;
+		result = 31 * result + stopIndex;
+		result = 31 * result + segmentID;
+		result = 31 * result + segmentLen;
+		result = 31 * result + (written ? 1 : 0);
+		result = 31 * result + Arrays.hashCode(data);
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		FileFragment f = (FileFragment) obj;
 		if (f == null) {
@@ -162,9 +174,13 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 			return false;
 		} else if (f.segmentID != this.segmentID) {
 			return false;
+		} else if (f.segmentLen != this.segmentLen) {
+			return false;
 		} else if (f.written != this.written) {
 			return false;
 		} else if (!Arrays.equals(f.data, this.data)) {
+			return false;
+		} else if (f.hashCode() != this.hashCode()) {
 			return false;
 		} else {
 			return true;
@@ -209,7 +225,8 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 			int start = LIMIT_LEN * i;
 			int len = Math.min(LIMIT_LEN, base.getFragLength() - start);
 			start += base.getStartIndex();
-			ff[i] = new FileFragment(start, len + start, base.getSegmentID(),base.getSegmentLen());
+			ff[i] = new FileFragment(start, len + start, base.getSegmentID(),
+					base.getSegmentLen());
 			byte[] newdata = base.getData(start);
 			if (newdata == null)
 				throw new FileFragmentException("data null");
