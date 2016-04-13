@@ -168,6 +168,8 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		FileFragment f = (FileFragment) obj;
 		if (f == null) {
 			return false;
+		} else if (f.hashCode() != this.hashCode()) {
+			return false;
 		} else if (f.startIndex != this.startIndex) {
 			return false;
 		} else if (f.stopIndex != this.stopIndex) {
@@ -179,8 +181,6 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		} else if (f.written != this.written) {
 			return false;
 		} else if (!Arrays.equals(f.data, this.data)) {
-			return false;
-		} else if (f.hashCode() != this.hashCode()) {
 			return false;
 		} else {
 			return true;
