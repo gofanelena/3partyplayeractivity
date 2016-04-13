@@ -29,7 +29,7 @@ public class Segment {
 
 	public boolean insert(FileFragment fm) {
 		synchronized (this) {
-			if (fm.isWritten() && fm.getSegmentID() == segmentID) {
+			if (fm.isWritten() && fm.getSegmentID() == segmentID && !Intergrity) {
 				segmentList.add(fm.clone());
 				Collections.sort(segmentList);
 				return true;
@@ -60,10 +60,8 @@ public class Segment {
 				continue;
 			} else if (prev.getStartIndex() < next.getStartIndex()) {
 				if (prev.getStopIndex() < next.getStopIndex()) {
-					Log.d(TAG,
-							"" + next.getStartIndex() + " "
-									+ prev.getStopIndex());
 					prev.setData(next.getData(), next.getStartIndex());
+					Log.d(TAG, "" + segLength + " " + prev.getStopIndex());
 				}
 				segmentList.remove(i + 1);
 				size--;
@@ -152,6 +150,9 @@ public class Segment {
 			}
 			if (checkIntegrity())
 				throw new Exception("No Fragment Miss");
+			if (size == 1) {
+				return segmentList.get(0).getStopIndex();
+			}
 			return segmentList.get(random.nextInt(size - 1)).getStopIndex();
 		}
 	}

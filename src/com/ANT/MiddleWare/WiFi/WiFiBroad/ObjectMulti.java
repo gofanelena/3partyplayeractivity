@@ -2,6 +2,7 @@ package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
 import java.io.ObjectInputStream;
 import java.io.PipedInputStream;
+import java.io.StreamCorruptedException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,19 +18,31 @@ public class ObjectMulti extends Thread {
 	private static final String TAG = ObjectMulti.class.getSimpleName();
 
 	private Context activity;
-	private ObjectInputStream oi;
+	private PipedInputStream pi;
 
 	public ObjectMulti(PipedInputStream pi, Context activity) {
 		this.activity = activity;
-		try {
-			oi = new ObjectInputStream(pi);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.pi = pi;
 	}
 
 	@Override
 	public void run() {
+		ObjectInputStream oi;
+		try {
+			/*
+			 * 
+			 * http://docs.oracle.com/javase/6/docs/api/java/io/ObjectInputStream
+			 * .html Creates an ObjectInputStream that reads from the specified
+			 * InputStream. A serialization stream header is read from the
+			 * stream and verified. This constructor will *** block *** until
+			 * the corresponding ObjectOutputStream has written and flushed the
+			 * header.
+			 */
+			oi = new ObjectInputStream(pi);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return;
+		}
 		while (true) {
 			try {
 				final FileFragment ff = (FileFragment) oi.readObject();
@@ -66,6 +79,9 @@ public class ObjectMulti extends Thread {
 					}
 				}
 
+			} catch (StreamCorruptedException e) {
+				// Thrown when control information that was read from an object
+				// stream violates internal consistency checks.
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

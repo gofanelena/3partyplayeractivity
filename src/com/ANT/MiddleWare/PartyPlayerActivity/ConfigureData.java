@@ -5,22 +5,22 @@ public class ConfigureData {
 
 	private String url;
 	private boolean serviceAlive;
-	private int workingMode;
-	public static final int LOCAL_MODE = 0;
-	public static final int G_MDOE = 1;
-	public static final int COOPERATIVE_MODE = 2;
+	private WorkMode workingMode;
+	public static enum WorkMode {
+		LOCAL_MODE,G_MDOE,COOPERATIVE_MODE,JUNIT_TEST_MODE
+	}
 
 	public ConfigureData(String url) {
 		this.url = url;
 		serviceAlive = false;
-		workingMode = LOCAL_MODE;
+		workingMode = WorkMode.LOCAL_MODE;
 	}
 
-	public int getWorkingMode() {
+	public WorkMode getWorkingMode() {
 		return workingMode;
 	}
 
-	public void setWorkingMode(int workingMode) {
+	public void setWorkingMode(WorkMode workingMode) {
 		this.workingMode = workingMode;
 	}
 

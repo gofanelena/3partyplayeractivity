@@ -3,6 +3,7 @@ package com.ANT.MiddleWare.PartyPlayerActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -44,35 +45,34 @@ public class MainFragment extends Fragment {
 
 	private Button btStart;
 	private Button btStop;
-//	private EditText etUrl;
-//	private Button btConfirm;
+	// private EditText etUrl;
+	// private Button btConfirm;
 	private Button btCaptain;
 	private Button btPlayer;
-	//private Button btLow;
-	//private Button btMid;
-    //private Button btHigh;
-	
-	private DashProxyServer server;
-	public static ConfigureData configureData;
+	// private Button btLow;
+	// private Button btMid;
+	// private Button btHigh;
+
+	private DashProxyServer server = new DashProxyServer();
+	public static ConfigureData configureData = new ConfigureData(null);;
 	private static final boolean SEVER_START_TAG = true;
 	private static final boolean SEVER_STOP_TAG = false;
 	private static final String SETTING_DIALOG_TAG = "setting";
 	public static String rateTag = "";
-	
+
 	private Handler myHandler;
 	private boolean adhocSelect = false;
-	
+
 	private List<String> list = new ArrayList<String>();
-	private ArrayAdapter<String> adapter;  
-	private Spinner mySpinner;  	
+	private ArrayAdapter<String> adapter;
+	private Spinner mySpinner;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		configureData = new ConfigureData(null);
 		myHandler = new Handler();
-		
+
 		list.add("NONE");
 		list.add("ADHOC MODE");
 		list.add("BT MODE");
@@ -89,49 +89,50 @@ public class MainFragment extends Fragment {
 
 		btStart = (Button) v.findViewById(R.id.btStart);
 		btStop = (Button) v.findViewById(R.id.btStop);
-//		btConfirm = (Button) v.findViewById(R.id.btConfirm);
+		// btConfirm = (Button) v.findViewById(R.id.btConfirm);
 		btPlayer = (Button) v.findViewById(R.id.btChoose);
 		btCaptain = (Button) v.findViewById(R.id.btCaptain);
-//		btCaptain.setClickable(false);
-//		etUrl = (EditText) v.findViewById(R.id.url_edit_text);
-		
+		// btCaptain.setClickable(false);
+		// etUrl = (EditText) v.findViewById(R.id.url_edit_text);
+
 		mySpinner = (Spinner) v.findViewById(R.id.Spinner_wifi_);
-		adapter = new ArrayAdapter<String>
-			(getActivity(),android.R.layout.simple_spinner_item, list);
+		adapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_item, list);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mySpinner.setAdapter(adapter);
-		
+
 		mySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				// TODO Auto-generated method stub
-				switch (arg2){
-				case 0: //none
+				switch (arg2) {
+				case 0: // none
 					adhocSelect = false;
 					break;
-				case 1: //adhoc
+				case 1: // adhoc
 					adhocSelect = true;
 					try {
-						WiFiFactory.changeInstance(getActivity(), WiFiType.BROAD);
+						WiFiFactory.changeInstance(getActivity(),
+								WiFiType.BROAD);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
+
 					break;
-				case 2: //bt
+				case 2: // bt
 					adhocSelect = false;
 					break;
-				case 3: //ncp2
-					adhocSelect = false;
-				    break;
-				case 4: //tcp
+				case 3: // ncp2
 					adhocSelect = false;
 					break;
-					
+				case 4: // tcp
+					adhocSelect = false;
+					break;
+
 				}
-				
+
 			}
 
 			@Override
@@ -140,66 +141,65 @@ public class MainFragment extends Fragment {
 				// arg0.setSelection(0);
 			}
 		});
-		
+
 		btCaptain.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(adhocSelect){
-					
+				if (adhocSelect) {
+
 					try {
-						WiFiFactory.EmergencySend("I am Captain!".getBytes("UTF-8"));
+						WiFiFactory.EmergencySend("I am Captain!"
+								.getBytes("UTF-8"));
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					myHandler.post(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							Toast.makeText(getActivity(), "I am captain!", Toast.LENGTH_SHORT)
-							.show();
+							Toast.makeText(getActivity(), "I am captain!",
+									Toast.LENGTH_SHORT).show();
 						}
 					});
 				}
-				
-				
+
 			}
 		});
 
-		
-//		btLow = (Button) v.findViewById(R.id.rate_low);
-//		btMid = (Button) v.findViewById(R.id.rate_mid);
-//		btHigh = (Button) v.findViewById(R.id.rate_high);
-//		
-//		btLow.setOnClickListener(new View.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				rateTag = "100";
-//			}
-//		});
-//		
-//		btMid.setOnClickListener(new View.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				rateTag = "300";
-//			}
-//		});
-//		
-//		btHigh.setOnClickListener(new View.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				rateTag = "500";
-//			}
-//		});
+		// btLow = (Button) v.findViewById(R.id.rate_low);
+		// btMid = (Button) v.findViewById(R.id.rate_mid);
+		// btHigh = (Button) v.findViewById(R.id.rate_high);
+		//
+		// btLow.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// rateTag = "100";
+		// }
+		// });
+		//
+		// btMid.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// rateTag = "300";
+		// }
+		// });
+		//
+		// btHigh.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// rateTag = "500";
+		// }
+		// });
 
 		btStart.setOnClickListener(new View.OnClickListener() {
 
@@ -207,10 +207,9 @@ public class MainFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				server = new DashProxyServer();
-
 				try {
-					server.start();
+					if (!configureData.isServiceAlive())
+						server.start();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -228,7 +227,8 @@ public class MainFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (server != null) {
-					server.stop();
+					if (configureData.isServiceAlive())
+						server.stop();
 				}
 
 				sendNotification(SEVER_STOP_TAG);
@@ -240,47 +240,47 @@ public class MainFragment extends Fragment {
 
 		configureData.setUrl("http://127.0.0.1:9999/4/s-1.mp4");
 
-//  		etUrl.addTextChangedListener(new TextWatcher() {
-//
-//			@Override
-//			public void onTextChanged(CharSequence s, int start, int before,
-//					int count) {
-//				// TODO Auto-generated method stub
-//				configureData.setUrl(s.toString());
-//			}
-//
-//			@Override
-//			public void beforeTextChanged(CharSequence s, int start, int count,
-//					int after) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//
-//			@Override
-//			public void afterTextChanged(Editable s) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
+		// etUrl.addTextChangedListener(new TextWatcher() {
+		//
+		// @Override
+		// public void onTextChanged(CharSequence s, int start, int before,
+		// int count) {
+		// // TODO Auto-generated method stub
+		// configureData.setUrl(s.toString());
+		// }
+		//
+		// @Override
+		// public void beforeTextChanged(CharSequence s, int start, int count,
+		// int after) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		//
+		// @Override
+		// public void afterTextChanged(Editable s) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
 
-//		btConfirm.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//
-//				if (configureData.getUrl() != null
-//						&& isLegel(configureData.getUrl())) {
-//					Toast.makeText(getActivity(),
-//							"URL is\n" + configureData.getUrl(),
-//							Toast.LENGTH_SHORT).show();
-//				} else {
-//					Toast.makeText(getActivity(), "URL illegal",
-//							Toast.LENGTH_SHORT).show();
-//				}
-//
-//			}
-//		});
+		// btConfirm.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		//
+		// if (configureData.getUrl() != null
+		// && isLegel(configureData.getUrl())) {
+		// Toast.makeText(getActivity(),
+		// "URL is\n" + configureData.getUrl(),
+		// Toast.LENGTH_SHORT).show();
+		// } else {
+		// Toast.makeText(getActivity(), "URL illegal",
+		// Toast.LENGTH_SHORT).show();
+		// }
+		//
+		// }
+		// });
 
 		btPlayer.setOnClickListener(new View.OnClickListener() {
 
@@ -369,6 +369,7 @@ public class MainFragment extends Fragment {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean isNetworkAvailable() {
 		boolean available = false;
 		ConnectivityManager cm = (ConnectivityManager) getActivity()
@@ -389,7 +390,7 @@ public class MainFragment extends Fragment {
 
 		Log.v(TAG, "s0 " + s[0]);
 
-		if (s[0].toLowerCase().equals("http")) {
+		if (s[0].toLowerCase(Locale.CHINA).equals("http")) {
 			legel = true;
 
 		}

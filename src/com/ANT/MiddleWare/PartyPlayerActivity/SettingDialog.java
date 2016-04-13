@@ -1,5 +1,7 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
+
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -44,19 +46,21 @@ public class SettingDialog extends DialogFragment {
 		radioGroup = (RadioGroup) v.findViewById(R.id.radioGroup);
 		btConfirm = (Button) v.findViewById(R.id.btalertconfirm);
 
-		int mode = MainFragment.configureData.getWorkingMode();
+		WorkMode mode = MainFragment.configureData.getWorkingMode();
 		switch (mode) {
-		case ConfigureData.LOCAL_MODE:
+		case LOCAL_MODE:
 			rbButton = (RadioButton) v.findViewById(R.id.local_mode);
 			rbButton.setChecked(true);
 			break;
-		case ConfigureData.G_MDOE:
+		case G_MDOE:
 			rbButton = (RadioButton) v.findViewById(R.id.G_mode);
 			rbButton.setChecked(true);
 			break;
-		case ConfigureData.COOPERATIVE_MODE:
+		case COOPERATIVE_MODE:
 			rbButton = (RadioButton) v.findViewById(R.id.cooperative_mode);
 			rbButton.setChecked(true);
+			break;
+		default:
 			break;
 		}
 
@@ -70,15 +74,15 @@ public class SettingDialog extends DialogFragment {
 				switch (selectedId) {
 				case R.id.local_mode:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.LOCAL_MODE);
+							.setWorkingMode(ConfigureData.WorkMode.LOCAL_MODE);
 					break;
 				case R.id.G_mode:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.G_MDOE);
+							.setWorkingMode(ConfigureData.WorkMode.G_MDOE);
 					break;
 				case R.id.cooperative_mode:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.COOPERATIVE_MODE);
+							.setWorkingMode(ConfigureData.WorkMode.COOPERATIVE_MODE);
 					break;
 				}
 			}

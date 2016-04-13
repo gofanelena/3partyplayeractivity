@@ -1,39 +1,29 @@
-/**
- * 
- */
 package com.ANT.MiddleWare.PartyPlayerActivity.test;
 
+
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Stack;
 
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
 
-import com.ANT.MiddleWare.DASHProxyServer.DashProxyServer;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
-import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData;
-import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
+import com.ANT.MiddleWare.WiFi.WiFiBroad.ObjectMulti;
 
-/**
- * @author zxyqwe
- * 
- */
-public class CellularDownTest extends AndroidTestCase {
-	private static final String TAG = CellularDownTest.class.getSimpleName();
+public class ObjectMultiTest  extends AndroidTestCase {
+	private static final String TAG = ObjectMultiTest.class.getSimpleName();
 	private String data;
 	private HashSet<Integer> numSet = new HashSet<Integer>();
-	public static Stack<FileFragment> fraList = new Stack<FileFragment>();
-	public static int base = 5000;
+	private LinkedList<FileFragment> fraList = new LinkedList<FileFragment>();
+	private int base = 5000;
 	private int fra = 50;
-	private static DashProxyServer server = new DashProxyServer();
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Override
 	public void setUp() throws Exception {
 		data = getRandomString(base);
@@ -59,17 +49,24 @@ public class CellularDownTest extends AndroidTestCase {
 		Collections.shuffle(fraList);
 	}
 
-	/**
-	 * Test method for
-	 * {@link com.example.Celluar.CellularDown#queryFragment(java.lang.String)}.
-	 */
-	public final void testQueryFragment() {
-		MainFragment.configureData
-				.setWorkingMode(ConfigureData.WorkMode.JUNIT_TEST_MODE);
-		final IntegrityCheck iTC = IntegrityCheck.getInstance();
-		byte[] tmp = iTC.getSegments(1);
-		Assert.assertNotNull(tmp);
+	public final void testRun() {
+		 final PipedOutputStream po = new PipedOutputStream();
+		 try {
+			final PipedInputStream pi = new PipedInputStream(po);
+
+			ObjectMulti objThd = new ObjectMulti(pi, getContext());
+			objThd.start();
+			for(FileFragment f:fraList){
+				po.write(f.toBytes());
+			}
+			final IntegrityCheck iTC = IntegrityCheck.getInstance();
+			byte[] tmp = iTC.getSegments(1);
+			Assert.assertNotNull(tmp);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+
 
 	private String getRandomString(int length) {
 		String base = "abcdefghijklmnopqrstuvwxyz0123456789";

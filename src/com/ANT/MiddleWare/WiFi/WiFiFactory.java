@@ -24,11 +24,12 @@ public class WiFiFactory {
 
 	public static void changeInstance(Context contect, WiFiType type)
 			throws Exception {
-		synchronized (instance) {
-			if (type != WiFiFactory.ins_type) {
-				Log.d(TAG, "INS_TYPE " + WiFiFactory.ins_type + " " + type);
+		synchronized (TAG) {
+			if (type != ins_type) {
+				Log.d(TAG, "INS_TYPE " + ins_type + " " + type);
 				instance.destroy();
 				instance = null;
+				ins_type = type;
 			}
 			if (instance == null) {
 				Log.d(TAG, "" + type);
@@ -54,19 +55,19 @@ public class WiFiFactory {
 	}
 
 	public static void insertF(FileFragment fm) {
-		synchronized (instance) {
+		synchronized (TAG) {
 			instance.insertF(fm.clone());
 		}
 	}
 
 	public static void notify(int seg, int start) {
-		synchronized (instance) {
+		synchronized (TAG) {
 			instance.notify(seg, start);
 		}
 	}
 
 	public static void EmergencySend(byte[] data) throws Exception {
-		synchronized (instance) {
+		synchronized (TAG) {
 			instance.EmergencySend(data);
 		}
 	}

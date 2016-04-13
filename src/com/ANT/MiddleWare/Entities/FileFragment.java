@@ -13,6 +13,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	private static final long serialVersionUID = -7869356592846635319L;
 
 	private static final String TAG = FileFragment.class.getSimpleName();
+	private static boolean TRY_LESS_GC = false;//Almost Same??
 
 	private int startIndex;
 	private int stopIndex;
@@ -47,15 +48,26 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		synchronized (this) {
 			Log.d(TAG, "" + startIndex + " " + stopIndex + " " + data.length
 					+ " " + offset + " " + d.length);
-			Log.w(TAG, "Waste " + (stopIndex - offset));
+			if (stopIndex - offset != 0)
+				Log.w(TAG, "Waste " + (stopIndex - offset));
 			offset = offset - this.startIndex;
 			int len = offset + d.length;
-			byte[] tmpdata = new byte[len];
-			System.arraycopy(this.data, 0, tmpdata, 0, this.data.length);
-			System.arraycopy(d, 0, tmpdata, offset, d.length);
+			byte[] tmpdata = null;
+			if (TRY_LESS_GC) {
+				ByteArrayOutputStream bo = new ByteArrayOutputStream(len);
+				bo.write(data, 0, data.length);
+				bo.write(d, data.length - offset, len - data.length);
+				tmpdata = bo.toByteArray();
+			} else {
+				tmpdata = new byte[len];
+				System.arraycopy(data, 0, tmpdata, 0, data.length);
+				System.arraycopy(d, data.length - offset, tmpdata, data.length,
+						len - data.length);
+			}
 			this.data = tmpdata;
 			this.stopIndex = this.startIndex + tmpdata.length;
 			this.written = true;
+			System.gc();
 		}
 	}
 
