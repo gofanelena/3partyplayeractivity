@@ -74,12 +74,13 @@ public class WiFiBroad extends WiFiPulic {
 
 		recvThd = new RecvMulti(po, contect, socket);
 		recvThd.start();
-
-		objThd = new ObjectMulti(pi, contect);
-		objThd.start();
-
+		
 		sendThd = new SendMulti(socket, taskList);
 		sendThd.start();
+
+		objThd = new ObjectMulti(pi, contect,sendThd);
+		objThd.start();
+
 	}
 
 	@Override
@@ -101,13 +102,13 @@ public class WiFiBroad extends WiFiPulic {
 			recvThd.interrupt();
 			recvThd.join();
 		}
-		if (objThd != null) {
-			objThd.interrupt();
-			objThd.join();
-		}
 		if (sendThd != null) {
 			sendThd.interrupt();
 			sendThd.join();
+		}
+		if (objThd != null) {
+			objThd.interrupt();
+			objThd.join();
 		}
 	}
 

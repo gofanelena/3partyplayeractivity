@@ -22,10 +22,12 @@ public class ObjectMulti extends Thread {
 
 	private Context activity;
 	private PipedInputStream pi;
+	private SendMulti sm;
 
-	public ObjectMulti(PipedInputStream pi, Context activity) {
+	public ObjectMulti(PipedInputStream pi, Context activity, SendMulti sm) {
 		this.activity = activity;
 		this.pi = pi;
+		this.sm = sm;
 	}
 
 	@Override
@@ -66,6 +68,7 @@ public class ObjectMulti extends Thread {
 						Segment s = IntegrityCheck.getInstance().getSeg(
 								ff.getStartIndex());
 						FileFragment f = s.getFragment(ff.getStopIndex());
+						sm.removeRepeat(f);
 						WiFiFactory.insertF(f);
 						break;
 					case WiFiBroad.EMERGEN_SEND_TAG:
