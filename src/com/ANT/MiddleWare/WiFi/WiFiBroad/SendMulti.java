@@ -81,51 +81,51 @@ public class SendMulti extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {			
-			if(RoundRobin.getInstance().canITalk()) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					if(this.isInterrupted()){
-						return;
-					}
+		while (true) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				if (this.isInterrupted()) {
+					return;
 				}
-				FileFragment ff = null;
-				synchronized (taskList) {
-					if (taskList.empty()) {
-						RoundRobin.getInstance().setMyTurn(false);
-						WiFiFactory.EmergencySend(RoundRobin.getInstance().nextPerson());
-						continue;
-					}
-					ff = taskList.pop();
-				}
-				if (ff == null)
+			}
+			if (!RoundRobin.getInstance().canITalk()) {
+			}
+			FileFragment ff = null;
+			synchronized (taskList) {
+				if (taskList.empty()) {
+					RoundRobin.getInstance().setMyTurn(false);
+					//WiFiFactory.EmergencySend(RoundRobin.getInstance().nextPerson());
 					continue;
-				if (ff.isTooBig()) {
-					FileFragment[] fragArray = null;
-					try {
-						fragArray = ff.split();
-					} catch (FileFragmentException e) {
-						e.printStackTrace();
-					}
-					for (FileFragment f : fragArray) {
-						boolean is = send(f);
-						if (!is) {
-							synchronized (taskList) {
-								taskList.add(f);
-							}
-						}
-					}
-				} else {
-					boolean is = send(ff);
+				}
+				ff = taskList.pop();
+			}
+			if (ff == null)
+				continue;
+			if (ff.isTooBig()) {
+				FileFragment[] fragArray = null;
+				try {
+					fragArray = ff.split();
+				} catch (FileFragmentException e) {
+					e.printStackTrace();
+				}
+				for (FileFragment f : fragArray) {
+					boolean is = send(f);
 					if (!is) {
 						synchronized (taskList) {
-							taskList.add(ff);
+							taskList.add(f);
 						}
 					}
 				}
-			}		
+			} else {
+				boolean is = send(ff);
+				if (!is) {
+					synchronized (taskList) {
+						taskList.add(ff);
+					}
+				}
+			}
 		}
 	}
 }
