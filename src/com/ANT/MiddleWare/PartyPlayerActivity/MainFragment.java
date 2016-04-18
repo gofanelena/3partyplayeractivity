@@ -66,6 +66,8 @@ public class MainFragment extends Fragment {
 
 	private Handler myHandler;
 	private boolean adhocSelect = false;
+	
+	private boolean ncp2Select =false;
 
 	private List<String> list = new ArrayList<String>();
 	private ArrayAdapter<String> adapter;
@@ -132,6 +134,16 @@ public class MainFragment extends Fragment {
 					break;
 				case 3: // ncp2
 					adhocSelect = false;
+					ncp2Select = true;
+					try {
+						WiFiFactory.changeInstance(getActivity(), WiFiType.NCP2);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				case 4: // tcp
 					adhocSelect = false;
