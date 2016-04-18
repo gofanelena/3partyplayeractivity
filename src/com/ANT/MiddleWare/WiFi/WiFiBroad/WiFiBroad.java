@@ -45,13 +45,15 @@ public class WiFiBroad extends WiFiPulic {
 
 		// pi.connect(po);
 		// po.connect(pi);
-        RoundRobin.getInstance().insertToIPList(myIP);
         
 		String s = tm.getDeviceId();
 		int len = s.length();
 		int number = Integer.parseInt(s.substring(len - 2));
 		String ip = "192.168.1." + number;
-		this.myIP = number;		
+		this.myIP = number;	
+		
+		RoundRobin.getInstance().insertToIPList(myIP);
+		
 		Log.v(TAG, "ip " + ip);
 		proc = Runtime.getRuntime().exec("su");
 		DataOutputStream os = new DataOutputStream(proc.getOutputStream());
@@ -83,6 +85,8 @@ public class WiFiBroad extends WiFiPulic {
 
 		objThd = new ObjectMulti(pi, contect,sendThd);
 		objThd.start();
+		
+		RoundRobin.getInstance().connectNext();
 
 	}
 

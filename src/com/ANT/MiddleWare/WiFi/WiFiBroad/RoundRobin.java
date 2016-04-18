@@ -1,5 +1,8 @@
 package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,9 +13,14 @@ public class RoundRobin {
 	private static boolean isMyTurn = false;
 	private static RoundRobin instance;
 	private int myIP;
+	private static final int SERVER_PORT = 4444;
+	public static boolean tcpConnected = false;
+	private Socket client;
 	
 	private RoundRobin() {
+		super();
 		myIP = WiFiBroad.myIP;
+		ServerThread severThd = new ServerThread(SERVER_PORT);
 	}
 	
 	public static synchronized RoundRobin getInstance() {
@@ -36,18 +44,23 @@ public class RoundRobin {
 	
 	public int nextPerson() {
 		synchronized(this) {
-			return (this.ipList.indexOf(Integer.valueOf(myIP))+1)%ipList.size();
+			return ipList.get(
+					(this.ipList.indexOf(Integer.valueOf(myIP))+1)%ipList.size());
 		}		
+	}
+	
+	public void connectNext() {
+		ClientThread clientThd = new ClientThread(nextPerson(), SERVER_PORT);
+		this.tcpConnected = true;
+	}
+	
+	public void passToken() {
+		
 	}
 	
 	public void insertToIPList(int IP) {
 		synchronized(this) {
 			if (ipList.contains(Integer.valueOf(IP))){
-				if (IP == myIP){
-					setMyTurn(true);
-				} else {
-					setMyTurn(false);
-				}
 				return;
 			}
 			ipList.add(Integer.valueOf(IP));
@@ -64,6 +77,9 @@ public class RoundRobin {
 			});
 			if (ipList.get(0).intValue() == myIP) {
 				setMyTurn(true);
+			}
+			else {
+				setMyTurn(false);
 			}
 		}
 	}

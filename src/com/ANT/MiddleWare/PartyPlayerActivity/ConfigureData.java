@@ -19,7 +19,7 @@ public class ConfigureData {
 
 	private CellType DefMore = CellType.NOCELL;
 	private CellType DefCell = CellType.NOCELL;
-	private boolean noWiFiSend = true;;
+	private boolean noWiFiSend = true;
 
 	public ConfigureData(String url) {
 		this.url = url;
