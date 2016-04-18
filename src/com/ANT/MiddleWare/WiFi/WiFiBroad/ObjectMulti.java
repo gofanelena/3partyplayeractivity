@@ -72,7 +72,9 @@ public class ObjectMulti extends Thread {
 						WiFiFactory.insertF(f);
 						break;
 					case WiFiBroad.EMERGEN_SEND_TAG:
-						RoundRobin.getInstance().insertToIPList(ff.getStartIndex());
+						RoundRobin.getInstance().insertToIPList(WiFiBroad.baseIP+ff.getStartIndex());
+						//TODO
+						//send IP
 						((Activity) activity).runOnUiThread(new Runnable() {
 							@Override
 							public void run() {

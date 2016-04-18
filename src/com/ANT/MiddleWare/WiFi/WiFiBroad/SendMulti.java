@@ -96,13 +96,9 @@ public class SendMulti extends Thread {
 			if (!RoundRobin.getInstance().canITalk()) {
 				continue;
 			}
-//			if (RoundRobin.tcpConnected){
-//				continue;
-//			}
 			FileFragment ff = null;
 			synchronized (taskList) {
 				if (taskList.empty()) {
-					RoundRobin.getInstance().setMyTurn(false);
 					RoundRobin.getInstance().passToken();
 					continue;
 				}
