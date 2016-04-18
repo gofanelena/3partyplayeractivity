@@ -86,7 +86,6 @@ public class WiFiBroad extends WiFiPulic {
 		objThd = new ObjectMulti(pi, contect,sendThd);
 		objThd.start();
 		
-		RoundRobin.getInstance().connectNext();
 
 	}
 

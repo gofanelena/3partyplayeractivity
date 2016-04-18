@@ -3,6 +3,7 @@ package com.ANT.MiddleWare.WiFi.WiFiBroad;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,13 +50,9 @@ public class RoundRobin {
 		}		
 	}
 	
-	public void connectNext() {
-		ClientThread clientThd = new ClientThread(nextPerson(), SERVER_PORT);
-		this.tcpConnected = true;
-	}
 	
 	public void passToken() {
-		
+		ClientThread clientThd = new ClientThread(nextPerson(), SERVER_PORT);
 	}
 	
 	public void insertToIPList(int IP) {
