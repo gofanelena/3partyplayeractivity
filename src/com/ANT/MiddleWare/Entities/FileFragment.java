@@ -237,6 +237,8 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 
 	public boolean isTooBig() {
 		synchronized (this) {
+			if (!written)
+				return false;
 			return data.length > LIMIT_LEN;
 		}
 	}
