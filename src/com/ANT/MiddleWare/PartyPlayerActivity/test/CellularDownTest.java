@@ -12,6 +12,7 @@ import java.util.Stack;
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
 
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.DASHProxyServer.DashProxyServer;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
@@ -66,6 +67,11 @@ public class CellularDownTest extends AndroidTestCase {
 	public final void testQueryFragment() {
 		MainFragment.configureData
 				.setWorkingMode(ConfigureData.WorkMode.JUNIT_TEST_MODE);
+		MainFragment.configureData.setDefCell(CellType.Single);
+		MainFragment.configureData.setDefMore(CellType.NOCELL);
+		MainFragment.configureData.setNoEmeSend(true);
+		MainFragment.configureData.setNoNotify(true);
+		MainFragment.configureData.setNoWiFiSend(true);
 		final IntegrityCheck iTC = IntegrityCheck.getInstance();
 		byte[] tmp = iTC.getSegments(1);
 		Assert.assertNotNull(tmp);
