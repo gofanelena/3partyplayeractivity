@@ -80,14 +80,14 @@ public class SingleCell extends Thread {
 
 					IC.setSegLength(url, totalLength);
 					FileFragment fm = new FileFragment(startOffset, endOffset,
-							url,totalLength);
+							url, totalLength);
 					Log.d(TAG, "" + url + " " + fm);
 					fm.setData(tmpbuff);
 					IC.insert(url, fm);
 				} else if (connection.getResponseCode() == 200) {
 					Log.d(TAG, "else " + url);
-					//CellularDown.queryFragment(CellularDown.CellType.WiFiMore,
-					//		url);
+					CellularDown.queryFragment(
+							MainFragment.configureData.getDefMore(), url);
 					break;
 				}
 			}

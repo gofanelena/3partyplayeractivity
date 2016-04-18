@@ -7,6 +7,8 @@ import com.ANT.MiddleWare.Celluar.CellularDown;
 import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.Segment;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
+import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class IntegrityCheck {
 	private static final String TAG = IntegrityCheck.class.getSimpleName();
@@ -30,7 +32,7 @@ public class IntegrityCheck {
 	}
 
 	public byte[] getSegments(int uri) {
-		return getSegments(uri, CellType.NOCELL);
+		return getSegments(uri, MainFragment.configureData.getDefCell());
 	}
 
 	public byte[] getSegments(int uri, CellType ct) {
@@ -76,7 +78,7 @@ public class IntegrityCheck {
 		}
 		Segment s = urlMap.get(id);
 		s.insert(fm);
-		//WiFiFactory.insertF(fm);
+		WiFiFactory.insertF(fm);
 	}
 
 	public Segment getSeg(int id) {

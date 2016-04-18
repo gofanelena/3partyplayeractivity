@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class SendMulti extends Thread {
@@ -61,6 +62,8 @@ public class SendMulti extends Thread {
 		if (isRepeat(f)) {
 			return true;
 		}
+		if (MainFragment.configureData.isNoWiFiSend())
+			return true;
 		try {
 			byte[] data = f.toBytes();
 			DatagramPacket dp = new DatagramPacket(data, data.length,
@@ -96,7 +99,7 @@ public class SendMulti extends Thread {
 			synchronized (taskList) {
 				if (taskList.empty()) {
 					RoundRobin.getInstance().setMyTurn(false);
-					//WiFiFactory.EmergencySend(RoundRobin.getInstance().nextPerson());
+					// WiFiFactory.EmergencySend(RoundRobin.getInstance().nextPerson());
 					continue;
 				}
 				ff = taskList.pop();
