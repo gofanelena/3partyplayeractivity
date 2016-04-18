@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
+import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class SendMulti extends Thread {
 	private static final String TAG = SendMulti.class.getSimpleName();
@@ -80,47 +81,51 @@ public class SendMulti extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				if(this.isInterrupted()){
-					return;
-				}
-			}
-			FileFragment ff = null;
-			synchronized (taskList) {
-				if (taskList.empty()) {
-					continue;
-				}
-				ff = taskList.pop();
-			}
-			if (ff == null)
-				continue;
-			if (ff.isTooBig()) {
-				FileFragment[] fragArray = null;
+		while (true) {			
+			if(RoundRobin.getInstance().canITalk()) {
 				try {
-					fragArray = ff.split();
-				} catch (FileFragmentException e) {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
 					e.printStackTrace();
+					if(this.isInterrupted()){
+						return;
+					}
 				}
-				for (FileFragment f : fragArray) {
-					boolean is = send(f);
+				FileFragment ff = null;
+				synchronized (taskList) {
+					if (taskList.empty()) {
+						RoundRobin.getInstance().setMyTurn(false);
+						WiFiFactory.EmergencySend(RoundRobin.getInstance().nextPerson());
+						continue;
+					}
+					ff = taskList.pop();
+				}
+				if (ff == null)
+					continue;
+				if (ff.isTooBig()) {
+					FileFragment[] fragArray = null;
+					try {
+						fragArray = ff.split();
+					} catch (FileFragmentException e) {
+						e.printStackTrace();
+					}
+					for (FileFragment f : fragArray) {
+						boolean is = send(f);
+						if (!is) {
+							synchronized (taskList) {
+								taskList.add(f);
+							}
+						}
+					}
+				} else {
+					boolean is = send(ff);
 					if (!is) {
 						synchronized (taskList) {
-							taskList.add(f);
+							taskList.add(ff);
 						}
 					}
 				}
-			} else {
-				boolean is = send(ff);
-				if (!is) {
-					synchronized (taskList) {
-						taskList.add(ff);
-					}
-				}
-			}
+			}		
 		}
 	}
 }
