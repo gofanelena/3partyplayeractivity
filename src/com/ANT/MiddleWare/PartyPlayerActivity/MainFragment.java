@@ -403,7 +403,6 @@ public class MainFragment extends Fragment {
 
 		if (s[0].toLowerCase(Locale.CHINA).equals("http")) {
 			legel = true;
-
 		}
 
 		return legel;

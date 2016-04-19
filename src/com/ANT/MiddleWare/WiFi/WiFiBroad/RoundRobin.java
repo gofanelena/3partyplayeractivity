@@ -11,8 +11,13 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.util.Log;
+
+import com.ANT.MiddleWare.Integrity.IntegrityCheck;
+
 public class RoundRobin extends Thread {
 
+	private static final String TAG = RoundRobin.class.getSimpleName();
 	private ArrayList<String> ipList = new ArrayList<String>();
 	private boolean isMyTurn = false;
 	private static RoundRobin instance;
@@ -53,11 +58,20 @@ public class RoundRobin extends Thread {
 			os.write(IP_PASS);
 			os.flush();
 			os.close();
+			InputStream is = next.getInputStream();
+			while (is.read()!= ACK) {
+				Thread.sleep(10);
+			}
+			Log.v(TAG, "sendIP ACK received");
+			is.close();
 			next.close();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}				
@@ -78,6 +92,7 @@ public class RoundRobin extends Thread {
 				next = new Socket(nextIP, SERVER_PORT);
 			} catch (Exception e) {
 				e.printStackTrace();
+				Log.v(TAG, "passToken-socket not created");
 				synchronized (this) {
 					ipList.remove(nextIP);
 				}
@@ -95,6 +110,7 @@ public class RoundRobin extends Thread {
 				next = new Socket(nextIP, SERVER_PORT);
 			} catch (Exception e) {
 				e.printStackTrace();
+				Log.v(TAG, "passToken-socket not created");
 				synchronized (this) {
 					ipList.remove(nextIP);
 				}
@@ -112,6 +128,7 @@ public class RoundRobin extends Thread {
 			while (is.read() != ACK) {
 				Thread.sleep(10);
 			}
+			Log.v(TAG, "passToken-ACK received");
 			is.close();
 			next.close();
 		} catch (IOException e) {
@@ -149,6 +166,7 @@ public class RoundRobin extends Thread {
 				String isa = ((InetSocketAddress) prev.getRemoteSocketAddress())
 						.getAddress().getHostAddress();
 				insertToIPList(isa);
+				Log.v(TAG, "remoteIP:"+isa);
 				// TODO
 				// 1. block and read pass token and ismyturn and write ack
 				// 2. add ip ObjectMulti Line 77 and close
@@ -184,18 +202,25 @@ public class RoundRobin extends Thread {
 	}
 	
 	public String getIPs() {
-		String s = null;
+		StringBuilder s = new StringBuilder();
 		synchronized(this) {
 			for (int i = 0 ; i < ipList.size(); i++) {
-				s = s + "," + ipList.get(i);
+				s.append(",");
+				s.append(ipList.get(i));
 			}
-			return s;
+			return s.toString();
 		}
 	}
 	public void setIPs(byte[] data) {
 		String[] ss = new String(data).split(",");
-		for (String s : ss) {
-			insertToIPList(s);
-		}
+		synchronized(this) {
+			for (String s : ss) {
+				if (ipList.contains(s)) {
+					return;
+				}
+				ipList.add(s);
+			}
+			Collections.sort(ipList);
+		}		
 	}
 }
