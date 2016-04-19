@@ -40,6 +40,12 @@ public class RoundRobin extends Thread {
 		}
 	}
 	
+	public void letMeTalk(boolean talkable) {
+		synchronized (this) {
+			isMyTurn = talkable;
+		}
+	}
+	
 	public void sendIP(String serverIP) {		
 		try {
 			next = new Socket(serverIP, SERVER_PORT);
@@ -148,9 +154,7 @@ public class RoundRobin extends Thread {
 				// 2. add ip ObjectMulti Line 77 and close
 				InputStream is = prev.getInputStream();
 				if (is.read() == this.TOKEN) {
-					synchronized(this) {
-						this.isMyTurn = true;
-					}
+					letMeTalk(true);
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					byte buf[] = new byte[512];
 					int temp;
