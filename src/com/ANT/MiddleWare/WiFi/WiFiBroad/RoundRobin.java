@@ -1,6 +1,8 @@
 package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,6 +16,8 @@ public class RoundRobin extends Thread {
 	private static RoundRobin instance;
 	private static final int SERVER_PORT = 4444;
 	private Socket prev = null, next = null;
+	private static final int TOKEN = 1;
+	private static final int ACK = 2;
 
 	private RoundRobin() {
 		super();
@@ -72,7 +76,24 @@ public class RoundRobin extends Thread {
 		}
 		// TODO
 		// write and wait ack
-
+		try {
+			OutputStream os = next.getOutputStream();
+			os.write(TOKEN);
+			os.flush();
+			os.close();
+			InputStream is = next.getInputStream();
+			while (is.read() != ACK) {
+				Thread.sleep(10);
+			}
+			is.close();
+			next.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void insertToIPList(String IP) {
@@ -104,6 +125,18 @@ public class RoundRobin extends Thread {
 				// TODO
 				// 1. block and read pass token and ismyturn and write ack
 				// 2. add ip ObjectMulti Line 77 and close
+				InputStream is = prev.getInputStream();
+				if (is.read() == this.TOKEN) {
+					synchronized(this) {
+						this.isMyTurn = true;
+					}					
+				}
+				is.close();
+				OutputStream os = prev.getOutputStream();
+				os.write(ACK);
+				os.flush();
+				os.close();
+				prev.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
