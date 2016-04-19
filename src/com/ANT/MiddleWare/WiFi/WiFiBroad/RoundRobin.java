@@ -1,11 +1,13 @@
 package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -18,6 +20,7 @@ public class RoundRobin extends Thread {
 	private Socket prev = null, next = null;
 	private static final int TOKEN = 1;
 	private static final int ACK = 2;
+	private static final int IP_PASS = 3;
 
 	private RoundRobin() {
 		super();
@@ -35,6 +38,23 @@ public class RoundRobin extends Thread {
 		synchronized (this) {
 			return isMyTurn;
 		}
+	}
+	
+	public void sendIP(String serverIP) {		
+		try {
+			next = new Socket(serverIP, SERVER_PORT);
+			OutputStream os = next.getOutputStream();
+			os.write(IP_PASS);
+			os.flush();
+			os.close();
+			next.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}				
 	}
 
 	public void passToken() {
@@ -78,7 +98,8 @@ public class RoundRobin extends Thread {
 		// write and wait ack
 		try {
 			OutputStream os = next.getOutputStream();
-			os.write(TOKEN);
+			os.write(TOKEN);			
+			os.write(getIPs().getBytes());
 			os.flush();
 			os.close();
 			InputStream is = next.getInputStream();
@@ -129,7 +150,15 @@ public class RoundRobin extends Thread {
 				if (is.read() == this.TOKEN) {
 					synchronized(this) {
 						this.isMyTurn = true;
-					}					
+					}
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					byte buf[] = new byte[512];
+					int temp;
+					while ((temp = is.read(buf)) != -1) {
+						bos.write(buf, 0, temp);
+					}
+					setIPs(bos.toByteArray());	
+					bos.close();
 				}
 				is.close();
 				OutputStream os = prev.getOutputStream();
@@ -147,6 +176,22 @@ public class RoundRobin extends Thread {
 			ss.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public String getIPs() {
+		String s = null;
+		synchronized(this) {
+			for (int i = 0 ; i < ipList.size(); i++) {
+				s = s + "," + ipList.get(i);
+			}
+			return s;
+		}
+	}
+	public void setIPs(byte[] data) {
+		String[] ss = new String(data).split(",");
+		for (String s : ss) {
+			insertToIPList(s);
 		}
 	}
 }
