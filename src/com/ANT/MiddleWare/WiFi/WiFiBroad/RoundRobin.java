@@ -216,7 +216,7 @@ public class RoundRobin extends Thread {
 		synchronized(this) {
 			for (String s : ss) {
 				if (ipList.contains(s)) {
-					return;
+					continue;
 				}
 				ipList.add(s);
 			}
