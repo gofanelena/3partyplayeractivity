@@ -7,6 +7,7 @@ import com.ANT.MiddleWare.Celluar.CellularDown;
 import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.Segment;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class IntegrityCheck {
@@ -15,6 +16,7 @@ public class IntegrityCheck {
 	private static IntegrityCheck instance;
 	private SparseArray<Segment> urlMap;
 	public static final String URL_TAG = "http://buptant.cn/autoChart/du/video/ljw2016/zxyqwe/download.php";
+	public static final String GROUP_TAG = "http://buptant.cn/autoChart/du/video/ljw2016/zxyqwe/appdown.php";
 	public static final String JUNIT_TAG = "http://127.0.0.1:9999/junit.php";
 	public static final String URI_TAG = "http://127.1.1.1:9999/";
 
@@ -30,7 +32,7 @@ public class IntegrityCheck {
 	}
 
 	public byte[] getSegments(int uri) {
-		return getSegments(uri, CellType.Single);
+		return getSegments(uri, MainFragment.configureData.getDefCell());
 	}
 
 	public byte[] getSegments(int uri, CellType ct) {
@@ -69,9 +71,14 @@ public class IntegrityCheck {
 	}
 
 	public void insert(int id, FileFragment fm) {
+		synchronized (this) {
+			if (urlMap.indexOfKey(id) < 0) {
+				urlMap.put(id, new Segment(id, -1));
+			}
+		}
 		Segment s = urlMap.get(id);
-		WiFiFactory.insertF(fm);
 		s.insert(fm);
+		WiFiFactory.insertF(fm);
 	}
 
 	public Segment getSeg(int id) {

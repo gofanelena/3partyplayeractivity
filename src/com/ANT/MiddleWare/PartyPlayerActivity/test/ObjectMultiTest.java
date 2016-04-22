@@ -1,6 +1,5 @@
 package com.ANT.MiddleWare.PartyPlayerActivity.test;
 
-
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -12,11 +11,15 @@ import java.util.Random;
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
 
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 import com.ANT.MiddleWare.WiFi.WiFiBroad.ObjectMulti;
+import com.ANT.MiddleWare.WiFi.WiFiBroad.SendMulti;
 
-public class ObjectMultiTest  extends AndroidTestCase {
+public class ObjectMultiTest extends AndroidTestCase {
 	private static final String TAG = ObjectMultiTest.class.getSimpleName();
 	private String data;
 	private HashSet<Integer> numSet = new HashSet<Integer>();
@@ -42,21 +45,29 @@ public class ObjectMultiTest  extends AndroidTestCase {
 			int stop = i == fra - 1 ? base : setSort.get(i + 1)
 					+ random.nextInt(base - setSort.get(i + 1));
 
-			FileFragment tmp = new FileFragment(start, stop, 1);
+			FileFragment tmp = new FileFragment(start, stop, 1, base);
 			tmp.setData(data.substring(start, stop).getBytes());
 			fraList.add(tmp);
 		}
 		Collections.shuffle(fraList);
+		MainFragment.configureData
+				.setWorkingMode(ConfigureData.WorkMode.JUNIT_TEST_MODE);
+		MainFragment.configureData.setDefCell(CellType.Single);
+		MainFragment.configureData.setDefMore(CellType.NOCELL);
+		MainFragment.configureData.setNoEmeSend(true);
+		MainFragment.configureData.setNoNotify(true);
+		MainFragment.configureData.setNoWiFiSend(true);
 	}
 
 	public final void testRun() {
-		 final PipedOutputStream po = new PipedOutputStream();
-		 try {
+		final PipedOutputStream po = new PipedOutputStream();
+		try {
 			final PipedInputStream pi = new PipedInputStream(po);
 
-			ObjectMulti objThd = new ObjectMulti(pi, getContext());
+			ObjectMulti objThd = new ObjectMulti(pi, getContext(),
+					new SendMulti(null, null));
 			objThd.start();
-			for(FileFragment f:fraList){
+			for (FileFragment f : fraList) {
 				po.write(f.toBytes());
 			}
 			final IntegrityCheck iTC = IntegrityCheck.getInstance();
@@ -66,7 +77,6 @@ public class ObjectMultiTest  extends AndroidTestCase {
 			e.printStackTrace();
 		}
 	}
-
 
 	private String getRandomString(int length) {
 		String base = "abcdefghijklmnopqrstuvwxyz0123456789";
