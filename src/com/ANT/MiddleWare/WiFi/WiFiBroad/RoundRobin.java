@@ -1,19 +1,31 @@
 package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.util.Log;
+
+import com.ANT.MiddleWare.Integrity.IntegrityCheck;
+
 public class RoundRobin extends Thread {
 
+	private static final String TAG = RoundRobin.class.getSimpleName();
 	private ArrayList<String> ipList = new ArrayList<String>();
 	private boolean isMyTurn = false;
 	private static RoundRobin instance;
 	private static final int SERVER_PORT = 4444;
 	private Socket prev = null, next = null;
+	private static final int TOKEN = 1;
+	private static final int ACK = 2;
+	private static final int IP_PASS = 3;
 
 	private RoundRobin() {
 		super();
@@ -32,6 +44,38 @@ public class RoundRobin extends Thread {
 			return isMyTurn;
 		}
 	}
+	
+	public void letMeTalk(boolean talkable) {
+		synchronized (this) {
+			isMyTurn = talkable;
+		}
+	}
+	
+	public void sendIP(String serverIP) {		
+		try {
+			next = new Socket(serverIP, SERVER_PORT);
+			OutputStream os = next.getOutputStream();
+			os.write(IP_PASS);
+			os.flush();
+			os.close();
+			InputStream is = next.getInputStream();
+			while (is.read()!= ACK) {
+				Thread.sleep(10);
+			}
+			Log.v(TAG, "sendIP ACK received");
+			is.close();
+			next.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}				
+	}
 
 	public void passToken() {
 		synchronized (this) {
@@ -48,6 +92,7 @@ public class RoundRobin extends Thread {
 				next = new Socket(nextIP, SERVER_PORT);
 			} catch (Exception e) {
 				e.printStackTrace();
+				Log.v(TAG, "passToken-socket not created");
 				synchronized (this) {
 					ipList.remove(nextIP);
 				}
@@ -65,6 +110,7 @@ public class RoundRobin extends Thread {
 				next = new Socket(nextIP, SERVER_PORT);
 			} catch (Exception e) {
 				e.printStackTrace();
+				Log.v(TAG, "passToken-socket not created");
 				synchronized (this) {
 					ipList.remove(nextIP);
 				}
@@ -72,7 +118,26 @@ public class RoundRobin extends Thread {
 		}
 		// TODO
 		// write and wait ack
-
+		try {
+			OutputStream os = next.getOutputStream();
+			os.write(TOKEN);			
+			os.write(getIPs().getBytes());
+			os.flush();
+			os.close();
+			InputStream is = next.getInputStream();
+			while (is.read() != ACK) {
+				Thread.sleep(10);
+			}
+			Log.v(TAG, "passToken-ACK received");
+			is.close();
+			next.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void insertToIPList(String IP) {
@@ -101,9 +166,28 @@ public class RoundRobin extends Thread {
 				String isa = ((InetSocketAddress) prev.getRemoteSocketAddress())
 						.getAddress().getHostAddress();
 				insertToIPList(isa);
+				Log.v(TAG, "remoteIP:"+isa);
 				// TODO
 				// 1. block and read pass token and ismyturn and write ack
 				// 2. add ip ObjectMulti Line 77 and close
+				InputStream is = prev.getInputStream();
+				if (is.read() == this.TOKEN) {
+					letMeTalk(true);
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					byte buf[] = new byte[512];
+					int temp;
+					while ((temp = is.read(buf)) != -1) {
+						bos.write(buf, 0, temp);
+					}
+					setIPs(bos.toByteArray());	
+					bos.close();
+				}
+				is.close();
+				OutputStream os = prev.getOutputStream();
+				os.write(ACK);
+				os.flush();
+				os.close();
+				prev.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
@@ -115,5 +199,28 @@ public class RoundRobin extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String getIPs() {
+		StringBuilder s = new StringBuilder();
+		synchronized(this) {
+			for (int i = 0 ; i < ipList.size(); i++) {
+				s.append(",");
+				s.append(ipList.get(i));
+			}
+			return s.toString();
+		}
+	}
+	public void setIPs(byte[] data) {
+		String[] ss = new String(data).split(",");
+		synchronized(this) {
+			for (String s : ss) {
+				if (ipList.contains(s)) {
+					continue;
+				}
+				ipList.add(s);
+			}
+			Collections.sort(ipList);
+		}		
 	}
 }

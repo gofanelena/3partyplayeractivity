@@ -75,6 +75,7 @@ public class ObjectMulti extends Thread {
 						RoundRobin.getInstance().insertToIPList(WiFiBroad.baseIP+ff.getStartIndex());
 						//TODO
 						//send IP
+						RoundRobin.getInstance().sendIP(WiFiBroad.baseIP+ff.getStartIndex());
 						((Activity) activity).runOnUiThread(new Runnable() {
 							@Override
 							public void run() {

@@ -40,6 +40,7 @@ import com.ANT.MiddleWare.DASHProxyServer.DashProxyServer;
 import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
 import com.ANT.MiddleWare.WiFi.WiFiFactory;
 import com.ANT.MiddleWare.WiFi.WiFiFactory.WiFiType;
+import com.ANT.MiddleWare.WiFi.WiFiBroad.RoundRobin;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 @SuppressLint("NewApi")
@@ -158,6 +159,7 @@ public class MainFragment extends Fragment {
 					try {
 						WiFiFactory.EmergencySend("I am Captain!"
 								.getBytes("UTF-8"));
+						RoundRobin.getInstance().letMeTalk(true);
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					} catch (FileFragmentException e) {
@@ -401,7 +403,6 @@ public class MainFragment extends Fragment {
 
 		if (s[0].toLowerCase(Locale.CHINA).equals("http")) {
 			legel = true;
-
 		}
 
 		return legel;
