@@ -21,8 +21,22 @@ public abstract class WiFiPulic {
 	}
 
 	public final void insertF(FileFragment fm) {
-		synchronized (taskList) {
-			taskList.add(fm);
+		if (fm.isTooBig()) {
+			FileFragment[] fragArray = null;
+			try {
+				fragArray = fm.split();
+			} catch (FileFragmentException e) {
+				e.printStackTrace();
+			}
+			synchronized (taskList) {
+				for (FileFragment f : fragArray) {
+					taskList.add(f);
+				}
+			}
+		} else {
+			synchronized (taskList) {
+				taskList.add(fm);
+			}
 		}
 	}
 

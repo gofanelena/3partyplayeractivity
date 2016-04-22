@@ -107,20 +107,7 @@ public class SendMulti extends Thread {
 			if (ff == null)
 				continue;
 			if (ff.isTooBig()) {
-				FileFragment[] fragArray = null;
-				try {
-					fragArray = ff.split();
-				} catch (FileFragmentException e) {
-					e.printStackTrace();
-				}
-				for (FileFragment f : fragArray) {
-					boolean is = send(f);
-					if (!is) {
-						synchronized (taskList) {
-							taskList.add(f);
-						}
-					}
-				}
+				WiFiFactory.insertF(ff);
 			} else {
 				boolean is = send(ff);
 				if (!is) {
