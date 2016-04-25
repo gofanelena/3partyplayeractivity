@@ -93,13 +93,13 @@ public class SendMulti extends Thread {
 					return;
 				}
 			}
-			if (!RoundRobin.getInstance().canITalk()) {
-				continue;
-			}
+//			if (!RoundRobin.getInstance().canITalk()) {
+//				continue;
+//			}
 			FileFragment ff = null;
 			synchronized (taskList) {
 				if (taskList.empty()) {
-					RoundRobin.getInstance().passToken();
+					//RoundRobin.getInstance().passToken();
 					continue;
 				}
 				ff = taskList.pop();

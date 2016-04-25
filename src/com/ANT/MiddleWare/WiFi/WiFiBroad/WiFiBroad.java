@@ -53,7 +53,7 @@ public class WiFiBroad extends WiFiPulic {
 		numIP = Integer.parseInt(s.substring(len - 2));
 		this.myIP = baseIP + numIP;	
 		
-		RoundRobin.getInstance().insertToIPList(myIP);
+		//RoundRobin.getInstance().insertToIPList(myIP);
 		
 		Log.v(TAG, "ip " + myIP);
 		proc = Runtime.getRuntime().exec("su");

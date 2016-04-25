@@ -159,7 +159,7 @@ public class MainFragment extends Fragment {
 					try {
 						WiFiFactory.EmergencySend("I am Captain!"
 								.getBytes("UTF-8"));
-						RoundRobin.getInstance().letMeTalk(true);
+						//RoundRobin.getInstance().letMeTalk(true);
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					} catch (FileFragmentException e) {
