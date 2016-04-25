@@ -11,8 +11,11 @@ import java.util.Random;
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
 
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 import com.ANT.MiddleWare.WiFi.WiFiBroad.ObjectMulti;
 import com.ANT.MiddleWare.WiFi.WiFiBroad.SendMulti;
 
@@ -47,6 +50,13 @@ public class ObjectMultiTest extends AndroidTestCase {
 			fraList.add(tmp);
 		}
 		Collections.shuffle(fraList);
+		MainFragment.configureData
+				.setWorkingMode(ConfigureData.WorkMode.JUNIT_TEST_MODE);
+		MainFragment.configureData.setDefCell(CellType.Single);
+		MainFragment.configureData.setDefMore(CellType.NOCELL);
+		MainFragment.configureData.setNoEmeSend(true);
+		MainFragment.configureData.setNoNotify(true);
+		MainFragment.configureData.setNoWiFiSend(true);
 	}
 
 	public final void testRun() {

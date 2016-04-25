@@ -4,9 +4,12 @@ import java.util.Random;
 
 import junit.framework.Assert;
 
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
 import com.ANT.MiddleWare.Entities.Segment;
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 
 import android.test.AndroidTestCase;
 
@@ -15,11 +18,18 @@ public class FileFragmentTest extends AndroidTestCase {
 	private static final int base = 50;
 
 	public void setUp() throws Exception {
+		MainFragment.configureData
+				.setWorkingMode(ConfigureData.WorkMode.JUNIT_TEST_MODE);
+		MainFragment.configureData.setDefCell(CellType.Single);
+		MainFragment.configureData.setDefMore(CellType.NOCELL);
+		MainFragment.configureData.setNoEmeSend(true);
+		MainFragment.configureData.setNoNotify(true);
+		MainFragment.configureData.setNoWiFiSend(true);
 	}
 
 	public final void test() {
 		FileFragment.LIMIT_LEN = 3;
-		FileFragment f = new FileFragment(0, base, 1,base);
+		FileFragment f = new FileFragment(0, base, 1, base);
 		try {
 			f.setData(getRandomString(base).getBytes());
 		} catch (FileFragmentException e) {

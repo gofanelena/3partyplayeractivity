@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
+import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class SendMulti extends Thread {
 	private static final String TAG = SendMulti.class.getSimpleName();
@@ -60,6 +62,8 @@ public class SendMulti extends Thread {
 		if (isRepeat(f)) {
 			return true;
 		}
+		if (MainFragment.configureData.isNoWiFiSend())
+			return true;
 		try {
 			byte[] data = f.toBytes();
 			DatagramPacket dp = new DatagramPacket(data, data.length,
@@ -85,13 +89,17 @@ public class SendMulti extends Thread {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				if(this.isInterrupted()){
+				if (this.isInterrupted()) {
 					return;
 				}
 			}
+//			if (!RoundRobin.getInstance().canITalk()) {
+//				continue;
+//			}
 			FileFragment ff = null;
 			synchronized (taskList) {
 				if (taskList.empty()) {
+					//RoundRobin.getInstance().passToken();
 					continue;
 				}
 				ff = taskList.pop();
@@ -99,20 +107,7 @@ public class SendMulti extends Thread {
 			if (ff == null)
 				continue;
 			if (ff.isTooBig()) {
-				FileFragment[] fragArray = null;
-				try {
-					fragArray = ff.split();
-				} catch (FileFragmentException e) {
-					e.printStackTrace();
-				}
-				for (FileFragment f : fragArray) {
-					boolean is = send(f);
-					if (!is) {
-						synchronized (taskList) {
-							taskList.add(f);
-						}
-					}
-				}
+				WiFiFactory.insertF(ff);
 			} else {
 				boolean is = send(ff);
 				if (!is) {

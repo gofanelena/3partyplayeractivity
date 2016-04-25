@@ -8,8 +8,11 @@ import java.util.Random;
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
 
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.Segment;
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 
 /**
  * @author zxyqwe
@@ -44,11 +47,24 @@ public class SegmentTest extends AndroidTestCase {
 			int stop = i == fra - 1 ? base : setSort.get(i + 1)
 					+ random.nextInt(base - setSort.get(i + 1));
 
-			FileFragment tmp = new FileFragment(start, stop, 1,base);
+			FileFragment tmp = new FileFragment(start, stop, 1, base);
 			tmp.setData(data.substring(start, stop).getBytes());
 			fraList.add(tmp);
 		}
 		Collections.shuffle(fraList);
+		MainFragment.configureData
+				.setWorkingMode(ConfigureData.WorkMode.JUNIT_TEST_MODE);
+		MainFragment.configureData.setDefCell(CellType.Single);
+		MainFragment.configureData.setDefMore(CellType.NOCELL);
+		MainFragment.configureData.setNoEmeSend(true);
+		MainFragment.configureData.setNoNotify(true);
+		MainFragment.configureData.setNoWiFiSend(true);
+	}
+
+	@Override
+	public void tearDown() throws Exception {
+		numSet.clear();
+		fraList.clear();
 	}
 
 	/**

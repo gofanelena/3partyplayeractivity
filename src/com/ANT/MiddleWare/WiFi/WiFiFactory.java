@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 import com.ANT.MiddleWare.WiFi.WiFiBT.WiFiBT;
 import com.ANT.MiddleWare.WiFi.WiFiBroad.WiFiBroad;
 import com.ANT.MiddleWare.WiFi.WiFiNCP2.WiFiNCP2;
@@ -64,6 +66,8 @@ public class WiFiFactory {
 	}
 
 	public static void notify(int seg, int start) {
+		if (MainFragment.configureData.isNoNotify())
+			return;
 		synchronized (TAG) {
 			instance.notify(seg, start);
 		}
@@ -71,6 +75,8 @@ public class WiFiFactory {
 
 	public static void EmergencySend(byte[] data) throws FileFragmentException,
 			IOException {
+		if (MainFragment.configureData.isNoEmeSend())
+			return;
 		synchronized (TAG) {
 			instance.EmergencySend(data);
 		}

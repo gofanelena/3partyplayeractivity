@@ -35,6 +35,9 @@ public class WiFiBroad extends WiFiPulic {
 	private SendMulti sendThd;
 	public static final int EMERGEN_SEND_TAG = -2;
 	public static final int FRAG_REQST_TAG = -3;
+	public static String myIP;
+	public static final String baseIP="192.168.1.";
+	private int numIP;
 
 	public WiFiBroad(Context contect) throws IOException, InterruptedException {
 		super(contect);
@@ -44,17 +47,20 @@ public class WiFiBroad extends WiFiPulic {
 
 		// pi.connect(po);
 		// po.connect(pi);
-
+        
 		String s = tm.getDeviceId();
 		int len = s.length();
-		int number = Integer.parseInt(s.substring(len - 2));
-		String ip = "192.168.1." + number;
-		Log.v(TAG, "ip " + ip);
+		numIP = Integer.parseInt(s.substring(len - 2));
+		this.myIP = baseIP + numIP;	
+		
+		//RoundRobin.getInstance().insertToIPList(myIP);
+		
+		Log.v(TAG, "ip " + myIP);
 		proc = Runtime.getRuntime().exec("su");
 		DataOutputStream os = new DataOutputStream(proc.getOutputStream());
 		os.writeBytes("netcfg wlan0 up\n");
 		os.writeBytes("wpa_supplicant -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -B\n");
-		os.writeBytes("ifconfig wlan0 " + ip + " netmask 255.255.255.0\n");
+		os.writeBytes("ifconfig wlan0 " + myIP + " netmask 255.255.255.0\n");
 		os.writeBytes("ip route add 224.0.0.0/4 dev wlan0\n");
 		os.writeBytes("exit\n");
 		os.flush();
@@ -80,13 +86,13 @@ public class WiFiBroad extends WiFiPulic {
 
 		objThd = new ObjectMulti(pi, contect,sendThd);
 		objThd.start();
-
+		
 	}
 
 	@Override
 	public void EmergencySend(byte[] data) throws FileFragmentException,
 			IOException {
-		FileFragment f = new FileFragment(0, data.length, EMERGEN_SEND_TAG,-1);
+		FileFragment f = new FileFragment(numIP, data.length, EMERGEN_SEND_TAG,-1);
 		f.setData(data);
 		data = f.toBytes();
 		DatagramPacket dp = new DatagramPacket(data, data.length,
@@ -117,4 +123,5 @@ public class WiFiBroad extends WiFiPulic {
 		FileFragment ff = new FileFragment(seg, start, FRAG_REQST_TAG,-1);
 		WiFiFactory.insertF(ff);
 	}
+	
 }
