@@ -79,14 +79,14 @@ public class MoresDialog extends DialogFragment {
 				case R.id.both_More:
 					MainFragment.configureData
 							.setDefMore(CellType.BothMore);
-					MainFragment.configureData
-							.setNoWiFiSend(false);
+//					MainFragment.configureData
+//							.setNoWiFiSend(false);
 					break;
 				case R.id.wifi_More:
 					MainFragment.configureData
 							.setDefMore(CellType.WiFiMore);
-					MainFragment.configureData
-							.setNoWiFiSend(false);
+//					MainFragment.configureData
+//							.setNoWiFiSend(false);
 					Log.v(TAG, ""+MainFragment.configureData.getDefMore());
 					break;
 				case R.id.cell_More:
