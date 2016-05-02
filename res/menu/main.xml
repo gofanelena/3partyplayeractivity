@@ -31,6 +31,15 @@
         android:title="@string/action_cell_mode"
         android:icon="@android:drawable/ic_menu_manage"
         />
+    
+    <item
+        android:id="@+id/is_notify"
+        android:showAsAction="never"
+        android:orderInCategory="0"
+        android:title="NOTIFY SWITCH"
+        android:icon="@android:drawable/ic_menu_manage"
+        />
+    
 
 
 </menu>

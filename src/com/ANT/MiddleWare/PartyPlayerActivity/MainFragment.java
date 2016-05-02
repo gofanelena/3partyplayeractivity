@@ -373,6 +373,14 @@ public class MainFragment extends Fragment {
 
 			return true;
 		}
+		
+		if (id == R.id.is_notify) {
+			android.app.FragmentManager fm = getActivity().getFragmentManager();
+			NotifyDialog noDialog = new NotifyDialog();
+		    noDialog.show(fm, SETTING_DIALOG_TAG);
+
+			return true;
+		}
 
 		return super.onOptionsItemSelected(item);
 	}
