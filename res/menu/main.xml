@@ -7,6 +7,30 @@
         android:title="@string/action_settings"
         android:icon="@android:drawable/ic_menu_manage"
         />
+    
+    <item
+        android:id="@+id/mores"
+        android:showAsAction="never"
+        android:orderInCategory="0"
+        android:title="@string/action_mores"
+        android:icon="@android:drawable/ic_menu_manage"
+        />
+    
+    <item
+        android:id="@+id/wifi_switch"
+        android:showAsAction="never"
+        android:orderInCategory="0"
+        android:title="@string/action_wifi_switch"
+        android:icon="@android:drawable/ic_menu_manage"
+        />
+    
+    <item
+        android:id="@+id/cell_mode"
+        android:showAsAction="never"
+        android:orderInCategory="0"
+        android:title="@string/action_cell_mode"
+        android:icon="@android:drawable/ic_menu_manage"
+        />
 
 
 </menu>

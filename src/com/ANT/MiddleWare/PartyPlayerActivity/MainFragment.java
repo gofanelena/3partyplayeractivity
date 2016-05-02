@@ -349,6 +349,30 @@ public class MainFragment extends Fragment {
 
 			return true;
 		}
+		
+		if (id == R.id.mores) {
+			android.app.FragmentManager fm = getActivity().getFragmentManager();
+			MoresDialog moDialog = new MoresDialog();
+			moDialog.show(fm, SETTING_DIALOG_TAG);
+
+			return true;
+		}
+		
+		if (id == R.id.wifi_switch) {
+			android.app.FragmentManager fm = getActivity().getFragmentManager();
+			WifiSwitchDialog wiDialog = new WifiSwitchDialog();
+		    wiDialog.show(fm, SETTING_DIALOG_TAG);
+
+			return true;
+		}
+		
+		if (id == R.id.cell_mode) {
+			android.app.FragmentManager fm = getActivity().getFragmentManager();
+			CellModeDialog ceDialog = new CellModeDialog();
+		    ceDialog.show(fm, SETTING_DIALOG_TAG);
+
+			return true;
+		}
 
 		return super.onOptionsItemSelected(item);
 	}

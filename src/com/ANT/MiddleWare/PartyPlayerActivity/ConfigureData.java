@@ -8,7 +8,7 @@ public class ConfigureData {
 	public static enum WorkMode {
 		LOCAL_MODE, G_MDOE, COOPERATIVE_MODE, JUNIT_TEST_MODE
 	}
-
+	
 	private String url;
 	private boolean serviceAlive = false;
 	private WorkMode workingMode = WorkMode.LOCAL_MODE;
