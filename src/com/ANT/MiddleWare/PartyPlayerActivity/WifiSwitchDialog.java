@@ -1,5 +1,6 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
 
 import android.app.Dialog;
@@ -72,6 +73,8 @@ public class WifiSwitchDialog extends DialogFragment {
 				case R.id.wifi_off:
 					MainFragment.configureData
 							.setNoWiFiSend(true);
+					MainFragment.configureData
+							.setDefMore(CellType.NOCELL);
 					break;
 				case R.id.wifi_on:
 					MainFragment.configureData
