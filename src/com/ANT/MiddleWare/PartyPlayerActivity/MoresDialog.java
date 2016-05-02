@@ -47,8 +47,8 @@ public class MoresDialog extends DialogFragment {
 		radioGroup = (RadioGroup) v.findViewById(R.id.radioGroup1);
 		btConfirm = (Button) v.findViewById(R.id.btalertconfirm1);
 
-		CellType defCell = MainFragment.configureData.getDefCell();
-		switch (defCell) {
+		CellType defMore = MainFragment.configureData.getDefMore();
+		switch (defMore) {
 		case CellMore:
 			rbButton = (RadioButton) v.findViewById(R.id.cell_More);
 			rbButton.setChecked(true);
