@@ -73,8 +73,8 @@ public class WifiSwitchDialog extends DialogFragment {
 				case R.id.wifi_off:
 					MainFragment.configureData
 							.setNoWiFiSend(true);
-					MainFragment.configureData
-							.setDefMore(CellType.NOCELL);
+//					MainFragment.configureData
+//							.setDefMore(CellType.NOCELL);
 					break;
 				case R.id.wifi_on:
 					MainFragment.configureData
