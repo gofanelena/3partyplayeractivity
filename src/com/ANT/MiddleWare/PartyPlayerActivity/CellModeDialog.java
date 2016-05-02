@@ -86,11 +86,11 @@ public class CellModeDialog extends DialogFragment {
 					break;
 				case R.id.dash:
 					MainFragment.configureData
-							.setDefMore(CellType.DASH);
+							.setDefCell(CellType.DASH);
 					break;
 				case R.id.nocell:
 					MainFragment.configureData
-							.setDefMore(CellType.NOCELL);
+							.setDefCell(CellType.NOCELL);
 					break;
 				}
 			}
