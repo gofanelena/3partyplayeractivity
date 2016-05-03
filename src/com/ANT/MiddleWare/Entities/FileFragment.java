@@ -91,8 +91,12 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 
 	public void setData(byte[] d) throws FileFragmentException {
 		if (data == null) {
-			int fragLength = stopIndex - startIndex;
-			this.data = new byte[fragLength];
+			synchronized (this) {
+				if (data == null) {
+					int fragLength = stopIndex - startIndex;
+					this.data = new byte[fragLength];
+				}
+			}
 		}
 		if (data.length != d.length)
 			throw new FileFragmentException("Fragment Length Wrong "
