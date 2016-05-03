@@ -2,6 +2,7 @@ package com.ANT.MiddleWare.DASHProxyServer;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Stack;
 
@@ -73,7 +74,7 @@ public class DashProxyServer extends NanoHTTPD {
 			}
 			Log.wtf(TAG, "file nothing");
 			return newFixedLengthResponse("");
-		} catch (IOException e) {
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			Log.wtf(TAG, e);
 			return newFixedLengthResponse("");
@@ -91,11 +92,22 @@ public class DashProxyServer extends NanoHTTPD {
 		return playlist;
 	}
 
-	private Response localFile(String str) throws IOException {
+	private Response localFile(String str) throws FileNotFoundException {
 		str = dir + str;
 		FileInputStream fis = new FileInputStream(
 				Environment.getExternalStorageDirectory() + str);
-		int length = fis.available();
+		int length = 0;
+		try {
+			length = fis.available();
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				fis.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			throw new FileNotFoundException(str + " Length Error");
+		}
 		return newFixedLengthResponse(Response.Status.OK, mp4, fis, length);
 	}
 
