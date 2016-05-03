@@ -20,6 +20,8 @@ import fi.iki.elonen.NanoHTTPD;
  */
 public class DashProxyServer extends NanoHTTPD {
 	private static final String TAG = DashProxyServer.class.getSimpleName();
+	private static final String mp4 = "application/x-mpegurl";
+	private static final String dir = "/video/4/";
 
 	public DashProxyServer() {
 		super(9999);
@@ -33,31 +35,31 @@ public class DashProxyServer extends NanoHTTPD {
 
 	@Override
 	public Response serve(IHTTPSession session) {
+		Log.e(TAG, "filename" + session.getUri());
 		try {
 			if (!getFileName(session, ".m3u8").equals("")) {
-				Log.v(TAG, "filename" + session.getUri());
-				return localFile("/video/4/index.m3u8");
-			} else {
-				Log.v(TAG, "DashProxy uri:" + session.getUri());
-				String playist = getFileName(session, ".mp4");
-				Log.v(TAG, "playist" + playist);
+				return localFile("index.m3u8");
+			}
+			String playist = getFileName(session, ".mp4");
+			Log.v(TAG, "playist" + playist);
+			if (!playist.equals("")) {
 				switch (MainFragment.configureData.getWorkingMode()) {
 				case LOCAL_MODE:
-					return localFile("/video/4/" + playist);
+					return localFile(playist);
 				case G_MDOE:
 					IntegrityCheck iTC = IntegrityCheck.getInstance();
 					int tmpp = Integer.parseInt(playist.substring(0, 1));
 					byte[] tmp = iTC.getSegments(tmpp);
-					return newFixedLengthResponse(Response.Status.OK,
-							"application/x-mpegurl", tmp);
+					return newFixedLengthResponse(Response.Status.OK, mp4, tmp);
 				case JUNIT_TEST_MODE:
 					Stack<FileFragment> s = CellularDownTest.fraList;
-					if (s.empty())
+					if (s.empty()) {
+						Log.wtf(TAG, "file nothing");
 						return newFixedLengthResponse("");
+					}
 					FileFragment f = s.pop();
 					Response res = newFixedLengthResponse(
-							Response.Status.PARTIAL_CONTENT,
-							"application/x-mpegurl", f.getData());
+							Response.Status.PARTIAL_CONTENT, mp4, f.getData());
 					res.addHeader(
 							"Content-Range",
 							"Content-Range " + f.getStartIndex() + "-"
@@ -65,11 +67,15 @@ public class DashProxyServer extends NanoHTTPD {
 									+ CellularDownTest.base);
 					return res;
 				default:
+					Log.wtf(TAG, "file nothing");
 					return newFixedLengthResponse("");
 				}
 			}
+			Log.wtf(TAG, "file nothing");
+			return newFixedLengthResponse("");
 		} catch (IOException e) {
 			e.printStackTrace();
+			Log.wtf(TAG, e);
 			return newFixedLengthResponse("");
 		}
 	}
@@ -86,11 +92,11 @@ public class DashProxyServer extends NanoHTTPD {
 	}
 
 	private Response localFile(String str) throws IOException {
+		str = dir + str;
 		FileInputStream fis = new FileInputStream(
 				Environment.getExternalStorageDirectory() + str);
 		int length = fis.available();
-		return newFixedLengthResponse(Response.Status.OK,
-				"application/x-mpegurl", fis, length);
+		return newFixedLengthResponse(Response.Status.OK, mp4, fis, length);
 	}
 
 	private Response newFixedLengthResponse(Response.IStatus status,

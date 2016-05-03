@@ -43,7 +43,7 @@ public class Segment {
 		}
 	}
 
-	private void merge() throws SegmentException {
+	private void merge() throws SegmentException, FileFragmentException {
 		if (segmentList == null || segmentList.size() <= 1) {
 			return;
 		}
@@ -92,6 +92,8 @@ public class Segment {
 			try {
 				merge();
 			} catch (SegmentException e) {
+				e.printStackTrace();
+			} catch (FileFragmentException e) {
 				e.printStackTrace();
 			}
 

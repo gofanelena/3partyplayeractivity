@@ -21,7 +21,7 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	private int stopIndex;
 	private int segmentID;
 	private int segmentLen;
-	private byte[] data;
+	private byte[] data = null;
 	private boolean written = false;
 
 	public FileFragment(int start, int stop, int segID, int seglen) {
@@ -29,8 +29,6 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		this.stopIndex = stop;
 		this.segmentID = segID;
 		this.segmentLen = seglen;
-		int fragLength = stopIndex - startIndex;
-		this.data = new byte[fragLength];
 	}
 
 	public FileFragment(FileFragment fm) throws FileFragmentException {
@@ -60,8 +58,12 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 		return buf;
 	}
 
-	public void setData(byte[] d, int offset) {
+	public void setData(byte[] d, int offset) throws FileFragmentException {
 		synchronized (this) {
+			if (data == null) {
+				throw new FileFragmentException("Fragment Data Null " + offset
+						+ " " + d.length);
+			}
 			Log.d(TAG, "" + startIndex + " " + stopIndex + " " + data.length
 					+ " " + offset + " " + d.length);
 			if (stopIndex - offset != 0)
@@ -88,6 +90,10 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	}
 
 	public void setData(byte[] d) throws FileFragmentException {
+		if (data == null) {
+			int fragLength = stopIndex - startIndex;
+			this.data = new byte[fragLength];
+		}
 		if (data.length != d.length)
 			throw new FileFragmentException("Fragment Length Wrong "
 					+ data.length + " " + d.length);
