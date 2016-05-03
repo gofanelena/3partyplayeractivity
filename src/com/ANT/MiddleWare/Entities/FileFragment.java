@@ -23,16 +23,6 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 	private int segmentLen;
 	private byte[] data;
 	private boolean written = false;
-	
-	public FileFragment(int ip, int start, int stop, int segID, int seglen) {
-		this.startIndex = start;
-		this.stopIndex = stop;
-		this.segmentID = segID;
-		this.segmentLen = seglen;
-		int fragLength = stopIndex - startIndex;
-		this.data = new byte[fragLength];
-		this.startIndex = ip;
-	}
 
 	public FileFragment(int start, int stop, int segID, int seglen) {
 		this.startIndex = start;

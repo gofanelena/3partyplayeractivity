@@ -92,7 +92,7 @@ public class WiFiBroad extends WiFiPulic {
 	@Override
 	public void EmergencySend(byte[] data) throws FileFragmentException,
 			IOException {
-		FileFragment f = new FileFragment(numIP, 0, data.length, EMERGEN_SEND_TAG,-1);
+		FileFragment f = new FileFragment(numIP, data.length, EMERGEN_SEND_TAG,-1);
 		f.setData(data);
 		data = f.toBytes();
 		DatagramPacket dp = new DatagramPacket(data, data.length,
