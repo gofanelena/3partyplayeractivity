@@ -27,12 +27,6 @@ public class DashProxyServer extends NanoHTTPD {
 
 	public DashProxyServer() {
 		super(9999);
-		try {
-			this.start();
-			Log.e(TAG, "start");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -42,7 +36,7 @@ public class DashProxyServer extends NanoHTTPD {
 			return localFile("index.m3u8");
 		}
 		String playist = getFileName(session, ".mp4");
-		Log.v(TAG, "playist" + playist);
+		Log.v(TAG, "playist " + playist);
 		if (!playist.equals("")) {
 			Log.v(TAG, "mp4");
 			switch (MainFragment.configureData.getWorkingMode()) {
