@@ -1,8 +1,5 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
-import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
-import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
-
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;

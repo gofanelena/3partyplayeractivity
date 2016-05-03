@@ -13,8 +13,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
-
 public class NotifyDialog extends DialogFragment {
 	private static final String TAG = SettingDialog.class.getSimpleName();
 
