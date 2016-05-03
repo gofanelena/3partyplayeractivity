@@ -40,6 +40,7 @@ import com.ANT.MiddleWare.DASHProxyServer.DashProxyServer;
 import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
 import com.ANT.MiddleWare.WiFi.WiFiFactory;
 import com.ANT.MiddleWare.WiFi.WiFiFactory.WiFiType;
+import com.ANT.MiddleWare.WiFi.WiFiBroad.RoundRobin;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 @SuppressLint("NewApi")

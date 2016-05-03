@@ -1,5 +1,7 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
+
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -11,8 +13,6 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-
-import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
 
 public class SettingDialog extends DialogFragment {
 	private static final String TAG = SettingDialog.class.getSimpleName();
