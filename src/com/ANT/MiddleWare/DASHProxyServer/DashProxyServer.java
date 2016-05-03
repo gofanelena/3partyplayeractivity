@@ -56,7 +56,8 @@ public class DashProxyServer extends NanoHTTPD {
 					Stack<FileFragment> s = CellularDownTest.fraList;
 					if (s.empty()) {
 						Log.wtf(TAG, "file nothing");
-						return newFixedLengthResponse("");
+						return newFixedLengthResponse(
+								Response.Status.NOT_FOUND, mp4, null, 0);
 					}
 					FileFragment f = s.pop();
 					Response res = newFixedLengthResponse(
@@ -69,15 +70,23 @@ public class DashProxyServer extends NanoHTTPD {
 					return res;
 				default:
 					Log.wtf(TAG, "file nothing");
-					return newFixedLengthResponse("");
+					return newFixedLengthResponse(
+							Response.Status.INTERNAL_ERROR, mp4, null, 0);
 				}
 			}
 			Log.wtf(TAG, "file nothing");
-			return newFixedLengthResponse("");
+			return newFixedLengthResponse(Response.Status.NOT_FOUND, mp4, null,
+					0);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			Log.wtf(TAG, e);
-			return newFixedLengthResponse("");
+			return newFixedLengthResponse(Response.Status.NOT_FOUND, mp4, null,
+					0);
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.wtf(TAG, e);
+			return newFixedLengthResponse(Response.Status.BAD_REQUEST, mp4,
+					null, 0);
 		}
 	}
 
@@ -92,22 +101,11 @@ public class DashProxyServer extends NanoHTTPD {
 		return playlist;
 	}
 
-	private Response localFile(String str) throws FileNotFoundException {
+	private Response localFile(String str) throws IOException {
 		str = dir + str;
 		FileInputStream fis = new FileInputStream(
 				Environment.getExternalStorageDirectory() + str);
-		int length = 0;
-		try {
-			length = fis.available();
-		} catch (IOException e) {
-			e.printStackTrace();
-			try {
-				fis.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			throw new FileNotFoundException(str + " Length Error");
-		}
+		int length = fis.available();
 		return newFixedLengthResponse(Response.Status.OK, mp4, fis, length);
 	}
 
