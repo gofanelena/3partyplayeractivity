@@ -150,7 +150,7 @@ public class Segment {
 
 	public int getMiss() throws SegmentException {
 		try {
-			Thread.sleep(10);
+			Thread.sleep(100);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
 import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
 import com.ANT.MiddleWare.PartyPlayerActivity.test.CellularDownTest;
 
@@ -36,7 +37,7 @@ public class DashProxyServer extends NanoHTTPD {
 
 	@Override
 	public Response serve(IHTTPSession session) {
-		Log.e(TAG, "filename" + session.getUri());
+		Log.v(TAG, "filename " + session.getUri());
 		try {
 			if (!getFileName(session, ".m3u8").equals("")) {
 				return localFile("index.m3u8");
@@ -44,6 +45,7 @@ public class DashProxyServer extends NanoHTTPD {
 			String playist = getFileName(session, ".mp4");
 			Log.v(TAG, "playist" + playist);
 			if (!playist.equals("")) {
+				Log.v(TAG, "mp4");
 				switch (MainFragment.configureData.getWorkingMode()) {
 				case LOCAL_MODE:
 					return localFile(playist);
@@ -52,27 +54,28 @@ public class DashProxyServer extends NanoHTTPD {
 					int tmpp = Integer.parseInt(playist.substring(0, 1));
 					byte[] tmp = iTC.getSegments(tmpp);
 					return newFixedLengthResponse(Response.Status.OK, mp4, tmp);
-				case JUNIT_TEST_MODE:
-					Stack<FileFragment> s = CellularDownTest.fraList;
-					if (s.empty()) {
-						Log.wtf(TAG, "file nothing");
-						return newFixedLengthResponse(
-								Response.Status.NOT_FOUND, mp4, null, 0);
-					}
-					FileFragment f = s.pop();
-					Response res = newFixedLengthResponse(
-							Response.Status.PARTIAL_CONTENT, mp4, f.getData());
-					res.addHeader(
-							"Content-Range",
-							"Content-Range " + f.getStartIndex() + "-"
-									+ f.getStopIndex() + "/"
-									+ CellularDownTest.base);
-					return res;
 				default:
-					Log.wtf(TAG, "file nothing");
+					Log.wtf(TAG, "mode wrong");
 					return newFixedLengthResponse(
 							Response.Status.INTERNAL_ERROR, mp4, null, 0);
 				}
+			} else if (MainFragment.configureData.getWorkingMode() == WorkMode.JUNIT_TEST_MODE) {
+				Log.v(TAG, "junit");
+				Stack<FileFragment> s = CellularDownTest.fraList;
+				if (s.empty()) {
+					Log.wtf(TAG, "stack empty");
+					return newFixedLengthResponse(Response.Status.OK,
+							mp4, null, 0);
+				}
+				FileFragment f = s.pop();
+				Response res = newFixedLengthResponse(
+						Response.Status.PARTIAL_CONTENT, mp4, f.getData());
+				res.addHeader(
+						"Content-Range",
+						"Content-Range " + f.getStartIndex() + "-"
+								+ f.getStopIndex() + "/"
+								+ CellularDownTest.base);
+				return res;
 			}
 			Log.wtf(TAG, "file nothing");
 			return newFixedLengthResponse(Response.Status.NOT_FOUND, mp4, null,

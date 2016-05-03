@@ -145,7 +145,11 @@ public class FileFragment implements Comparable<FileFragment>, Serializable,
 
 	@Override
 	public String toString() {
-		return "Frag " + startIndex + " " + stopIndex + " " + data.length;
+		if (data == null) {
+			return "Frag " + startIndex + " " + stopIndex + " 0";
+		} else {
+			return "Frag " + startIndex + " " + stopIndex + " " + data.length;
+		}
 	}
 
 	@Override

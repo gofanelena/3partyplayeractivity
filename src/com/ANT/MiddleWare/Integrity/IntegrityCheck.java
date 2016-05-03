@@ -57,7 +57,7 @@ public class IntegrityCheck {
 				}
 			}
 			try {
-				Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				return null;// Empty Data
 			}
