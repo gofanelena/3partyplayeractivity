@@ -3,6 +3,7 @@
  */
 package com.ANT.MiddleWare.PartyPlayerActivity.test;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.Stack;
 
 import junit.framework.Assert;
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.DASHProxyServer.DashProxyServer;
@@ -37,6 +39,12 @@ public class CellularDownTest extends AndroidTestCase {
 	 */
 	@Override
 	public void setUp() throws Exception {
+		try {
+			server.start();
+			Log.e(TAG, "start");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		data = getRandomString(base);
 		Random random = new Random();
 		numSet.add(0);
@@ -53,7 +61,7 @@ public class CellularDownTest extends AndroidTestCase {
 			int stop = i == fra - 1 ? base : setSort.get(i + 1)
 					+ random.nextInt(base - setSort.get(i + 1));
 
-			FileFragment tmp = new FileFragment(start, stop, 1,base);
+			FileFragment tmp = new FileFragment(start, stop, 1, base);
 			tmp.setData(data.substring(start, stop).getBytes());
 			fraList.add(tmp);
 		}

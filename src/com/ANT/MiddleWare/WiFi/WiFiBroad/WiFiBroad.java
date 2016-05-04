@@ -36,7 +36,7 @@ public class WiFiBroad extends WiFiPulic {
 	public static final int EMERGEN_SEND_TAG = -2;
 	public static final int FRAG_REQST_TAG = -3;
 	public static String myIP;
-	public static final String baseIP="192.168.1.";
+	public static final String baseIP = "192.168.1.";
 	private int numIP;
 
 	public WiFiBroad(Context contect) throws IOException, InterruptedException {
@@ -47,14 +47,14 @@ public class WiFiBroad extends WiFiPulic {
 
 		// pi.connect(po);
 		// po.connect(pi);
-        
+
 		String s = tm.getDeviceId();
 		int len = s.length();
 		numIP = Integer.parseInt(s.substring(len - 2));
-		this.myIP = baseIP + numIP;	
-		
-		//RoundRobin.getInstance().insertToIPList(myIP);
-		
+		this.myIP = baseIP + numIP;
+
+		// RoundRobin.getInstance().insertToIPList(myIP);
+
 		Log.v(TAG, "ip " + myIP);
 		proc = Runtime.getRuntime().exec("su");
 		DataOutputStream os = new DataOutputStream(proc.getOutputStream());
@@ -80,19 +80,20 @@ public class WiFiBroad extends WiFiPulic {
 
 		recvThd = new RecvMulti(po, contect, socket);
 		recvThd.start();
-		
+
 		sendThd = new SendMulti(socket, taskList);
 		sendThd.start();
 
-		objThd = new ObjectMulti(pi, contect,sendThd);
+		objThd = new ObjectMulti(pi, contect, sendThd);
 		objThd.start();
-		
+
 	}
 
 	@Override
 	public void EmergencySend(byte[] data) throws FileFragmentException,
 			IOException {
-		FileFragment f = new FileFragment(numIP, data.length, EMERGEN_SEND_TAG,-1);
+		FileFragment f = new FileFragment(numIP, numIP + data.length,
+				EMERGEN_SEND_TAG, -1);
 		f.setData(data);
 		data = f.toBytes();
 		DatagramPacket dp = new DatagramPacket(data, data.length,
@@ -120,8 +121,8 @@ public class WiFiBroad extends WiFiPulic {
 
 	@Override
 	public void notify(int seg, int start) {
-		FileFragment ff = new FileFragment(seg, start, FRAG_REQST_TAG,-1);
+		FileFragment ff = new FileFragment(seg, start, FRAG_REQST_TAG, -1);
 		WiFiFactory.insertF(ff);
 	}
-	
+
 }

@@ -1,7 +1,5 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
-import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
-
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -14,7 +12,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-public class SettingDialog extends DialogFragment {
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
+
+public class CellModeDialog extends DialogFragment {
 	private static final String TAG = SettingDialog.class.getSimpleName();
 
 	private RadioGroup radioGroup;
@@ -40,26 +40,30 @@ public class SettingDialog extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View v = inflater.inflate(R.layout.fragment_setting, null);
+		View v = inflater.inflate(R.layout.fragment_cellmode, null);
 		getDialog().setTitle(R.string.alerttitle);
 
-		radioGroup = (RadioGroup) v.findViewById(R.id.radioGroup);
-		btConfirm = (Button) v.findViewById(R.id.btalertconfirm);
+		radioGroup = (RadioGroup) v.findViewById(R.id.radioGroup3);
+		btConfirm = (Button) v.findViewById(R.id.btalertconfirm3);
 
-		WorkMode mode = MainFragment.configureData.getWorkingMode();
-		switch (mode) {
-		case LOCAL_MODE:
-			rbButton = (RadioButton) v.findViewById(R.id.local_mode);
+		CellType defCell = MainFragment.configureData.getDefCell();
+		switch (defCell) {
+		case Single:
+			rbButton = (RadioButton) v.findViewById(R.id.single);
 			rbButton.setChecked(true);
 			break;
-		case G_MDOE:
-			rbButton = (RadioButton) v.findViewById(R.id.G_mode);
+		case GROUP:
+			rbButton = (RadioButton) v.findViewById(R.id.group);
 			rbButton.setChecked(true);
 			break;
-//		case COOPERATIVE_MODE:
-//			rbButton = (RadioButton) v.findViewById(R.id.cooperative_mode);
-//			rbButton.setChecked(true);
-//			break;
+		case DASH:
+			rbButton = (RadioButton) v.findViewById(R.id.dash);
+			rbButton.setChecked(true);
+			break;
+		case NOCELL:
+			rbButton = (RadioButton) v.findViewById(R.id.nocell);
+			rbButton.setChecked(true);
+			break;
 		default:
 			break;
 		}
@@ -72,13 +76,21 @@ public class SettingDialog extends DialogFragment {
 				int selectedId = radioGroup.getCheckedRadioButtonId();
 
 				switch (selectedId) {
-				case R.id.local_mode:
+				case R.id.single:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.WorkMode.LOCAL_MODE);
+							.setDefCell(CellType.Single);
 					break;
-				case R.id.G_mode:
+				case R.id.group:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.WorkMode.G_MDOE);
+							.setDefCell(CellType.GROUP);
+					break;
+				case R.id.dash:
+					MainFragment.configureData
+							.setDefCell(CellType.DASH);
+					break;
+				case R.id.nocell:
+					MainFragment.configureData
+							.setDefCell(CellType.NOCELL);
 					break;
 				}
 			}

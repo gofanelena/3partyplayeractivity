@@ -1,11 +1,10 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
-import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
-
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-public class SettingDialog extends DialogFragment {
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
+
+public class NotifyDialog extends DialogFragment {
 	private static final String TAG = SettingDialog.class.getSimpleName();
 
 	private RadioGroup radioGroup;
@@ -40,26 +41,23 @@ public class SettingDialog extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View v = inflater.inflate(R.layout.fragment_setting, null);
+		View v = inflater.inflate(R.layout.fragment_notify, null);
 		getDialog().setTitle(R.string.alerttitle);
 
-		radioGroup = (RadioGroup) v.findViewById(R.id.radioGroup);
-		btConfirm = (Button) v.findViewById(R.id.btalertconfirm);
+		radioGroup = (RadioGroup) v.findViewById(R.id.radioGroup4);
+		btConfirm = (Button) v.findViewById(R.id.btalertconfirm4);
 
-		WorkMode mode = MainFragment.configureData.getWorkingMode();
-		switch (mode) {
-		case LOCAL_MODE:
-			rbButton = (RadioButton) v.findViewById(R.id.local_mode);
+		boolean notifySwitch = MainFragment.configureData.isNoNotify();
+		int onOff = notifySwitch?0:1;
+		switch (onOff) {
+		case 1:
+			rbButton = (RadioButton) v.findViewById(R.id.Notify_on);
 			rbButton.setChecked(true);
 			break;
-		case G_MDOE:
-			rbButton = (RadioButton) v.findViewById(R.id.G_mode);
+		case 0:
+			rbButton = (RadioButton) v.findViewById(R.id.Notify_off);
 			rbButton.setChecked(true);
 			break;
-//		case COOPERATIVE_MODE:
-//			rbButton = (RadioButton) v.findViewById(R.id.cooperative_mode);
-//			rbButton.setChecked(true);
-//			break;
 		default:
 			break;
 		}
@@ -72,13 +70,18 @@ public class SettingDialog extends DialogFragment {
 				int selectedId = radioGroup.getCheckedRadioButtonId();
 
 				switch (selectedId) {
-				case R.id.local_mode:
+				case R.id.Notify_on:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.WorkMode.LOCAL_MODE);
+							.setNoNotify(false);
+//					MainFragment.configureData
+//							.setNoWiFiSend(false);
 					break;
-				case R.id.G_mode:
+				case R.id.Notify_off:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.WorkMode.G_MDOE);
+							.setNoNotify(true);
+//					MainFragment.configureData
+//							.setNoWiFiSend(false);
+					Log.v(TAG, ""+MainFragment.configureData.getDefMore());
 					break;
 				}
 			}

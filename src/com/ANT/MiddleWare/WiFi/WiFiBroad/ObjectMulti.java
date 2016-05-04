@@ -15,6 +15,8 @@ import com.ANT.MiddleWare.Entities.FileFragment;
 import com.ANT.MiddleWare.Entities.FileFragment.FileFragmentException;
 import com.ANT.MiddleWare.Entities.Segment;
 import com.ANT.MiddleWare.Integrity.IntegrityCheck;
+import com.ANT.MiddleWare.PartyPlayerActivity.MainFragment;
+import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
 import com.ANT.MiddleWare.WiFi.WiFiFactory;
 
 public class ObjectMulti extends Thread {
@@ -56,13 +58,15 @@ public class ObjectMulti extends Thread {
 				final FileFragment ff = (FileFragment) oi.readObject();
 				if (ff != null) {
 					Log.d(TAG, ff.toString());
-					((Activity) activity).runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							Toast.makeText(activity, ff.toString(),
-									Toast.LENGTH_SHORT).show();
-						}
-					});
+					if (MainFragment.configureData.getWorkingMode() != WorkMode.JUNIT_TEST_MODE) {
+						((Activity) activity).runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Toast.makeText(activity, ff.toString(),
+										Toast.LENGTH_SHORT).show();
+							}
+						});
+					}
 					switch (ff.getSegmentID()) {
 					case WiFiBroad.FRAG_REQST_TAG:
 						Segment s = IntegrityCheck.getInstance().getSeg(
@@ -72,10 +76,10 @@ public class ObjectMulti extends Thread {
 						WiFiFactory.insertF(f);
 						break;
 					case WiFiBroad.EMERGEN_SEND_TAG:
-						//RoundRobin.getInstance().insertToIPList(WiFiBroad.baseIP+ff.getStartIndex());
-						//TODO
-						//send IP
-						//RoundRobin.getInstance().sendIP(WiFiBroad.baseIP+ff.getStartIndex());
+						// RoundRobin.getInstance().insertToIPList(WiFiBroad.baseIP+ff.getStartIndex());
+						// TODO
+						// send IP
+						// RoundRobin.getInstance().sendIP(WiFiBroad.baseIP+ff.getStartIndex());
 						((Activity) activity).runOnUiThread(new Runnable() {
 							@Override
 							public void run() {

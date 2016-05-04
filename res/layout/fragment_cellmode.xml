@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:gravity="center">
     
     <RadioGroup 
-        android:id="@+id/radioGroup" 
+        android:id="@+id/radioGroup3" 
         android:contentDescription="setting" 
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
@@ -15,25 +15,38 @@
     	<RadioButton 
     	    android:layout_width="wrap_content" 
     	    android:layout_height="wrap_content" 
-    	    android:id="@+id/local_mode" 
-    	    android:text="@string/localmode" 
+    	    android:id="@+id/single" 
+    	    android:text="Single" 
     	    >
     	</RadioButton>
     	
     	<RadioButton 
     	    android:layout_width="wrap_content" 
     	    android:layout_height="wrap_content" 
-    	    android:id="@+id/G_mode"  
-    	    android:text="@string/Gmode">
+    	    android:id="@+id/group"  
+    	    android:text="Group">
     	</RadioButton>  
     	
-
+    	<RadioButton 
+    	    android:layout_width="wrap_content" 
+    	    android:layout_height="wrap_content" 
+    	    android:id="@+id/dash"  
+    	    android:text="Dash">
+    	</RadioButton>
+    	
+    	<RadioButton 
+    	    android:layout_width="wrap_content" 
+    	    android:layout_height="wrap_content" 
+    	    android:id="@+id/nocell"  
+    	    android:text="NO Cell">
+    	</RadioButton>
+  
     </RadioGroup>
     
     <Button 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btalertconfirm"
+        android:id="@+id/btalertconfirm3"
         android:text="@string/bt_confirm"
         android:padding="0dp"
         android:layout_marginLeft="8dp"

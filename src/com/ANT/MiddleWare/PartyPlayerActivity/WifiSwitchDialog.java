@@ -1,5 +1,6 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
+import com.ANT.MiddleWare.Celluar.CellularDown.CellType;
 import com.ANT.MiddleWare.PartyPlayerActivity.ConfigureData.WorkMode;
 
 import android.app.Dialog;
@@ -14,7 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-public class SettingDialog extends DialogFragment {
+public class WifiSwitchDialog extends DialogFragment {
 	private static final String TAG = SettingDialog.class.getSimpleName();
 
 	private RadioGroup radioGroup;
@@ -40,26 +41,23 @@ public class SettingDialog extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View v = inflater.inflate(R.layout.fragment_setting, null);
+		View v = inflater.inflate(R.layout.fragment_wifi_switch, null);
 		getDialog().setTitle(R.string.alerttitle);
 
-		radioGroup = (RadioGroup) v.findViewById(R.id.radioGroup);
-		btConfirm = (Button) v.findViewById(R.id.btalertconfirm);
+		radioGroup = (RadioGroup) v.findViewById(R.id.radioGroup2);
+		btConfirm = (Button) v.findViewById(R.id.btalertconfirm2);
 
-		WorkMode mode = MainFragment.configureData.getWorkingMode();
-		switch (mode) {
-		case LOCAL_MODE:
-			rbButton = (RadioButton) v.findViewById(R.id.local_mode);
+		boolean wifiSwitch = MainFragment.configureData.isNoWiFiSend();
+		int mSwitch = wifiSwitch?1:0;
+		switch (mSwitch) {
+		case 1:
+			rbButton = (RadioButton) v.findViewById(R.id.wifi_off);
 			rbButton.setChecked(true);
 			break;
-		case G_MDOE:
-			rbButton = (RadioButton) v.findViewById(R.id.G_mode);
+		case 0:
+			rbButton = (RadioButton) v.findViewById(R.id.wifi_on);
 			rbButton.setChecked(true);
 			break;
-//		case COOPERATIVE_MODE:
-//			rbButton = (RadioButton) v.findViewById(R.id.cooperative_mode);
-//			rbButton.setChecked(true);
-//			break;
 		default:
 			break;
 		}
@@ -72,13 +70,15 @@ public class SettingDialog extends DialogFragment {
 				int selectedId = radioGroup.getCheckedRadioButtonId();
 
 				switch (selectedId) {
-				case R.id.local_mode:
+				case R.id.wifi_off:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.WorkMode.LOCAL_MODE);
+							.setNoWiFiSend(true);
+//					MainFragment.configureData
+//							.setDefMore(CellType.NOCELL);
 					break;
-				case R.id.G_mode:
+				case R.id.wifi_on:
 					MainFragment.configureData
-							.setWorkingMode(ConfigureData.WorkMode.G_MDOE);
+							.setNoWiFiSend(false);
 					break;
 				}
 			}

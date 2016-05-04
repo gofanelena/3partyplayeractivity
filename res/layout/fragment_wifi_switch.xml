@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:gravity="center">
     
     <RadioGroup 
-        android:id="@+id/radioGroup" 
+        android:id="@+id/radioGroup2" 
         android:contentDescription="setting" 
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
@@ -15,16 +15,16 @@
     	<RadioButton 
     	    android:layout_width="wrap_content" 
     	    android:layout_height="wrap_content" 
-    	    android:id="@+id/local_mode" 
-    	    android:text="@string/localmode" 
+    	    android:id="@+id/wifi_on" 
+    	    android:text="WiFi ON" 
     	    >
     	</RadioButton>
     	
     	<RadioButton 
     	    android:layout_width="wrap_content" 
     	    android:layout_height="wrap_content" 
-    	    android:id="@+id/G_mode"  
-    	    android:text="@string/Gmode">
+    	    android:id="@+id/wifi_off"  
+    	    android:text="WiFi OFF">
     	</RadioButton>  
     	
 
@@ -33,7 +33,7 @@
     <Button 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btalertconfirm"
+        android:id="@+id/btalertconfirm2"
         android:text="@string/bt_confirm"
         android:padding="0dp"
         android:layout_marginLeft="8dp"
