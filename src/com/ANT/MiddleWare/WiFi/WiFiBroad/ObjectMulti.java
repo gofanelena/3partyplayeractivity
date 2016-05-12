@@ -1,13 +1,18 @@
 package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
 import java.io.PipedInputStream;
 import java.io.StreamCorruptedException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -56,6 +61,31 @@ public class ObjectMulti extends Thread {
 		while (true) {
 			try {
 				final FileFragment ff = (FileFragment) oi.readObject();
+				//测试收到时间写入文件
+				String startOffset=String.valueOf(ff.getStartIndex());
+				String stopOffset=String.valueOf(ff.getStopIndex());
+				String segId=String.valueOf(ff.getSegmentID());
+				SimpleDateFormat format=new SimpleDateFormat("HH:mm:ss:SSS");
+				Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+				String str = format.format(curDate);
+				String receive="sId:"+segId+"\t start:"+startOffset+"\t stop:"+
+				stopOffset+"\t time:"+System.currentTimeMillis()+"\t "+str+"\n";
+				String dir=Environment.getExternalStorageDirectory()+"/lbroadchtest/";
+				File filedir=new File(dir);
+				filedir.mkdir();
+				int num=MainFragment.configureData.getFileNum();
+//				if(filedir.isDirectory()){
+//					String[] s =filedir.list();
+//					num=s.length;
+//				}
+				File file=new File(dir, "lreceive_ch1_sp90_1.txt");
+				if(!file.exists()){
+					file.createNewFile();
+				}
+				FileOutputStream fos =new FileOutputStream(file, true);
+				fos.write(receive.getBytes());
+				fos.close();
+				
 				if (ff != null) {
 					Log.d(TAG, ff.toString());
 					if (MainFragment.configureData.getWorkingMode() != WorkMode.JUNIT_TEST_MODE) {

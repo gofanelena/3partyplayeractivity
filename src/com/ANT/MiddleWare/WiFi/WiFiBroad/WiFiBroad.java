@@ -1,5 +1,6 @@
 package com.ANT.MiddleWare.WiFi.WiFiBroad;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
@@ -58,13 +59,40 @@ public class WiFiBroad extends WiFiPulic {
 		Log.v(TAG, "ip " + myIP);
 		proc = Runtime.getRuntime().exec("su");
 		DataOutputStream os = new DataOutputStream(proc.getOutputStream());
-		os.writeBytes("netcfg wlan0 up\n");
-		os.writeBytes("wpa_supplicant -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -B\n");
-		os.writeBytes("ifconfig wlan0 " + myIP + " netmask 255.255.255.0\n");
-		os.writeBytes("ip route add 224.0.0.0/4 dev wlan0\n");
+		final DataInputStream is =new DataInputStream(proc.getInputStream());
+//		os.writeBytes("dmesg 1>/data/misc/wifi/dmesg.txt\n");
+//		os.writeBytes("netcfg 1>/data/misc/wifi/1.txt 2>/data/misc/wifi/err.txt\n");
+		os.writeBytes("netcfg wlan0 up 1>>/data/misc/wifi/out.txt 2>>/data/misc/wifi/err.txt\n");
+//		os.writeBytes("netcfg 1>/data/misc/wifi/11.txt 2>/data/misc/wifi/err.txt\n");
+		os.writeBytes("wpa_supplicant -iwlan0  -t -d -c/data/misc/wifi/wpa_supplicant.conf /data/misc/wifi/out.txt\n");
+//		os.writeBytes("ifconfig wlan0 1>/data/misc/wifi/2.txt 2>>/data/misc/wifi/1err.txt\n");
+		os.writeBytes("ifconfig wlan0 " + myIP + " netmask 255.255.255.0 1>>/data/misc/wifi/out.txt 2>>/data/misc/wifi/err.txt\n");
+		os.writeBytes("ip route add 224.0.0.0/4 dev wlan0 1>>/data/misc/wifi/out.txt 2>>/data/misc/wifi/err.txt\n");
+//		os.writeBytes("ifconfig wlan0 1>/data/misc/wifi/2.txt 2>>/data/misc/wifi/1err.txt\n");
+//		os.writeBytes("dmesg 1>/data/misc/wifi/dmesgaf.txt\n");
 		os.writeBytes("exit\n");
 		os.flush();
 		proc.waitFor();
+		
+		new Thread(new Runnable() {
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			String out = null;
+			String result="";
+			try {
+				while((out=is.readLine())!=null) {
+					result+=out;
+				}
+				Log.d(TAG, "proc-out:"+result);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}).start();	
 
 		wifi = (WifiManager) contect.getSystemService(Context.WIFI_SERVICE);
 		if (wifi != null) {
@@ -80,8 +108,8 @@ public class WiFiBroad extends WiFiPulic {
 
 		recvThd = new RecvMulti(po, contect, socket);
 		recvThd.start();
-
-		sendThd = new SendMulti(socket, taskList);
+		Log.d("wifisend", "send");
+		sendThd = new SendMulti(socket, taskList,convertStack);
 		sendThd.start();
 
 		objThd = new ObjectMulti(pi, contect, sendThd);

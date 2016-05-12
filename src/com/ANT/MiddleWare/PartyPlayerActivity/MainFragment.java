@@ -1,11 +1,14 @@
 package com.ANT.MiddleWare.PartyPlayerActivity;
 
+
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Stack;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -19,6 +22,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
@@ -73,6 +77,7 @@ public class MainFragment extends Fragment {
 	private List<String> list = new ArrayList<String>();
 	private ArrayAdapter<String> adapter;
 	private Spinner mySpinner;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +128,15 @@ public class MainFragment extends Fragment {
 					try {
 						WiFiFactory.changeInstance(getActivity(),
 								WiFiType.BROAD);
+//						String dir=Environment.getExternalStorageDirectory()+"/lbroadchtest/";
+//						File filedir=new File(dir);
+//						filedir.mkdir();
+//						int num=0;
+//						if(filedir.isDirectory()){
+//							String[] s =filedir.list();
+//							num=s.length;
+//						}
+//						MainFragment.configureData.setFileNum(num);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
