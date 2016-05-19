@@ -103,7 +103,7 @@ public class SegmentTest extends AndroidTestCase {
 		Assert.assertNull(tmp);
 		for (FileFragment ff : fraList) {
 			seg.insert(ff);
-			for (int i = 0; i < fra; i++) {
+			for (int i = 0; i < 10; i++) {
 				int start = random.nextInt(base);
 				byte[] buf = seg.getData(start);
 				if (buf != null) {
@@ -112,8 +112,6 @@ public class SegmentTest extends AndroidTestCase {
 				}
 			}
 		}
-		tmp = seg.getData();
-		// Assert.assertFalse(new String(tmp).compareTo(data) == 0);
 		boolean b = seg.checkIntegrity();
 		Assert.assertTrue(b);
 		tmp = seg.getData();

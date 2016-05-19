@@ -49,7 +49,7 @@ public class RecvMulti extends Thread {
 			try {
 				socket.receive(packet);
 				Log.d(TAG, packet.toString());
-				RoundRobin.getInstance().insertToIPList(packet.getAddress().getHostAddress());
+				//RoundRobin.getInstance().insertToIPList(packet.getAddress().getHostAddress());
 				po.write(packet.getData(), packet.getOffset(),
 						packet.getLength());
 			} catch (IOException e) {

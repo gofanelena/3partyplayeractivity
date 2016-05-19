@@ -12,12 +12,15 @@
     <string name="confirm">CONFIRM</string>
     <string name="player">choose 3rd party video player</string>
     <string name="choose">CHOOSE PLAYER</string>
-    <string name="action_settings">SETTING</string>
+    <string name="action_settings">WORK MODE</string>
     <string name="localmode">Local Mode</string>
     <string name="Gmode">Celluar Mode</string>
     <string name="cooperativemode">Cooperative Mode</string>
     <string name="alerttitle">WORKING MODE:</string>
     <string name="bt_confirm">CONFIRM</string>
     <string name="captain">GROUPING</string>
+    <string name="action_mores">MORES SETTING</string>
+    <string name="action_wifi_switch">WiFi SWITCH</string>
+    <string name="action_cell_mode">CELL MODE</string>
 
 </resources>

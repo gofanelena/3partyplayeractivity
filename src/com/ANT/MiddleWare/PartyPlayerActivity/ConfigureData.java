@@ -8,7 +8,7 @@ public class ConfigureData {
 	public static enum WorkMode {
 		LOCAL_MODE, G_MDOE, COOPERATIVE_MODE, JUNIT_TEST_MODE
 	}
-
+	
 	private String url;
 	private boolean serviceAlive = false;
 	private WorkMode workingMode = WorkMode.LOCAL_MODE;
@@ -20,11 +20,20 @@ public class ConfigureData {
 	private CellType DefMore = CellType.NOCELL;
 	private CellType DefCell = CellType.NOCELL;
 	private boolean noWiFiSend = true;
+	private int filenum=-1;
 
 	public ConfigureData(String url) {
 		this.url = url;
 		serviceAlive = false;
 		workingMode = WorkMode.LOCAL_MODE;
+	}
+	
+	public int getFileNum(){
+		return filenum;
+	}
+	
+	public void setFileNum(int i){
+		this.filenum=i;
 	}
 
 	public WorkMode getWorkingMode() {
