@@ -32,26 +32,8 @@ public abstract class WiFiPulic {
 				e.printStackTrace();
 			}
 			synchronized (taskList) {
-//				int i=0;
 				for (FileFragment f : fragArray) {
 					taskList.add(f);
-//					Log.d("broadtasklistadd", f.toString()+" "+f.getSegmentID());
-//					if (!taskList.empty()) {
-//						Log.d("insertforeach",taskList.peek().toString()+" "+taskList.peek().getSegmentID());
-//					}
-//					if (taskList.empty()) {
-//						Log.d("tasklistempty", "empty");
-//						continue;
-//					}else{
-//					 while (true) { 
-//	                       Log.d("insertforeach",taskList.pop().toString()+" "+taskList.pop().getSegmentID()); 
-//	                } 
-//					}
-					
-//					 for (FileFragment x : taskList) { 
-//					  Log.d("tasklistforeach", x.toString()+" "+x.getSegmentID()+" "+i);  
-//	                } 
-//					 i++;
 				}
 				while (!taskList.empty()) {
 //			         Log.d("convert", "before enqueue,taskList size: " + String.valueOf(taskList.size()));

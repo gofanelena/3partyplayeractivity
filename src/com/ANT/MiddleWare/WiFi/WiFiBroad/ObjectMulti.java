@@ -70,7 +70,7 @@ public class ObjectMulti extends Thread {
 				String str = format.format(curDate);
 				String receive="sId:"+segId+"\t start:"+startOffset+"\t stop:"+
 				stopOffset+"\t time:"+System.currentTimeMillis()+"\t "+str+"\n";
-				String dir=Environment.getExternalStorageDirectory()+"/lbroadchtest/";
+				String dir=Environment.getExternalStorageDirectory()+"/lbroadtest/";
 				File filedir=new File(dir);
 				filedir.mkdir();
 				int num=MainFragment.configureData.getFileNum();
@@ -78,7 +78,7 @@ public class ObjectMulti extends Thread {
 //					String[] s =filedir.list();
 //					num=s.length;
 //				}
-				File file=new File(dir, "lreceive_ch1_sp90_1.txt");
+				File file=new File(dir, "lreceive_63k_sp0_"+num+".txt");
 				if(!file.exists()){
 					file.createNewFile();
 				}
@@ -88,6 +88,8 @@ public class ObjectMulti extends Thread {
 				
 				if (ff != null) {
 					Log.d(TAG, ff.toString());
+//					if(ff.getStartIndex()==89){
+//					Log.d("rece51",String.valueOf(System.currentTimeMillis()));}
 					if (MainFragment.configureData.getWorkingMode() != WorkMode.JUNIT_TEST_MODE) {
 						((Activity) activity).runOnUiThread(new Runnable() {
 							@Override
@@ -110,6 +112,10 @@ public class ObjectMulti extends Thread {
 						// TODO
 						// send IP
 						// RoundRobin.getInstance().sendIP(WiFiBroad.baseIP+ff.getStartIndex());
+						if(ff.getStartIndex()==51){
+							WiFiFactory.EmergencySend("I am Captain!"
+									.getBytes("UTF-8"));
+							Log.d("send2",String.valueOf(System.currentTimeMillis()));}
 						((Activity) activity).runOnUiThread(new Runnable() {
 							@Override
 							public void run() {

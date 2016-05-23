@@ -128,6 +128,7 @@ public class WiFiBroad extends WiFiPulic {
 				InetAddress.getByName(multicastHost), localPort);
 		synchronized (taskList) {
 			socket.send(dp);
+			Log.d("send51",String.valueOf(System.currentTimeMillis()));
 		}
 	}
 

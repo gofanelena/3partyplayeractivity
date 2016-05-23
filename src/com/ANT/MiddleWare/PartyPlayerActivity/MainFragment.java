@@ -125,18 +125,20 @@ public class MainFragment extends Fragment {
 					break;
 				case 1: // adhoc
 					adhocSelect = true;
+					Toast.makeText(getActivity(), "time:"+System.currentTimeMillis(),
+							Toast.LENGTH_SHORT).show();
 					try {
 						WiFiFactory.changeInstance(getActivity(),
 								WiFiType.BROAD);
-//						String dir=Environment.getExternalStorageDirectory()+"/lbroadchtest/";
-//						File filedir=new File(dir);
-//						filedir.mkdir();
-//						int num=0;
-//						if(filedir.isDirectory()){
-//							String[] s =filedir.list();
-//							num=s.length;
-//						}
-//						MainFragment.configureData.setFileNum(num);
+						String dir=Environment.getExternalStorageDirectory()+"/lbroadtest/";
+						File filedir=new File(dir);
+						filedir.mkdir();
+						int num=0;
+						if(filedir.isDirectory()){
+							String[] s =filedir.list();
+							num=s.length;
+						}
+						MainFragment.configureData.setFileNum(num);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
